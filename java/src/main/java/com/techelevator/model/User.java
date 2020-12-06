@@ -3,6 +3,7 @@ package com.techelevator.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,14 +16,16 @@ public class User {
    @JsonIgnore
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
+   private List<Long> friends;
 
    public User() { }
 
-   public User(Long id, String username, String password, String authorities) {
+   public User(Long id, String username, String password, String authorities, List<Long> friends) {
       this.id = id;
       this.username = username;
       this.password = password;
       this.activated = true;
+      this.friends = friends;
    }
 
    public Long getId() {
@@ -72,6 +75,49 @@ public class User {
          this.authorities.add(new Authority(authority));
       }
    }
+   
+   public List<Long> getFriends() {
+	   return friends;
+   }
+   
+   public void setFriends(List<Long> friends) {
+	   this.friends = friends;
+   }
+   
+   public User addFriends(List<Long> friends)
+   {
+	   this.friends.addAll(friends);
+	   return this;
+   }
+   
+   public User addFriends(long friend)
+   {
+	   this.friends.add(friend);
+	   return this;
+   }
+   
+   public User removeComics(List<Long> friends)
+	{
+		for(int i = 0; i < this.friends.size(); i++)
+			if(friends.contains(this.friends.get(i)))
+				this.friends.remove(i--);
+		return this;
+	}
+   
+   public User removeComics(long friend)
+   {
+	   	try 
+	   	{
+		   friends.remove(friends.indexOf(friend));
+	   	} 
+	   	catch (Exception e) 
+	   	{
+			System.out.println("Could not remove friend " + friend);
+	   	}
+
+		return this;
+	}
+  
 
    @Override
    public boolean equals(Object o) {
