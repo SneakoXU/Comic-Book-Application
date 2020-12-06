@@ -74,3 +74,14 @@ export default {
   }
 };
 </script>
+<style scoped>
+  /* @font-face{
+    font-family: "Roof Runners";
+    src: local("Roof Runners") format("truetype")
+  }
+
+  *{
+    font-family: "Roof Runners", sans serif;
+  } */
+
+</style>

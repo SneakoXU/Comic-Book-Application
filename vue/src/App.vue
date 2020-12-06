@@ -7,3 +7,15 @@
     <router-view />
   </div>
 </template>
+
+<style>
+  @font-face{
+    font-family: "Roof Runners";
+    src: url("https://www.1001fonts.com/roof-font.html") format("truetype")
+  }
+
+  *{
+    font-family: "Roof Runners", sans serif;
+  }
+</style>
+
