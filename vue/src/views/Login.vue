@@ -75,24 +75,62 @@ export default {
 };
 </script>
 <style scoped>
+
   #login{
     background-image: url("../../assets/Images/blue backgd.jpg");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-size: 100%;
     background-repeat: no-repeat;
+    height: 350px;
+    width: 65%;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
+  -moz-box-shadow:    20px 20px 10px 10px #000000;
+  -webkit-box-shadow: 20px 20px 10px 10px #000000;
+  box-shadow:         20px 20px 10px 10px #000000;
+    
   } 
 
   .form-signin{
     display: flex;
     align-items: center;
     flex-direction: column;
-    
-
   }
 
    #username:hover, #password:hover{
-     width: 200px;
+     width: 270px;
      box-shadow: 2px 5px;
    }
+
+   #username, #password{
+     margin-bottom: 15px;
+   }
+
+  button{
+    margin-top: 5px;
+  }
+
+   input{
+     height: 30px;
+     width: 250px;
+     font-size: 32px;
+   }
+
+   h1{
+     font-family: "Super Boom";
+     font-size: 40px;
+   }
+
+   label{
+     font-family: "Super Boom";
+   }
+
+
 
  
 

@@ -96,14 +96,16 @@ export default {
     background-image: url("../../assets/Images/blue backgd.jpg");
     background-size: 100%;
     background-repeat: no-repeat;
+    height: 500px;
   } 
     .form-register{
     display: flex;
     align-items: center;
     flex-direction: column;
+    justify-content: center;
   }
 
-  input:hover{
+  #username:hover, #password:hover, #confirmPassword:hover{
     width: 200px;
     box-shadow: 2px 5px;
   }

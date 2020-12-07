@@ -16,8 +16,6 @@ export default {
     background-image: url("../../assets/Images/blue backgd.jpg");
     background-size: 100%;
     background-repeat: no-repeat;    
-  };
-  #header {
-    background-image: "../../assets/Images/nav bar.png";
   }
+ 
 </style>
