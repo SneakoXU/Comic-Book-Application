@@ -75,13 +75,27 @@ export default {
 };
 </script>
 <style scoped>
-  /* @font-face{
-    font-family: "Roof Runners";
-    src: local("Roof Runners") format("truetype")
+  #login{
+    background-image: url("../../assets/Images/blue backgd.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  } 
+
+  .form-signin{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+
   }
 
-  *{
-    font-family: "Roof Runners", sans serif;
-  } */
+   #username:hover, #password:hover{
+     width: 200px;
+     box-shadow: 2px 5px;
+   }
+
+ 
+
+
 
 </style>
