@@ -1,19 +1,17 @@
-package com.techelevator.model.marvel.wrappers;
+package com.techelevator.model.marvel.fields;
 
-import com.techelevator.model.marvel.containers.EventDataContainer;
-
-public class EventDataWrapper {
+public class DataWrapper {
 	private int code;
 	private String status;
 	private String copyright;
 	private String attributionText;
 	private String attributionHTML;
 	private String etag;
-	private EventDataContainer data;
-	public EventDataWrapper() {}
-	public EventDataWrapper(int code, String status, String copyright,
+	private Container data;
+	public DataWrapper() {}
+	public DataWrapper(int code, String status, String copyright,
 	        String attributionText, String attributionHTML, String etag,
-	        EventDataContainer data) {
+	        Container data) {
 		super();
 		this.code = code;
 		this.status = status;
@@ -59,10 +57,10 @@ public class EventDataWrapper {
 	public void setEtag(String etag) {
 		this.etag = etag;
 	}
-	public EventDataContainer getData() {
+	public Container getData() {
 		return data;
 	}
-	public void setData(EventDataContainer data) {
+	public void setData(Container data) {
 		this.data = data;
 	}
 }

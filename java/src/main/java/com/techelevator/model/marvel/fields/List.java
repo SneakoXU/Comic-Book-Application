@@ -1,22 +1,32 @@
-package com.techelevator.model.marvel.lists;
+package com.techelevator.model.marvel.fields;
 
-import com.techelevator.model.marvel.summaries.EventSummary;
-
-public class EventList {
-
+public class List 
+{
 	private int available;
 	private int returned;
+	public String name;
 	private String collectionURI;
-	private EventSummary[] items;
-	public EventList() {
+	private String resourceURI;
+	private Summary[] items;
+	public List() {
 	}
-	public EventList(int available, int returned, String collectionURI,
-	        EventSummary[] items) {
+
+	public List(int available, int returned, String name, String collectionURI,
+	        String resourceURI, Summary[] items) {
 		super();
 		this.available = available;
 		this.returned = returned;
+		this.name = name;
 		this.collectionURI = collectionURI;
+		this.resourceURI = resourceURI;
 		this.items = items;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getAvailable() {
 		return available;
@@ -36,13 +46,19 @@ public class EventList {
 	public void setCollectionURI(String collectionURI) {
 		this.collectionURI = collectionURI;
 	}
-	public EventSummary[] getItems() {
+	
+	public String getResourceURI() {
+		return resourceURI;
+	}
+	public void setResourceURI(String resourceURI) {
+		this.resourceURI = resourceURI;
+	}
+	public Summary[] getItems() {
 		return items;
 	}
-	public void setItems(EventSummary[] items) {
+	public void setItems(Summary[] items) {
 		this.items = items;
 	}
-	
 	
 	
 }

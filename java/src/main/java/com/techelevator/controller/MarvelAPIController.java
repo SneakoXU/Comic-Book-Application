@@ -1,28 +1,16 @@
 package com.techelevator.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.List;
-import java.util.Stack;
+import java.security.NoSuchAlgorithmException;
 
-import org.apache.tomcat.jni.Time;
-import org.apache.tomcat.util.security.MD5Encoder;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techelevator.model.marvel.containers.ComicDataContainer;
-import com.techelevator.model.marvel.fields.Comic;
+import com.techelevator.model.marvel.fields.DataWrapper;
 import com.techelevator.model.marvel.fields.Image;
-import com.techelevator.model.marvel.wrappers.ComicDataWrapper;
 
 public class MarvelAPIController 
 {
@@ -39,7 +27,7 @@ public class MarvelAPIController
 
 		try
 		{
-	        java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+	        MessageDigest md = MessageDigest.getInstance("MD5");
 	        byte[] array = md.digest((time + API_PRIVATE_HASH + API_PUBLIC_HASH).getBytes());
 	        StringBuffer sb = new StringBuffer();
 	        for (int i = 0; i < array.length; ++i) 
@@ -48,9 +36,128 @@ public class MarvelAPIController
 	        }
 	        return API_BASE_URL+uri+"ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString();
 	    } 
-		catch (java.security.NoSuchAlgorithmException e) 
+		catch (NoSuchAlgorithmException e) 
 		{}
 	    return null;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static DataWrapper getDataWrapper(String s)
+	{
+		try 
+		{
+			ResponseEntity response = MarvelAPIController.restTemplate.getForEntity(MarvelAPIController.generateURL(s + (s.indexOf('?')==-1?'?':'&')), String.class);
+			return MarvelAPIController.mapper.readValue(MarvelAPIController.mapper.createParser((String)response.getBody()) , DataWrapper.class);
+		}
+		catch (HttpClientErrorException e) {
+			System.out.println("404- Not found");
+		}
+		catch (IOException e) 
+		{
+			System.out.println("Could not parse JSON");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static abstract class Character
+	{
+		public static DataWrapper getCharacter(long id) 
+		{
+			return getDataWrapper("public/characters/"+id);
+		}
+		
+		public static DataWrapper getCharacter() 
+		{
+			return getDataWrapper("public/characters");
+		}
+		
+		public static DataWrapper getCharactersByName(String name) 
+		{
+			return getDataWrapper("public/characters?nameStartsWith="+name);
+		}
+		
+		public static DataWrapper getCharactersByComic(int id) 
+		{
+			return getDataWrapper("public/characters?comics="+id);
+		}
+		public static DataWrapper getComicsBySeries(int id) 
+		{
+			return getDataWrapper("public/comics?series="+id);
+		}
+		public static String getThumbnailURL(int characterID)
+		{
+			try
+			{
+				Image comicImage = getCharacter(characterID).getData().getResults()[0].getThumbnail();
+				return comicImage.getPath()+"." + comicImage.getExtension();
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			return "err";
+		}
+	}
+	
+	public static abstract class Comic
+	{
+		public static DataWrapper getComic(long id) 
+		{
+			return getDataWrapper("public/comics/"+id);
+		}
+		
+		public static DataWrapper getAllComics() 
+		{
+			return getDataWrapper("public/comics");
+		}
+		
+		public static DataWrapper getComicsByName(String name) 
+		{
+			return getDataWrapper("public/comics?titleStartsWith="+name);
+		}
+		
+		public static DataWrapper getComicsByCharacter(int id) 
+		{
+			return getDataWrapper("public/comics?characters="+id);
+		}
+		public static DataWrapper getComicsBySeries(int id) 
+		{
+			return getDataWrapper("public/comics?series="+id);
+		}
+		public static String getThumbnailURL(int comicID)
+		{
+			try
+			{
+				Image comicImage =getComic(comicID).getData().getResults()[0].getThumbnail();
+				return comicImage.getPath()+"." + comicImage.getExtension();
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			return "err";
+		}
+	}
+	
+	public static abstract class Creator
+	{
+		
+	}
+	
+	public static abstract class Event
+	{
+		
+	}
+	
+	public static abstract class Series
+	{
+		
+	}
+	
+	public static abstract class Story
+	{
+		
 	}
 	
 	

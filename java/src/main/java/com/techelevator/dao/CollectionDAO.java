@@ -3,7 +3,6 @@ package com.techelevator.dao;
 import java.util.List;
 
 import com.techelevator.model.Collection;
-import com.techelevator.model.marvel.fields.Comic;
 
 public interface CollectionDAO {
 

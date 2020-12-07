@@ -1,12 +1,12 @@
 package com.techelevator.model.marvel.fields;
 
-public class Date {
+public class ComicDate {
 
 	private String type;
 	private String date;
-	public Date() {
+	public ComicDate() {
 	}
-	public Date(String type, String date) {
+	public ComicDate(String type, String date) {
 		super();
 		this.type = type;
 		this.date = date;
