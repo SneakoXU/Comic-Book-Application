@@ -90,4 +90,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+    .form-register{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+  }
+</style>
