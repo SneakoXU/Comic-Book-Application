@@ -10,9 +10,11 @@
 
 <style>
   @font-face{
-    font-family: "Roof Runners";
+    font-family: "Roof Runners", "Super Boom";
     /* src: url("https://www.1001fonts.com/roof-font.html") format("truetype") */
-    src: local("../assets/roof.runners.tff") format("truetype")
+    src: local("../assets/roof.runners.tff") format("truetype"), local("../assets/SUPER BOOM.ttf") format("truetype");
+
+
   }
 
   *{
