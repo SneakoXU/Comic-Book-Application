@@ -75,20 +75,26 @@ export default {
 };
 </script>
 <style scoped>
-  /* #login{
-    background-color: ;
-  } */
+  #login{
+    background-image: url("../../assets/Images/blue backgd.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  } 
 
   .form-signin{
     display: flex;
     align-items: center;
     flex-direction: column;
+    
 
   }
 
    #username:hover, #password:hover{
      width: 200px;
+     box-shadow: 2px 5px;
    }
+
+ 
 
 
 

@@ -90,11 +90,23 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+ #register{
+    background-image: url("../../assets/Images/blue backgd.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+  } 
     .form-register{
     display: flex;
     align-items: center;
     flex-direction: column;
-
   }
+
+  input:hover{
+    width: 200px;
+    box-shadow: 2px 5px;
+  }
+
+ 
 </style>
