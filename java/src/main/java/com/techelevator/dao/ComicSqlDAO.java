@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.techelevator.model.marvel.Comic;
+import com.techelevator.model.marvel.fields.Comic;
 
 @Component
 public class ComicSqlDAO implements ComicDAO{

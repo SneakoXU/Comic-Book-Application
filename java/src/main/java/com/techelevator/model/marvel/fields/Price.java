@@ -1,4 +1,4 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.fields;
 
 public class Price {
 	

@@ -1,15 +1,17 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.lists;
 
-public class StoryList {
+import com.techelevator.model.marvel.summaries.CreatorSummary;
+
+public class CreatorList {
 	
 	private int available;
 	private int returned;
 	private String collectionURI;
-	private StorySummary[] items;
-	public StoryList() {
+	private CreatorSummary[] items;
+	public CreatorList() {
 	}
-	public StoryList(int available, int returned, String collectionURI,
-	        StorySummary[] items) {
+	public CreatorList(int available, int returned, String collectionURI,
+	        CreatorSummary[] items) {
 		super();
 		this.available = available;
 		this.returned = returned;
@@ -34,10 +36,10 @@ public class StoryList {
 	public void setCollectionURI(String collectionURI) {
 		this.collectionURI = collectionURI;
 	}
-	public StorySummary[] getItems() {
+	public CreatorSummary[] getItems() {
 		return items;
 	}
-	public void setItems(StorySummary[] items) {
+	public void setItems(CreatorSummary[] items) {
 		this.items = items;
 	}
 	

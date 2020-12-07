@@ -19,10 +19,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techelevator.model.marvel.Comic;
-import com.techelevator.model.marvel.ComicDataContainer;
-import com.techelevator.model.marvel.Image;
-import com.techelevator.model.marvel.CharacterDataWrapper;
+import com.techelevator.model.marvel.containers.ComicDataContainer;
+import com.techelevator.model.marvel.fields.Comic;
+import com.techelevator.model.marvel.fields.Image;
+import com.techelevator.model.marvel.wrappers.ComicDataWrapper;
 
 public class MarvelAPIController 
 {
@@ -30,8 +30,8 @@ public class MarvelAPIController
 	private static final String API_PUBLIC_HASH = "7e740b39912d2877c3f183a21d4d53b1";
 	private static final String API_PRIVATE_HASH = "03aba47b1aa53fece1a0c748f1af03004ed6622a";
 
-	private RestTemplate restTemplate = new RestTemplate();
-	private ObjectMapper mapper = new ObjectMapper();
+	public static RestTemplate restTemplate = new RestTemplate();
+	public static ObjectMapper mapper = new ObjectMapper();
 	
 	public static String generateURL(String uri)
 	{
@@ -53,59 +53,7 @@ public class MarvelAPIController
 	    return null;
 	}
 	
-	private CharacterDataWrapper returnCharacterDataWrapper(String s)
-	{
-		ResponseEntity response = restTemplate.getForEntity(generateURL(s + (s.indexOf('?')==-1?'?':'&')), String.class);
-		try 
-		{
-			return mapper.readValue(mapper.createParser((String)response.getBody()) , CharacterDataWrapper.class);
-		}
-		catch (IOException e) 
-		{
-			System.out.println("Could not parse JSON");
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
-	public CharacterDataWrapper getComic(long id) 
-	{
-		return returnCharacterDataWrapper("public/comics/"+id);
-	}
-	
-	public CharacterDataWrapper getComics() 
-	{
-		return returnCharacterDataWrapper("public/comics");
-	}
-	
-	public CharacterDataWrapper getComicsByName(String name) 
-	{
-		return returnCharacterDataWrapper("public/comics?titleStartsWith="+name);
-	}
-	
-	public CharacterDataWrapper getComicsByCharacter(int id) 
-	{
-		return returnCharacterDataWrapper("public/comics?characters="+id);
-	}
-	public CharacterDataWrapper getComicsBySeries(int id) 
-	{
-		return returnCharacterDataWrapper("public/comics?series="+id);
-	}
-	public String getThumbnailURL(int comicID)
-	{
-		Image comicImage =getComic(comicID).getData().getResults()[0].getThumbnail();
-		try
-		{
-			return comicImage.getPath()+"." + comicImage.getExtension();
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return "err";
-		
-		
-	}
 	
 	
 }

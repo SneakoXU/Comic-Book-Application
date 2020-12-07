@@ -1,17 +1,19 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.wrappers;
 
-public class CharacterDataWrapper {
+import com.techelevator.model.marvel.containers.EventDataContainer;
+
+public class EventDataWrapper {
 	private int code;
 	private String status;
 	private String copyright;
 	private String attributionText;
 	private String attributionHTML;
 	private String etag;
-	private ComicDataContainer data;
-	public CharacterDataWrapper() {}
-	public CharacterDataWrapper(int code, String status, String copyright,
+	private EventDataContainer data;
+	public EventDataWrapper() {}
+	public EventDataWrapper(int code, String status, String copyright,
 	        String attributionText, String attributionHTML, String etag,
-	        ComicDataContainer data) {
+	        EventDataContainer data) {
 		super();
 		this.code = code;
 		this.status = status;
@@ -57,13 +59,10 @@ public class CharacterDataWrapper {
 	public void setEtag(String etag) {
 		this.etag = etag;
 	}
-	public ComicDataContainer getData() {
+	public EventDataContainer getData() {
 		return data;
 	}
-	public void setData(ComicDataContainer data) {
+	public void setData(EventDataContainer data) {
 		this.data = data;
 	}
-	
-	
-
 }

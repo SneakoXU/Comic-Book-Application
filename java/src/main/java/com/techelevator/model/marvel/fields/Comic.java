@@ -1,8 +1,14 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.fields;
 
-import java.util.List;
+import com.techelevator.model.marvel.lists.CharacterList;
+import com.techelevator.model.marvel.lists.CreatorList;
+import com.techelevator.model.marvel.lists.EventList;
+import com.techelevator.model.marvel.lists.StoryList;
+import com.techelevator.model.marvel.summaries.ComicSummary;
+import com.techelevator.model.marvel.summaries.SeriesSummary;
+import com.techelevator.model.marvel.wrappers.ComicDataWrapper;
 
-public class Comic {
+public class Comic extends Field {
 
 	private long id;
 	private long digitalId;
@@ -21,7 +27,7 @@ public class Comic {
 	private TextObject[] textObjects;
 	private String resourceURI;
 	private URL[] urls;
-	private Series series;
+	private SeriesSummary series;
 	private ComicSummary[] variants;
 	private ComicSummary[] collections;
 	private ComicSummary[] collectedIssues;
@@ -40,7 +46,7 @@ public class Comic {
 	        String variantDescription, String description, String modified,
 	        String isbn, String upc, String diamondCode, String ean,
 	        String issn, String format, int pageCount, TextObject[] textObjects,
-	        String resourceURI, URL[] urls, Series series,
+	        String resourceURI, URL[] urls, SeriesSummary series,
 	        ComicSummary[] variants, ComicSummary[] collections,
 	        ComicSummary[] collectedIssues, Date[] dates, Price[] prices,
 	        Image thumbnail, Image[] images, CreatorList creators,
@@ -76,6 +82,44 @@ public class Comic {
 		this.stories = stories;
 		this.events = events;
 	}
+	
+	public static ComicDataWrapper getComic(long id) 
+	{
+		return getDataWrapper("public/comics/"+id, ComicDataWrapper.class);
+	}
+	
+	public static ComicDataWrapper getComics() 
+	{
+		return getDataWrapper("public/comics", ComicDataWrapper.class);
+	}
+	
+	public static ComicDataWrapper getComicsByName(String name) 
+	{
+		return getDataWrapper("public/comics?titleStartsWith="+name, ComicDataWrapper.class);
+	}
+	
+	public static ComicDataWrapper getComicsByCharacter(int id) 
+	{
+		return getDataWrapper("public/comics?characters="+id, ComicDataWrapper.class);
+	}
+	public static ComicDataWrapper getComicsBySeries(int id) 
+	{
+		return getDataWrapper("public/comics?series="+id, ComicDataWrapper.class);
+	}
+	public static String getThumbnailURL(int comicID)
+	{
+		Image comicImage =getComic(comicID).getData().getResults()[0].getThumbnail();
+		try
+		{
+			return comicImage.getPath()+"." + comicImage.getExtension();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return "err";
+	}
+	
 	public long getId() {
 		return id;
 	}
@@ -178,10 +222,10 @@ public class Comic {
 	public void setUrls(URL[] urls) {
 		this.urls = urls;
 	}
-	public Series getSeries() {
+	public SeriesSummary getSeries() {
 		return series;
 	}
-	public void setSeries(Series series) {
+	public void setSeries(SeriesSummary series) {
 		this.series = series;
 	}
 	public ComicSummary[] getVariants() {

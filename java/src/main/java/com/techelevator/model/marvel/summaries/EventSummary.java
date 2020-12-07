@@ -1,17 +1,15 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.summaries;
 
-public class CreatorSummary {
+public class EventSummary {
 	
 	private String resourceURI;
 	private String name;
-	private String role;
-	public CreatorSummary() {
+	public EventSummary() {
 	}
-	public CreatorSummary(String resourceURI, String name, String role) {
+	public EventSummary(String resourceURI, String name) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;
-		this.role = role;
 	}
 	public String getResourceURI() {
 		return resourceURI;
@@ -24,12 +22,6 @@ public class CreatorSummary {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
 	}
 	
 	

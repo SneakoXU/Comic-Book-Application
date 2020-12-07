@@ -1,16 +1,17 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.containers;
 
-public class ComicDataContainer 
-{
+import com.techelevator.model.marvel.fields.Story;
+
+public class StoryDataContainer {
 	private int offset;
 	private int limit;
 	private int total;
 	private int count;
-	private Comic[] results;
-	public ComicDataContainer() {
+	private Story[] results;
+	public StoryDataContainer() {
 	}
-	public ComicDataContainer(int offset, int limit, int total, int count,
-	        Comic[] results) {
+	public StoryDataContainer(int offset, int limit, int total, int count,
+	        Story[] results) {
 		super();
 		this.offset = offset;
 		this.limit = limit;
@@ -42,13 +43,10 @@ public class ComicDataContainer
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public Comic[] getResults() {
+	public Story[] getResults() {
 		return results;
 	}
-	public void setResults(Comic[] results) {
+	public void setResults(Story[] results) {
 		this.results = results;
 	}
-	
-	
-	
 }

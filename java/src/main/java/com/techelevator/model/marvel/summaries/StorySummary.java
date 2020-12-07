@@ -1,15 +1,17 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.summaries;
 
-public class ComicSummary {
+public class StorySummary {
 	
 	private String resourceURI;
 	private String name;
-	public ComicSummary() {
+	private String type;
+	public StorySummary() {
 	}
-	public ComicSummary(String resourceURI, String name) {
+	public StorySummary(String resourceURI, String name, String type) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;
+		this.type = type;
 	}
 	public String getResourceURI() {
 		return resourceURI;
@@ -23,6 +25,13 @@ public class ComicSummary {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	
 
 }

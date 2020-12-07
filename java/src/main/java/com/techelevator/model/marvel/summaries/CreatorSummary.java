@@ -1,13 +1,13 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.summaries;
 
-public class CharacterSummary {
+public class CreatorSummary {
 	
 	private String resourceURI;
 	private String name;
 	private String role;
-	public CharacterSummary() {
+	public CreatorSummary() {
 	}
-	public CharacterSummary(String resourceURI, String name, String role) {
+	public CreatorSummary(String resourceURI, String name, String role) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;
@@ -31,6 +31,7 @@ public class CharacterSummary {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
 	
 
 }

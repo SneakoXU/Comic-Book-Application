@@ -1,12 +1,12 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.summaries;
 
-public class EventSummary {
-	
+public class SeriesSummary 
+{
 	private String resourceURI;
 	private String name;
-	public EventSummary() {
+	public SeriesSummary() {
 	}
-	public EventSummary(String resourceURI, String name) {
+	public SeriesSummary(String resourceURI, String name) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;

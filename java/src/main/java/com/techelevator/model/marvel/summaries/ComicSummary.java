@@ -1,12 +1,12 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.summaries;
 
-public class Series 
-{
+public class ComicSummary {
+	
 	private String resourceURI;
 	private String name;
-	public Series() {
+	public ComicSummary() {
 	}
-	public Series(String resourceURI, String name) {
+	public ComicSummary(String resourceURI, String name) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;
@@ -23,7 +23,6 @@ public class Series
 	public void setName(String name) {
 		this.name = name;
 	}
-	
 	
 
 }
