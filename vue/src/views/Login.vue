@@ -113,6 +113,10 @@ export default {
      margin-bottom: 15px;
    }
 
+   #password{
+     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+   }
+
   button{
     margin-top: 5px;
     font-size: 20px;
@@ -126,7 +130,7 @@ export default {
    input{
      height: 30px;
      width: 250px;
-     font-size: 32px;
+     font-size: 24px;
    }
 
    h1{

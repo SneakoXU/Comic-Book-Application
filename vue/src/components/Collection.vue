@@ -1,19 +1,23 @@
 <template>
-<div class="collection">
-  <h3 class="title">{{collection.title}}</h3>
-  <h2>By: {{collection.owner}}</h2>
-  <img src="" alt="">
-</div>
+    <div class="comic-display">
+        <h2>List of Comics in {{collection.name}}</h2>
+        
+    </div>
 </template>
 
 <script>
 export default {
+    name: 'collection-display',
+    data() {
+        return {
+            name: ''
+            
+        }
+    }
 
 }
 </script>
 
 <style>
-    .collection{
 
-    }
 </style>

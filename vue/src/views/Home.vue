@@ -1,14 +1,19 @@
 <template>
-  <div class="home">
-    <h1 id="header">Home</h1>
-    
-    
+  <div class="home">   
+    <div class="container">
+      <collection-card></collection-card>
+    </div>
   </div>
 </template>
 
 <script>
+import CollectionCard from "../components/CollectionCard.vue";
+
 export default {
-  name: "home"
+  name: "home",
+  components: {
+    CollectionCard
+  }
 };
 </script>
 
@@ -19,5 +24,7 @@ export default {
     
     background-repeat: no-repeat;    
   } */
+
+ 
  
 </style>
