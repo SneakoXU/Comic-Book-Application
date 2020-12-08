@@ -31,13 +31,19 @@
     transform: skew(-10deg);
     display: flex;
   }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 4c7caa1dc141d3ac9cc2d0ad8f6b735476cc76b8
   .itemBox{
     display: flex;
     width: 100%;
     justify-content: flex-end;
   }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 4c7caa1dc141d3ac9cc2d0ad8f6b735476cc76b8
   /* .navItem{
     display: flex;
     justify-content: space-evenly;
@@ -45,7 +51,10 @@
     padding: 2px 2px 2px 2px;
     margin: 2px 2px 2px 2px;
   } */
+<<<<<<< HEAD
+=======
 
+>>>>>>> 4c7caa1dc141d3ac9cc2d0ad8f6b735476cc76b8
   img{
     height: 70px;
     width: 100px;
