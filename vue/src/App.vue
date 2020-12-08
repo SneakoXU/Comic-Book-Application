@@ -2,10 +2,12 @@
   <div id="app">
     <div id="nav">
       <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
+      <div class="itemBox">
       <router-link class="navItem" v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'login' }">Login</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'register' }">Register</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+      </div>
     </div>
     <router-view />
   </div>
@@ -37,10 +39,19 @@
     
   }
 
-  #navItem{
+  .itemBox{
     display: flex;
-    align-content: flex-end;
+    width: 100%;
+    justify-content: flex-end;
   }
+
+  /* .navItem{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 2px 2px 2px 2px;
+    margin: 2px 2px 2px 2px;
+  } */
 
   img{
     height: 70px;
