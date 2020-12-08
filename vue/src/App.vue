@@ -39,7 +39,7 @@
 
   #navItem{
     display: flex;
-    align-items: center; 
+    align-content: flex-end;
   }
 
   img{

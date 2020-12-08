@@ -141,13 +141,17 @@ export default {
   input{
     height: 30px;
      width: 250px;
-     font-size: 32px;
+     font-size: 24px;
   }
 
   #username:hover, #password:hover, #confirmPassword:hover{
     width: 270px; 
     box-shadow: 2px 5px;
     
+  }
+
+  #password, #confirmPassword{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
 
   h1{
