@@ -7,4 +7,5 @@ public class Statistics
 	private long[] mostPopularCollections;
 	private long totalComicBooks;
 	
+	
 }

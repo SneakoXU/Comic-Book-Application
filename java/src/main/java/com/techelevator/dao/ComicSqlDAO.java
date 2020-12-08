@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import com.techelevator.model.marvel.Comic;
+import com.techelevator.model.marvel.fields.Field;
 
 @Component
 public class ComicSqlDAO implements ComicDAO{
@@ -17,37 +16,37 @@ public class ComicSqlDAO implements ComicDAO{
 	}
 	
 	@Override
-	public Comic getComicByID(long id) {
+	public Field getComicByID(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Comic addComic(long id) {
+	public Field addComic(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Comic removeComic(long id) {
+	public Field removeComic(long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Comic> getComicByCharacter(long characterID) {
+	public List<Field> getComicByCharacter(long characterID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Comic> getComicByAuthor(long authorID) {
+	public List<Field> getComicByAuthor(long authorID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Comic> findAll() {
+	public List<Field> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

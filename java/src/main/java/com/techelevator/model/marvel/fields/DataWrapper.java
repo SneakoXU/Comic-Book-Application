@@ -1,17 +1,17 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.fields;
 
-public class CharacterDataWrapper {
+public class DataWrapper {
 	private int code;
 	private String status;
 	private String copyright;
 	private String attributionText;
 	private String attributionHTML;
 	private String etag;
-	private ComicDataContainer data;
-	public CharacterDataWrapper() {}
-	public CharacterDataWrapper(int code, String status, String copyright,
+	private Container data;
+	public DataWrapper() {}
+	public DataWrapper(int code, String status, String copyright,
 	        String attributionText, String attributionHTML, String etag,
-	        ComicDataContainer data) {
+	        Container data) {
 		super();
 		this.code = code;
 		this.status = status;
@@ -57,13 +57,10 @@ public class CharacterDataWrapper {
 	public void setEtag(String etag) {
 		this.etag = etag;
 	}
-	public ComicDataContainer getData() {
+	public Container getData() {
 		return data;
 	}
-	public void setData(ComicDataContainer data) {
+	public void setData(Container data) {
 		this.data = data;
 	}
-	
-	
-
 }

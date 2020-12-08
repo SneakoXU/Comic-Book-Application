@@ -1,16 +1,15 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.fields;
 
-public class ComicDataContainer 
-{
+public class Container {
 	private int offset;
 	private int limit;
 	private int total;
 	private int count;
-	private Comic[] results;
-	public ComicDataContainer() {
+	private Field[] results;
+	public Container() {
 	}
-	public ComicDataContainer(int offset, int limit, int total, int count,
-	        Comic[] results) {
+	public Container(int offset, int limit, int total, int count,
+	        Field[] results) {
 		super();
 		this.offset = offset;
 		this.limit = limit;
@@ -42,13 +41,10 @@ public class ComicDataContainer
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public Comic[] getResults() {
+	public Field[] getResults() {
 		return results;
 	}
-	public void setResults(Comic[] results) {
+	public void setResults(Field[] results) {
 		this.results = results;
 	}
-	
-	
-	
 }

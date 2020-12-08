@@ -1,17 +1,24 @@
-package com.techelevator.model.marvel;
+package com.techelevator.model.marvel.fields;
 
-public class CreatorSummary {
-	
+public class Summary {
 	private String resourceURI;
 	private String name;
+	/**
+	 * Only used for creators
+	 */
 	private String role;
-	public CreatorSummary() {
+	/**
+	 * Only used for characters
+	 */
+	private String type;
+	public Summary() {
 	}
-	public CreatorSummary(String resourceURI, String name, String role) {
+	public Summary(String resourceURI, String name, String role, String type) {
 		super();
 		this.resourceURI = resourceURI;
 		this.name = name;
 		this.role = role;
+		this.type = type;
 	}
 	public String getResourceURI() {
 		return resourceURI;
@@ -31,7 +38,12 @@ public class CreatorSummary {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 	
-
 }
