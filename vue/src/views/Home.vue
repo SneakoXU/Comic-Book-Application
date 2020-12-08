@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <h1 id="header">Home</h1>
+    <img class="logo" src="../../assets/Images/BTC icon.png" alt="BT Comic Logo">
     <p>You must be authenticated to see this</p>
   </div>
 </template>
