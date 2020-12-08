@@ -3,9 +3,11 @@ package com.techelevator.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.techelevator.model.marvel.fields.Field;
+
 public class Collection {
 	
-	private List<Long> comicBookIDs;
+	private List<Field> comicBooks;
 	private long userID;
 	private boolean isPublic;
 	private Date dateCreated;
@@ -13,22 +15,22 @@ public class Collection {
 	
 
 
-	public Collection(List<Long> comicBookIDs, long userID, boolean isPublic,
+	public Collection(List<Field> comicBooks, long userID, boolean isPublic,
 	        Date dateCreated, String name) {
 		super();
-		this.comicBookIDs = comicBookIDs;
+		this.comicBooks = comicBooks;
 		this.userID = userID;
 		this.isPublic = isPublic;
 		this.dateCreated = dateCreated;
 		this.name = name;
 	}
 
-	public List<Long> getComicBookIDs() {
-		return comicBookIDs;
+	public List<Field> getComicBookIDs() {
+		return comicBooks;
 	}
 
 	public void setComicBookIDs(List<Long> comicBookIDs) {
-		this.comicBookIDs = comicBookIDs;
+		this.comicBooks = comicBooks;
 	}
 
 	public long getUserID() {
@@ -63,31 +65,31 @@ public class Collection {
 		this.name = name;
 	}
 
-	public Collection addComics(List<Long> comicBookIDs)
+	public Collection addComics(List<Field> comicBooks)
 	{
-		this.comicBookIDs.addAll(comicBookIDs);
+		this.comicBooks.addAll(comicBooks);
 		return this;
 	}
 	
-	public Collection addFriends(long comicBookID)
+	public Collection addFriends(Field comicBook)
 	   {
-		   this.comicBookIDs.add(comicBookID);
+		   this.comicBooks.add(comicBook);
 		   return this;
 	   }
 	
-	public Collection removeComics(List<Long> comicBookIDs)
+	public Collection removeComics(List<Field> comicBooks)
 	{
-		for(int i = 0; i < this.comicBookIDs.size(); i++)
-			if(comicBookIDs.contains(this.comicBookIDs.get(i)))
-				this.comicBookIDs.remove(i--);
+		for(int i = 0; i < this.comicBooks.size(); i++)
+			if(comicBooks.contains(this.comicBooks.get(i)))
+				this.comicBooks.remove(i--);
 		return this;
 	}
 	
-	public Collection removeComics(long comicBookID)
+	public Collection removeComics(Field comicBookID)
 	{
 		try 
 	   	{
-			comicBookIDs.remove(comicBookIDs.indexOf(comicBookID));
+			comicBooks.remove(comicBooks.indexOf(comicBookID));
 	   	} 
 	   	catch (Exception e) 
 	   	{

@@ -26,7 +26,6 @@ public class CollectionController {
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="", method = RequestMethod.GET)
     public List<Collection> getpublicCollections(Principal principal) {
-		System.out.println("RANNNNN");
         List<Collection> collections = collectionDAO.getPublicCollections();
         return collections;
     }

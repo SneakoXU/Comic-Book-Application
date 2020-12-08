@@ -7,16 +7,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import com.techelevator.controller.ComicController;
 import com.techelevator.model.Collection;
 import com.techelevator.model.marvel.fields.Field;
 
 @Component
 public class CollectionSqlDAO implements CollectionDAO {
 
+	private ComicDAO comicDAO;
     private JdbcTemplate jdbcTemplate;
 	
-	public CollectionSqlDAO(JdbcTemplate jdbcTemplate) {
+	public CollectionSqlDAO(JdbcTemplate jdbcTemplate, ComicDAO comicDAO) {
 		this.jdbcTemplate = jdbcTemplate;
+		this.comicDAO = comicDAO;
 	}
 	
 	@Override
@@ -85,21 +88,11 @@ public class CollectionSqlDAO implements CollectionDAO {
 		return null;
 	}
 	
-	@Override
-	public List<Long> getComicIdsByCollection(long collection_id) {
-		List<Long> ids = new ArrayList<Long>();
-        String sql = "select comic_id from collection_comic where collection_id = ?";
-
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collection_id);
-        while(results.next()) {
-            ids.add(results.getLong("comic_id"));
-        }
-        return ids;
-	}
+	
 	
 	private Collection mapRowToCollection(SqlRowSet rs)
 	{
-		return new Collection(getComicIdsByCollection(rs.getLong("collection_id")), rs.getLong("creator_id"), rs.getBoolean("publicstatus"), rs.getDate("datecreated"), rs.getString("collectionname"));
+		return new Collection(comicDAO.getComicsByCollection(rs.getLong("collection_id")), rs.getLong("creator_id"), rs.getBoolean("publicstatus"), rs.getDate("datecreated"), rs.getString("collectionname"));
 	}
 
 	

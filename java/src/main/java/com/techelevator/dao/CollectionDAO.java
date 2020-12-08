@@ -20,8 +20,6 @@ public interface CollectionDAO {
 	
 	List<Collection> findAll();
 	
-	List<Long> getComicIdsByCollection(long collection_id);
-
 	List<Collection> getPublicCollectionsByCreator(long creatorID);
 
 	List<Collection> getPublicCollections();
