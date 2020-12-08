@@ -77,7 +77,7 @@ export default {
 <style scoped>
 
   #login{
-    background-image: url("../../assets/Images/blue backgd.jpg");
+    background-image: url("../../assets/Images/green.jpg");
     display: flex;
     justify-content: center;
     align-items: center;

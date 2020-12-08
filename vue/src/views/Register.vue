@@ -94,7 +94,7 @@ export default {
 
 
   #register{
-    background-image: url("../../assets/Images/blue backgd.jpg");
+    background-image: url("../../assets/Images/green.jpg");
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,7 +112,7 @@ export default {
   box-shadow:         20px 20px 20px 30px #000000; */
   border-radius: 30px;
   box-shadow: 6px 12px black;
-    
+    margin-top: 10px;
   } 
     .form-register{
     display: flex;
