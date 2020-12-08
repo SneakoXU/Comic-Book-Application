@@ -1,12 +1,6 @@
 package com.techelevator.model.marvel.fields;
 
-import java.io.IOException;
 import java.sql.Date;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
-
-import com.techelevator.controller.MarvelAPIController;
 
 public class Field {
 	
@@ -38,147 +32,147 @@ public class Field {
 	 * Used in All
 	 */
 	private Image thumbnail;
-	/*
+	/**
 	 * Used in Character, Story, Event, Series, Creator
 	 */
 	private List comics;
-	/*
+	/**
 	 * Used in Character, Comic, Event, Series, Creator
 	 */
 	private List stories;
-	/*
+	/**
 	 * Used in Character, Story, Comic, Series, Creator
 	 */
 	private List events;
-	/*
+	/**
 	 * Used in Character, Story, Event, Comic, Creator
 	 */
 	private List series;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private long digitalId;
-	/*
+	/**
 	 * Used in Comic, Story, Event, Series
 	 */
 	private String title;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private int issueNumber;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String variantDescription;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String isbn;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String upc;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String diamondCode;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String ean;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String issn;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private String format;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private int pageCount;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private TextObject[] textObjects;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private Summary[] variants;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private Summary[] collections;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private Summary[] collectedIssues;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private ComicDate[] dates;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private Price[] prices;
-	/*
+	/**
 	 * Used in Comic
 	 */
 	private Image[] images;
-	/*
+	/**
 	 * Used in Comic, Story, Event, Series
 	 */
 	private List creators;
-	/*
+	/**
 	 * Used in Comic, Story, Event, Series
 	 */
 	private List characters;
-	/*
+	/**
 	 * Used in Story
 	 */
 	private String type;
-	/*
+	/**
 	 * Used in Event, Series
 	 */
 	private Summary next;
-	/*
+	/**
 	 * Used in Event, Series
 	 */
 	private Summary previous;
-	/*
+	/**
 	 * Used in Story
 	 */
 	private Summary originalIssue;
-	/*
+	/**
 	 * Used in Series
 	 */
 	private int startYear;
-	/*
+	/**
 	 * Used in Series
 	 */
 	private int endYear;
-	/*
+	/**
 	 * Used in Series
 	 */
 	private String rating;
-	/*
+	/**
 	 * Used in Creator
 	 */
 	private String firstName;
-	/*
+	/**
 	 * Used in Creator
 	 */
 	private String middleName;
-	/*
+	/**
 	 * Used in Creator
 	 */
 	private String lastName;
-	/*
+	/**
 	 * Used in Creator
 	 */
 	private String suffix;
-	/*
+	/**
 	 * Used in Creator
 	 */
 	private String fullName;

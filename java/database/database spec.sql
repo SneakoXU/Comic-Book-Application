@@ -142,5 +142,14 @@ CREATE TABLE series_character
         constraint fk_series_character_character foreign key(character_id) references character(character_id)
 );
 
+CREATE TABLE collection_comic
+(
+        collection_id int,
+        comic_id int,
+        
+        constraint fk_collection_comic_collection foreign key(collection_id) references collections(collection_id),
+        constraint fk_collection_comic_comic foreign key(comic_id) references comic(comic_id)
+);
+
 
 COMMIT;

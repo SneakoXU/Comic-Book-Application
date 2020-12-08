@@ -13,13 +13,17 @@ public interface CollectionDAO {
 	Collection removeCollection(long id);
 	
 	List<Collection> getCollectionByCharacter(long characterID);
-	
-	List<Collection> getCollectionByCreator(long creatorID);
-	
+		
 	List<Collection> getCollectionByUser(long userID);
 	
 	List<Collection> getCollectionByComic(long comicBookID);
 	
 	List<Collection> findAll();
+	
+	List<Long> getComicIdsByCollection(long collection_id);
+
+	List<Collection> getPublicCollectionsByCreator(long creatorID);
+
+	List<Collection> getPublicCollections();
 	
 }

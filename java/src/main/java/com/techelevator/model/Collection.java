@@ -1,16 +1,26 @@
 package com.techelevator.model;
 
+import java.sql.Date;
 import java.util.List;
 
 public class Collection {
 	
 	private List<Long> comicBookIDs;
 	private long userID;
+	private boolean isPublic;
+	private Date dateCreated;
+	private String name;
 	
-	public Collection(long userID, List<Long> comicBookIDs)
-	{
-		this.userID = userID;
+
+
+	public Collection(List<Long> comicBookIDs, long userID, boolean isPublic,
+	        Date dateCreated, String name) {
+		super();
 		this.comicBookIDs = comicBookIDs;
+		this.userID = userID;
+		this.isPublic = isPublic;
+		this.dateCreated = dateCreated;
+		this.name = name;
 	}
 
 	public List<Long> getComicBookIDs() {
@@ -29,6 +39,30 @@ public class Collection {
 		this.userID = userID;
 	}
 	
+	public boolean isPublic() {
+		return isPublic;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Collection addComics(List<Long> comicBookIDs)
 	{
 		this.comicBookIDs.addAll(comicBookIDs);

@@ -12,10 +12,10 @@ public class Application {
 
     public static void main(String[] args) 
     {
-    	for(Field c : Comic.getComicsByName("Spi").getData().getResults())
-    		System.out.println(c.getTitle() + "\t\t" + c.getDescription() + "\t\t" + c.getThumbnail().getPath() + "." + c.getThumbnail().getExtension());
+    	//for(Field c : Comic.getComicsByName("Spi").getData().getResults())
+    	//	System.out.println(c.getTitle() + "\t\t" + c.getDescription() + "\t\t" + c.getThumbnail().getPath() + "." + c.getThumbnail().getExtension());
 
-    	System.exit(0);
+    	//System.exit(0);
     	
         SpringApplication.run(Application.class, args);
     }

@@ -21,6 +21,7 @@ public class MarvelAPIController
 	public static RestTemplate restTemplate = new RestTemplate();
 	public static ObjectMapper mapper = new ObjectMapper();
 	
+	//black box
 	public static String generateURL(String uri)
 	{
 		long time =System.currentTimeMillis();
