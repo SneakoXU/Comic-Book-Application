@@ -19,7 +19,7 @@ public class Field {
 	/**
 	 * Used in All
 	 */
-	private java.sql.Date modified;
+	private String modified;
 	/**
 	 * Used in All
 	 */
@@ -181,7 +181,7 @@ public class Field {
 	}
 
 	
-	public Field(int id, String name, String description, Date modified,
+	public Field(int id, String name, String description, String modified,
 	        String resourceURI, URL[] urls, Image thumbnail, List comics,
 	        List stories, List events, List series, long digitalId,
 	        String title, int issueNumber, String variantDescription,
@@ -270,12 +270,12 @@ public class Field {
 	}
 
 
-	public java.sql.Date getModified() {
+	public String getModified() {
 		return modified;
 	}
 
 
-	public void setModified(java.sql.Date modified) {
+	public void setModified(String modified) {
 		this.modified = modified;
 	}
 

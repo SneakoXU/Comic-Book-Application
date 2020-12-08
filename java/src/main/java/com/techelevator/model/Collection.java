@@ -1,6 +1,7 @@
 package com.techelevator.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.techelevator.model.marvel.fields.Field;
@@ -13,8 +14,8 @@ public class Collection {
 	private Date dateCreated;
 	private String name;
 	
-
-
+	public Collection() {}
+	
 	public Collection(List<Field> comicBooks, long userID, boolean isPublic,
 	        Date dateCreated, String name) {
 		super();
@@ -37,8 +38,9 @@ public class Collection {
 		return userID;
 	}
 
-	public void setUserID(long userID) {
+	public Collection setUserID(long userID) {
 		this.userID = userID;
+		return this;
 	}
 	
 	public boolean isPublic() {
@@ -53,8 +55,9 @@ public class Collection {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date dateCreated) {
+	public Collection setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
+		return this;
 	}
 
 	public String getName() {
