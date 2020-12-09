@@ -1,6 +1,6 @@
 <template>
-  <div id="login" class="text-center" action="http://localhost:8080/login">
-    <form class="form-signin" @submit.prevent="login">
+  <div id="login" class="text-center">
+<form class="form-signin" @submit.prevent="login">
       <h1 class="h1 mb-3 font-weight-normal">Please Sign In</h1>
       <div
         class="alert alert-danger"
@@ -63,7 +63,7 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            this.$router.push("/login");
+            this.$router.push("/");
           }
         })
         .catch(error => {
