@@ -1,5 +1,5 @@
 <template>
-  <div id="login" class="text-center">
+  <div id="login" class="text-center" action="http://localhost:8080/login">
     <form class="form-signin" @submit.prevent="login">
       <h1 class="h1 mb-3 font-weight-normal">Please Sign In</h1>
       <div
@@ -16,6 +16,7 @@
       <input
         type="text"
         id="username"
+        name="username"
         class="form-control"
         placeholder="Username"
         v-model="user.username"
@@ -26,6 +27,7 @@
       <input
         type="password"
         id="password"
+        name="password"
         class="form-control"
         placeholder="Password"
         v-model="user.password"
@@ -34,6 +36,7 @@
       <router-link :to="{ name: 'register' }">Need an account?</router-link>
       <button type="submit">Sign in</button>
     </form>
+    
   </div>
 </template>
 
@@ -60,7 +63,7 @@ export default {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
-            this.$router.push("/");
+            this.$router.push("/login");
           }
         })
         .catch(error => {
