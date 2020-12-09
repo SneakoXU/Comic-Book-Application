@@ -36,7 +36,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@Valid /*@RequestBody*/ LoginDTO loginDto) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
 
     	System.out.println(loginDto.getUsername() + " " + loginDto.getPassword());
     	
@@ -56,7 +56,7 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<HttpStatus> register(@Valid /*@RequestBody*/ RegisterUserDTO newUser) { 
+    public ResponseEntity<HttpStatus> register(@Valid @RequestBody RegisterUserDTO newUser) { 
     	
         try {
             User user = userDAO.findByUsername(newUser.getUsername());
