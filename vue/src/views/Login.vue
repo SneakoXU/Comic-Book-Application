@@ -1,7 +1,7 @@
 <template>
   <div id="login" class="text-center">
     <form class="form-signin" @submit.prevent="login">
-      <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
+      <h1 class="h1 mb-3 font-weight-normal">Please Sign In</h1>
       <div
         class="alert alert-danger"
         role="alert"
@@ -102,6 +102,7 @@ export default {
     display: flex;
     align-items: center;
     flex-direction: column;
+    
   }
 
    #username:hover, #password:hover{
@@ -111,10 +112,11 @@ export default {
 
    #username, #password{
      margin-bottom: 15px;
+     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
    }
 
    #password{
-     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+     
    }
 
   button{
@@ -134,12 +136,12 @@ export default {
    }
 
    h1{
-     font-family: "Super Boom";
+     font-family: "SBoom";
      font-size: 40px;
    }
 
    label{
-     font-family: "Super Boom";
+     font-family: "SBoom";
    }
 
 

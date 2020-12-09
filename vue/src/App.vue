@@ -14,12 +14,17 @@
 </template>
 <style>
   @font-face{
-    font-family: "Roof Runners", "Super Boom";
-    /* src: url("https://www.1001fonts.com/roof-font.html") format("truetype") */
-    src: local("../assets/roof.runners.tff") format("truetype"), local("../assets/SUPER BOOM.ttf") format("truetype");
+    font-family: "Runners";    
+    src: url("../assets/Fonts/roof/PG_Roof Runners.ttf");
   }
+
+  @font-face{
+    font-family: "SBoom";
+     src: url("../assets/Fonts/super_boom/SUPER BOOM.ttf");
+  }
+  
   *{
-    font-family: "Roof Runners", sans serif;
+    font-family: "Runners", sans serif;
   }
   html{
     background-image: url("../assets/Images/blue backgd.jpg");
