@@ -1,7 +1,7 @@
 <template>
   <div id="register" class="text-center">
     <form class="form-register" @submit.prevent="register">
-      <h1 class="h3 mb-3 font-weight-normal">Create Account</h1>
+      <h1 class="h1 mb-3 font-weight-normal">Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -135,7 +135,7 @@ export default {
   }
 
   label{
-    font-family: "Super Boom";
+    font-family: "SBoom";
   }
 
   input{
@@ -148,14 +148,15 @@ export default {
     width: 270px; 
     box-shadow: 2px 5px;
     
+    
   }
 
-  #password, #confirmPassword{
+  #username, #password, #confirmPassword{
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
 
   h1{
-    font-family: "Super Boom";
+    font-family: "SBoom";
     font-size: 40px;
   }
 
