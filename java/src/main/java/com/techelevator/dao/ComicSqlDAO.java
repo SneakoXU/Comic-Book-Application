@@ -28,6 +28,16 @@ public class ComicSqlDAO implements ComicDAO{
         }
         return  comic;
 	}
+	
+	@Override
+	public String getThumbnail(long id) {
+        String sql = "select thumbnail_url from comic where comic_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,id);
+        if(results.next() ) {
+            return results.getString("thumbnail_url");
+        }
+        return "";
+	}
 
 	@Override
 	public Field addComic(long id) {

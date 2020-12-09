@@ -19,4 +19,6 @@ public interface ComicDAO {
 
 	List<Field> getComicsByCollection(long collection_id);
 
+	String getThumbnail(long id);
+
 }

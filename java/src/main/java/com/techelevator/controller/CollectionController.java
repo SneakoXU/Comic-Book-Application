@@ -80,7 +80,7 @@ public class CollectionController {
 		
 	@PreAuthorize("permitAll()")
 	@ResponseStatus(HttpStatus.OK)
-	@RequestMapping(value = "/{collectionId}/thumbnail", method = RequestMethod.GET)
+	@RequestMapping(value = "/thumbnail/{collectionId}", method = RequestMethod.GET)
 	public String getThumbnail(@PathVariable int collectionId, Principal principal) {
 		//if(verifyUser(principal, collectionId))
 			return collectionDAO.getThumbnail(collectionId);
