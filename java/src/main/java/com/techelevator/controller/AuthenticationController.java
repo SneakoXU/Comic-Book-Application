@@ -36,8 +36,10 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
+    public ResponseEntity<LoginResponse> login(@Valid /*@RequestBody*/ LoginDTO loginDto) {
 
+    	System.out.println(loginDto.getUsername() + " " + loginDto.getPassword());
+    	
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
@@ -54,17 +56,22 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public void register(@Valid @RequestBody RegisterUserDTO newUser) {
+    public ResponseEntity<HttpStatus> register(@Valid /*@RequestBody*/ RegisterUserDTO newUser) { 
+    	
         try {
             User user = userDAO.findByUsername(newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-            userDAO.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole());
+        	System.out.println("What");
+            userDAO.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole()); 
+            return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
         }
+        
+        
     }
 
     /**
-     * Object to return as body in JWT Authentication.
+     * Object to return as body in JWT Authentication. 
      */
     static class LoginResponse {
 

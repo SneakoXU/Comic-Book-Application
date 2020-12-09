@@ -23,9 +23,15 @@ public class CollectionSqlDAO implements CollectionDAO {
 	
 	@Override
 	public Collection getCollectionByID(long id, boolean isPublic) {
-		return getCollection("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = ? and collection_id = ?",
-				new Object[] {isPublic, id},
-				new int[] {java.sql.Types.BOOLEAN, java.sql.Types.INTEGER});
+		if(isPublic)
+			return getCollection("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = true and collection_id = ?",
+				new Object[] {id},
+				new int[] {java.sql.Types.INTEGER});
+		else 
+			return getCollection("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where collection_id = ?",
+					new Object[] {id},
+					new int[] {java.sql.Types.INTEGER});
+		
 	}
 
 	@Override
@@ -79,6 +85,18 @@ public class CollectionSqlDAO implements CollectionDAO {
 		return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = ? and creator_id = ?",
 				new Object[] {isPublic, userID},
 				new int[] {java.sql.Types.BOOLEAN, java.sql.Types.INTEGER});
+	}
+	
+	@Override
+	public int getCollectionOwner(int collectionId)
+	{
+		String sql = "select creator_id from collections where collection_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collectionId);
+        while(results.next()) {
+            return  results.getInt("creator_id");
+        }
+		return -1;
+
 	}
 
 	@Override

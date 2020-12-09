@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.techelevator.dao.CollectionDAO;
+import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Collection;
+import com.techelevator.model.CollectionStatistics;
 
 @RestController
 @RequestMapping("/collections")
@@ -26,65 +28,94 @@ import com.techelevator.model.Collection;
 public class CollectionController {
 
 	private CollectionDAO collectionDAO;
+	private UserDAO userDAO;
 	
-	public CollectionController(CollectionDAO collectionDAO) {
+	public CollectionController(CollectionDAO collectionDAO, UserDAO userDAO) {
 		this.collectionDAO = collectionDAO;
+		this.userDAO = userDAO;
 	}
 	
 	@PreAuthorize("permitAll()")
-	@RequestMapping(value="public", method = RequestMethod.GET)
+	@RequestMapping(value="/public", method = RequestMethod.GET)
     public List<Collection> getPublicCollections(Principal principal) {
         List<Collection> collections = collectionDAO.getCollections(true);
+        System.out.println(principal.getName());
         return collections;
     }
 	
 	@PreAuthorize("permitAll()")
-	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public Collection getPublicCollectionById(@PathVariable int id, Principal principal){
-        Collection collections = collectionDAO.getCollectionByID(id, true);
-        if(collections == null)
+	@RequestMapping(value="/{collectionId}", method = RequestMethod.GET)
+    public Collection getPublicCollectionById(@PathVariable int collectionId, Principal principal){
+        Collection collection = collectionDAO.getCollectionByID(collectionId, true);
+        if(collection == null)
         	throw new ResponseStatusException(
         	          HttpStatus.NOT_FOUND, "Collection Not Found");
-        return collections;
+        if((principal == null && collection.isPublic()) || verifyUser(principal, collectionId))
+        	return collection;
+        throw new ResponseStatusException(
+  	          HttpStatus.UNAUTHORIZED, "This collection is private");
     }
 	
-	//TODO: make edit perms so that only the collection owner can do this
-	@PreAuthorize("permitAll()")
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/{collectionId}/add/{comicId}", method = RequestMethod.POST)
     public void addComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
-		collectionDAO.addComic(MarvelAPIController.Comic.getComic(comicId).getData().getResults()[0], collectionId);
+		if(verifyUser(principal, collectionId))
+			collectionDAO.addComic(MarvelAPIController.Comic.getComic(comicId).getData().getResults()[0], collectionId);
+		else 
+			throw new ResponseStatusException(
+	      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
+		
+		
     }
 	
-	//TODO: make edit perms so that only the collection owner can do this
-		@PreAuthorize("permitAll()")
 		@ResponseStatus(HttpStatus.OK)
 	    @RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)
 	    public void deleteComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
-			collectionDAO.deleteComic(collectionId, comicId);
+			if(verifyUser(principal, collectionId))
+				collectionDAO.deleteComic(collectionId, comicId);
+			else 
+				throw new ResponseStatusException(
+		      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
 	    }
 	
-	//TODO: make edit perms so that only the collection owner can do this
-	@PreAuthorize("permitAll()")
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/delete/{collectionId}", method = RequestMethod.POST)
 	public void removeCollection(@PathVariable int collectionId, Principal principal) {
-		collectionDAO.removeCollection(collectionId);
+		if(verifyUser(principal, collectionId))
+			collectionDAO.removeCollection(collectionId);
+		else 
+			throw new ResponseStatusException(
+	      	          HttpStatus.UNAUTHORIZED, "You cannot delete others' collections");
 	}
 	
-	//TODO: make edit perms so that only the collection owner can do this
-	@PreAuthorize("permitAll()")
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public void addCollection( Collection collection, Principal principal) {
+
 		if(collection == null || collection.getName() == null)
 			throw new ResponseStatusException(
       	          HttpStatus.BAD_REQUEST, "Empty Request");
 		else
-			collectionDAO.addCollection(collection.setDateCreated(Date.valueOf( LocalDate.now())).setUserID(1));
+			collectionDAO.addCollection(collection.setDateCreated(Date.valueOf( LocalDate.now())).setUserID(userDAO.findIdByUsername(principal.getName())));
 	}
 	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value = "/stat/{collectionId}", method = RequestMethod.GET)
+	public CollectionStatistics addCollection(@PathVariable int collectionId, Principal principal) {
+		CollectionStatistics stats = new CollectionStatistics();
+		Collection collection = collectionDAO.getCollectionByID(collectionId, false);
+        if(collection == null)
+        	throw new ResponseStatusException(
+        	          HttpStatus.NOT_FOUND, "Collection Not Found");
+        if((principal == null && collection.isPublic()) || (principal != null && verifyUser(principal, collectionId)))
+        	return stats.setNumberOfComics(collection.getComicBookIDs().size());
+        throw new ResponseStatusException(
+  	          HttpStatus.UNAUTHORIZED, "This collection is private");
+	}
 	
-
-	
+	private boolean verifyUser(Principal principal, int collectionId)
+	{
+		System.out.println(principal);
+		return userDAO.getUserById((long) collectionDAO.getCollectionOwner(collectionId)).getUsername().equals(principal.getName());
+	}
 }

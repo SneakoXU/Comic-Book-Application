@@ -28,5 +28,7 @@ public interface CollectionDAO {
 	void addComic(Field newComic, int collectionId);
 
 	void deleteComic(int collectionId, int comicId);
+
+	int getCollectionOwner(int collectionId);
 	
 }
