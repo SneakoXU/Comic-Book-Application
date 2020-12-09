@@ -30,7 +30,8 @@ public class CollectionStatistics
 		return numberOfComics;
 	}
 
-	public CollectionStatistics setNumberOfComics(int numberOfComics) {
+	public CollectionStatistics setNumberOfComics(int numberOfComics) 
+	{
 		this.numberOfComics = numberOfComics;
 		return this;
 	}

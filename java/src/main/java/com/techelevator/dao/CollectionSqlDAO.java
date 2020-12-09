@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.techelevator.model.Collection;
 import com.techelevator.model.marvel.fields.Field;
+import com.techelevator.model.marvel.fields.Summary;
 
 @Component
 public class CollectionSqlDAO implements CollectionDAO {
@@ -44,8 +45,28 @@ public class CollectionSqlDAO implements CollectionDAO {
 	public void addComic(Field newComic, int collectionId) {
 		String sql = "insert into comic (comic_id, title, description, thumbnail_url) values (?, ?, ?, ?) on conflict do nothing;";
         jdbcTemplate.update(sql, newComic.getId(), newComic.getTitle(), newComic.getDescription(), newComic.getThumbnail().getPath()+newComic.getThumbnail().getExtension());
-        sql = "insert into collection_comic (comic_id, collection_id) values (?, ?);";
+        sql = "insert into collection_comic (comic_id, collection_id) values (?, ?) on conflict do nothing;";
         jdbcTemplate.update(sql, newComic.getId(), collectionId);
+        /*for(Summary creator : newComic.getCreators().getItems())
+        {
+        	if(creator.getResourceURI() != null)
+        	{
+        		int id = 0;
+        		try 
+        		{
+        			id = Integer.parseInt( creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/')));
+				} 
+        		catch (Exception e) 
+        		{
+					System.out.println(creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/')));
+				}
+        		
+        		sql = "insert into comic_author (comic_id, author_id) values (?, ?) on conflict do nothing;";
+        		jdbcTemplate.update(sql, newComic.getId(), id);
+        		sql = "insert into author (author_id, firstname, lastname, description, thumbnail_url) values (?, ?, ?, ?, ?) on conflict do nothing;";
+        		jdbcTemplate.update(sql, id, creator.getName().substring(0, ));
+        	}
+        }*/
 	}
 	
 	@Override
