@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ode to Data</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Form testing</h1>
+    </header>
+
+    <main>
+        <h2>
+            Create Collection
+        </h2>
+        <form action="http://localhost:8080/collections/create" method="post" target="_blank">
+            <label for="name" >Collection Name:</label><br>
+            <input name="name" type="text" id="nameInput"><br>
+            <label for="isPublic" >Is this collection public?</label><br>
+            <input name="isPublic" type="checkbox" id="isPublicInput"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <br><br>
+        <h2>
+            Register
+        </h2>
+        <form action="http://localhost:8080/register" method="post" target="_blank">
+            <label for="username" >Username:</label><br>
+            <input name="username" type="text" id="usernameInput" value="Jam"><br>
+            <label for="password" >Password:</label><br>
+            <input name="password" type="text" id="passwordInput" value="yes"><br>
+            <label for="confirmPassword" >Confirm Password:</label><br>
+            <input name="confirmPassword" type="text" id="confirmPasswordInput" value="yes"><br>
+            <label for="role" >Role:</label><br>
+            <input name="role" type="text" id="roleInput" value="ADMIN"><br>
+            <input type="submit" value="Submit">
+        </form>
+        <br><br>
+        <h2>
+            Log in
+        </h2>
+        <form action="http://localhost:8080/login" method="post" target="_blank">
+            <label for="username" >Username:</label><br>
+            <input name="username" type="text" id="usernameInput" value="Jam"><br>
+            <label for="password" >Password:</label><br>
+            <input name="password" type="text" id="passwordInput" value="yes"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+</body>
+</html>
