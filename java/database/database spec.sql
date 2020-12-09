@@ -151,5 +151,14 @@ CREATE TABLE collection_comic
         constraint fk_collection_comic_comic foreign key(comic_id) references comic(comic_id)
 );
 
+CREATE TABLE user_friend
+(
+        user_id int,
+        friend_id int,
+        
+        constraint fk_user_friend_comic foreign key(user_id) references users(user_id),
+        constraint fk_user_friend_friend foreign key(user_id) references users(user_id)
+);
+
 
 COMMIT;
