@@ -1,6 +1,6 @@
 <template>
 <div class="card">
-  <h1 class="title">{{collection.title}}</h1>
+  <h2 class="title">{{collection.title}}</h2>
   <h3 class="owner">By: {{collection.owner}}</h3>
   <div class="container">
     <img id="face" src="../../assets/Images/Captain_America_Comics_Vol_1_2.jpg" alt="">
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'collection-card',  
   data() {
@@ -22,13 +24,9 @@ export default {
         dateCreated: '',
         comics: []
       }
-    };
+    }
   },
   methods: {
-
-    getAllComics() {
-      
-    }
     
   }  
 
@@ -53,7 +51,8 @@ export default {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    top:50%;
+    font-size: 150%; 
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%,-50%);

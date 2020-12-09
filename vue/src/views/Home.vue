@@ -1,5 +1,6 @@
 <template>
-  <div class="home">   
+  <div class="home"> 
+    <h1>Welcome to BT Comics</h1>  
     <div class="container">
       <collection-card></collection-card>
     </div>
@@ -25,6 +26,10 @@ export default {
     background-repeat: no-repeat;    
   } */
 
- 
+ .home {
+   color: white;
+   text-shadow: 2px 2px black;
+   text-align: center;
+ }
  
 </style>
