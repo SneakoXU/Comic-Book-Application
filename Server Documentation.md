@@ -2,6 +2,8 @@
 for yall doing the client <3
 
 ## Paths
+
+***
 - ## Comics 
     -     /comics/query/title/{name}
          - Makes request to Marvel API to get the first 100 comics that begin with {name}
@@ -10,6 +12,8 @@ for yall doing the client <3
     -     /comics/query/id/{id}
          - Makes request to Marvel API to get a comic with the matching {id}.
          - Public
+***
+
 - ## Collections
     -     /collections/public
          - Gets all public collections
@@ -30,10 +34,77 @@ for yall doing the client <3
          - Creates a form from the response body
          - Currently Public. Will be made private
          - Example:     
-           -     <form action="http://localhost:8080/collections/create" method="post">
+           *** 
+                <form action="http://localhost:8080/collections/create" method="post">
                      <label for="name" >Collection Name:</label><br>
                      <input name="name" type="text" id="nameInput"><br>
                      <label for="isPublic" >Is this collection public?</label><br>
                      <input name="isPublic" type="checkbox" id="isPublicInput"><br>
                      <input type="submit" value="Submit">
                  </form>
+
+             <form action="http://localhost:8080/collections/create" method="post">
+                 <label for="name" >Collection Name:</label><br>
+                 <input name="name" type="text" id="nameInput"><br>
+                 <label for="isPublic" >Is this collection public?</label><br>
+                 <input name="isPublic" type="checkbox" id="isPublicInput"><br>
+                 <input type="submit" value="Submit">
+             </form>
+
+***
+
+- ## Authentication
+     -     /register
+         - Creates an account
+         - Public
+         - Example: 
+           ***    
+                <form action="http://localhost:8080/register" method="post" target="_blank">
+                    <label for="username" >Username:</label><br>
+                    <input name="username" type="text" id="usernameInput" value="Jam"><br>
+                    <label for="password" >Password:</label><br>
+                    <input name="password" type="text" id="passwordInput" value="yes"><br>
+                    <label for="confirmPassword" >Confirm Password:</label><br>
+                    <input name="confirmPassword" type="text" id="confirmPasswordInput" value="yes"><br>
+                    <label for="role" >Role:</label><br>
+                    <input name="role" type="text" id="roleInput" value="ADMIN"><br>
+                    <input type="submit" value="Submit">
+                </form>
+
+              <form action="http://localhost:8080/register" method="post" target="_blank">
+                  <label for="username" >Username:</label><br>
+                  <input name="username" type="text" id="usernameInput" value="Jam"><br>
+                  <label for="password" >Password:</label><br>
+                  <input name="password" type="text" id="passwordInput" value="yes"><br>
+                  <label for="confirmPassword" >Confirm Password:</label><br>
+                  <input name="confirmPassword" type="text" id="confirmPasswordInput" value="yes"><br>
+                  <label for="role" >Role:</label><br>
+                  <input name="role" type="text" id="roleInput" value="ADMIN"><br>
+                  <input type="submit" value="Submit">
+              </form>
+
+           ***
+
+     -     /login
+         - Get an authenticated bearer token such as `{"token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYW0iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwNzU2OTkxOH0.S8XRbCF0c7vzuV_5kh2XKZMErqXk-qX9TmhzA9fDFHkGi19USM0Oi-uXbEu-NK9_DPA0CN35EIaxsreP0GXpfQ","user":{"id":4,"username":"Jam","authorities":[{"name":"ROLE_ADMIN"}],"friends":null}}`
+         - Public
+         - Example:  
+           ***
+               
+                <form action="http://localhost:8080/login" method="post" target="_blank">
+                    <label for="username" >Username:</label><br>
+                    <input name="username" type="text" id="usernameInput" value="username"><br>
+                    <label for="password" >Password:</label><br>
+                    <input name="password" type="text" id="passwordInput" value="password"><br>
+                    <input type="submit" value="Submit">
+                </form> 
+
+              <form action="http://localhost:8080/login" method="post" target="_blank">
+                  <label for="username" >Username:</label><br>
+                  <input name="username" type="text" id="usernameInput" value="username"><br>
+                  <label for="password" >Password:</label><br>
+                  <input name="password" type="text" id="passwordInput" value="password"><br>
+                  <input type="submit" value="Submit">
+               </form>
+
+           ***
