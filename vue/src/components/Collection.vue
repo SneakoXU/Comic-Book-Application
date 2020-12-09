@@ -6,13 +6,21 @@
 </template>
 
 <script>
-export default {
+import collectionService from '@/services/CollectionService.js';
+
+export default {   
+
     name: 'collection-display',
     data() {
         return {
-            name: ''
+           collections: []
             
         }
+    },
+    created() {
+        collectionService.getCollections().then((response) =>{
+            this.collections = response.data;
+        })
     }
 
 }
