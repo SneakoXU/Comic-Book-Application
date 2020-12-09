@@ -30,5 +30,7 @@ public interface CollectionDAO {
 	void deleteComic(int collectionId, int comicId);
 
 	int getCollectionOwner(int collectionId);
+
+	String getThumbnail(int collectionId);
 	
 }

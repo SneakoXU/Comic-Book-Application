@@ -27,6 +27,9 @@ for yall doing the client <3
     -     /collections/{collectionId}/remove/{comicId}
          - Removes the comic matching {comicId} from the collection matching {collectionId}
          - Currently Public. Will be made private
+     -     /collections/{collectionId}/thumbnail
+         - Gets the url of the first comic in the collection mathing {collectionId} as a String
+         - Currently Public. Will be made private
     -     /collections/delete/{collectionId}
          - Deletes the collection matching {collectionId} if it exists
          - Currently Public. Will be made private

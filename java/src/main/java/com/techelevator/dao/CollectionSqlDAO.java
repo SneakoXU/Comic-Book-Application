@@ -88,6 +88,16 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 	
 	@Override
+	public String getThumbnail(int collectionId) {
+		String sql = "select c.thumbnail_url from comic as c inner join collection_comic as cc on c.comic_id = cc.comic_id where cc.collection_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collectionId);
+        while(results.next()) {
+            return results.getString("thumbnail_url");
+        }
+        return "";
+	}
+	
+	@Override
 	public int getCollectionOwner(int collectionId)
 	{
 		String sql = "select creator_id from collections where collection_id = ?";

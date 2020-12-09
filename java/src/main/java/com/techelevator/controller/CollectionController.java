@@ -68,15 +68,26 @@ public class CollectionController {
 		
     }
 	
-		@ResponseStatus(HttpStatus.OK)
-	    @RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)
-	    public void deleteComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
-			if(verifyUser(principal, collectionId))
-				collectionDAO.deleteComic(collectionId, comicId);
-			else 
-				throw new ResponseStatusException(
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)
+	public void deleteComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
+		if(verifyUser(principal, collectionId))
+			collectionDAO.deleteComic(collectionId, comicId);
+		else 
+			throw new ResponseStatusException(
 		      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
-	    }
+	}
+		
+	@PreAuthorize("permitAll()")
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/{collectionId}/thumbnail", method = RequestMethod.GET)
+	public String getThumbnail(@PathVariable int collectionId, Principal principal) {
+		//if(verifyUser(principal, collectionId))
+			return collectionDAO.getThumbnail(collectionId);
+		//else 
+			//throw new ResponseStatusException(
+		      	          //HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
+	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/delete/{collectionId}", method = RequestMethod.POST)
