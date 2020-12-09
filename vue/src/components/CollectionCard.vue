@@ -12,9 +12,10 @@
 </template>
 
 <script>
+import collection from '@/components/Collection.vue';
 
 
-export default {
+export default {  
   name: 'collection-card',  
   data() {
     return {
@@ -27,7 +28,9 @@ export default {
     }
   },
   methods: {
-    
+    getCollections() {
+
+    }
   }  
 
 }
@@ -50,6 +53,7 @@ export default {
   .view {
     transition: .5s ease;
     opacity: 0;
+    align-items: center;
     position: absolute;
     font-size: 150%; 
     top: 80%;
@@ -64,11 +68,11 @@ export default {
     color: white;
   }
 
-   div.container:hover #face{
+   #face:hover {
     opacity: 0.5;
   }
 
-   div.container:hover .view{
+   #face:hover + .view{
     opacity: 1;
   }
 
