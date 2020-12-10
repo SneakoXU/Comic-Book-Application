@@ -1,4 +1,4 @@
-# Java Server Documentation
+# Java Server Documentation v1.1b
 for yall doing the client <3
 
 ## Paths
@@ -15,7 +15,7 @@ for yall doing the client <3
     -     /comics/thumbnail/{id}
          - Gets the url of the comic in the database matching {id} as a String 
          - Public 
-***
+     ***
 
 - ## Collections
     -     /collections/public
@@ -57,7 +57,7 @@ for yall doing the client <3
                  <input type="submit" value="Submit">
              </form>
 
-***
+     ***
 
 - ## Authentication
      -     /register
@@ -93,6 +93,11 @@ for yall doing the client <3
 
      -     /login
          - Get an authenticated bearer token such as `{"token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYW0iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwNzU2OTkxOH0.S8XRbCF0c7vzuV_5kh2XKZMErqXk-qX9TmhzA9fDFHkGi19USM0Oi-uXbEu-NK9_DPA0CN35EIaxsreP0GXpfQ","user":{"id":4,"username":"Jam","authorities":[{"name":"ROLE_ADMIN"}],"friends":null}}`
+         - Used when pushing with axios
+         - Public
+     -     /loginraw
+         - Get an authenticated bearer token such as `{"token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYW0iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwNzU2OTkxOH0.S8XRbCF0c7vzuV_5kh2XKZMErqXk-qX9TmhzA9fDFHkGi19USM0Oi-uXbEu-NK9_DPA0CN35EIaxsreP0GXpfQ","user":{"id":4,"username":"Jam","authorities":[{"name":"ROLE_ADMIN"}],"friends":null}}`
+         - Used when sending raw form data via Vanilla HTML or Postman
          - Public
          - Example:  
            ***
@@ -113,4 +118,26 @@ for yall doing the client <3
                   <input type="submit" value="Submit">
                </form>
 
-           ***
+     ***
+- ## Friends
+   -     /user/friends
+     - Gets the friends of the logged in user
+     - Private
+   -     /user/friends/add/{id}
+     - Sends the user matching {id} a friend request if they exist
+     - Private
+   -     /user/friends/remove/{id}
+     - Removes a user matching {id} from the logged in user's friend list
+     - Private
+   -     /user/friends/request/incoming
+     - Gets a list of pending friend requests to the logged in user
+     - Private
+   -     /user/friends/request/deny/{requestId}
+     - Cancels an incoming request to the logged in user matching {requestId}
+     - Private
+   -     /user/friends/request/cancel/{requestId}
+     - Cancels an outgoing request from the logged in user matching {requestId}
+     - Private
+   -     /user/friends/request/accept/{requestId}
+     - Accepts an incoming request to the logged in user matching {requestId} and adds the request sender as a friend
+     - Private
