@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -59,13 +60,14 @@ public class CollectionController {
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/{collectionId}/add/{comicId}", method = RequestMethod.POST)
     public void addComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
+		if (collectionDAO.hasComic(comicId, collectionId)) 
+			throw new ResponseStatusException(
+	      	          HttpStatus.CONFLICT, "You cannot add duplicate comics to a collection");
 		if(verifyUser(principal, collectionId))
 			collectionDAO.addComic(MarvelAPIController.Comic.getComic(comicId).getData().getResults()[0], collectionId);
 		else 
 			throw new ResponseStatusException(
 	      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
-		
-		
     }
 	
 	@ResponseStatus(HttpStatus.OK)
@@ -101,7 +103,18 @@ public class CollectionController {
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public void addCollection( Collection collection, Principal principal) {
+	public void addCollection(@RequestBody Collection collection, Principal principal) {
+
+		if(collection == null || collection.getName() == null)
+			throw new ResponseStatusException(
+      	          HttpStatus.BAD_REQUEST, "Empty Request");
+		else
+			collectionDAO.addCollection(collection.setDateCreated(Date.valueOf( LocalDate.now())).setUserID(userDAO.findIdByUsername(principal.getName())));
+	}
+	
+	@ResponseStatus(HttpStatus.CREATED)
+	@RequestMapping(value = "/createraw", method = RequestMethod.POST)
+	public void addCollectionRaw(Collection collection, Principal principal) {
 
 		if(collection == null || collection.getName() == null)
 			throw new ResponseStatusException(
@@ -127,6 +140,6 @@ public class CollectionController {
 	private boolean verifyUser(Principal principal, int collectionId)
 	{
 		System.out.println(principal);
-		return userDAO.getUserById((long) collectionDAO.getCollectionOwner(collectionId)).getUsername().equals(principal.getName());
+		return userDAO.getUserById( collectionDAO.getCollectionOwner(collectionId)).getUsername().equals(principal.getName());
 	}
 }

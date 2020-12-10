@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.techelevator.model.FriendRequest;
 import com.techelevator.model.User;
 
 @Service
@@ -28,14 +29,115 @@ public class UserSqlDAO implements UserDAO {
     }
 
 	@Override
-	public User getUserById(Long userId) {
+	public User getUserById(int userId) {
 		String sql = "SELECT * FROM users WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		if(results.next()) {
-			return mapRowToUser(results);
+			return mapRowToUserPublic(results);
 		} else {
 			throw new RuntimeException("userId "+userId+" was not found.");
 		}
+	}
+	
+	@Override
+	public boolean userExists(int id)
+	{
+		String sql = "SELECT user_id FROM users WHERE user_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+		return results.next();
+	}
+	
+	@Override
+	public List<User> getFriendsByUserId(int userId)
+	{
+		List<User> friends = new ArrayList<>();
+		String sql = "select u.user_id, u.username from users as u inner join user_friend as uf on uf.user_id = u.user_id where uf.friend_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+		while(results.next()) 
+			friends.add(mapRowToUserPublic(results));
+		sql = "select u.user_id, u.username from users as u inner join user_friend as uf on uf.friend_id = u.user_id where uf.user_id = ?";
+		results = jdbcTemplate.queryForRowSet(sql, userId);
+		while(results.next()) 
+			friends.add(mapRowToUserPublic(results));
+		return friends;
+	}
+	
+	@Override
+	public void sendFriendRequest(int userId, int friendId)
+	{
+		if(!friendExists(userId, friendId) && userExists(friendId) && !friendRequestExists(userId, friendId))
+		{
+			String sql = "insert into friendrequest (recipient_id, sender_id, status_id) values (?, ?, 0);";
+			jdbcTemplate.update(sql, friendId, userId);
+		}
+	}
+	
+	@Override
+	public List<FriendRequest> getOutGoingRequests(int userId)
+	{
+		List<FriendRequest> requests = new ArrayList<FriendRequest>();
+		
+		String sql = "SELECT * FROM friendrequest WHERE sender_id = ? and status_id in (0, 2)";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+		while(results.next()) 
+			requests.add(mapRowToFriendRequest(results));
+		return requests;
+	}
+	
+	@Override
+	public List<FriendRequest> getIncomingRequests(int userId)
+	{
+		List<FriendRequest> requests = new ArrayList<FriendRequest>();
+		
+		String sql = "SELECT * FROM friendrequest WHERE recipient_id = ? and status_id = 0";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+		while(results.next()) 
+			requests.add(mapRowToFriendRequest(results));
+		return requests;
+	}
+	
+	@Override
+	public boolean friendExists(int userId, int friendId)
+	{
+		String sql = "SELECT user_id FROM user_friend WHERE user_id = ? and friend_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, friendId);
+		return results.next();
+	}
+	
+	@Override
+	public boolean friendRequestExists(int userId, int friendId)
+	{
+		String sql = "SELECT sender_id FROM friendrequest WHERE sender_id = ? and recipient_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, friendId);
+		return results.next();
+	}
+	
+	@Override
+	public void changeRequestStatusSender(int senderId, int requestId, int status)
+	{
+		String sql = "update friendrequest set status_id = ? where request_id = ? and sender_id = ?";
+		jdbcTemplate.update(sql, status, requestId);
+	}
+	
+	@Override
+	public void changeRequestStatusRecipient(int recipientId, int requestId, int status)
+	{
+		String sql = "update friendrequest set status_id = ? where request_id = ? and recipient_id = ?";
+		jdbcTemplate.update(sql, status, requestId);
+	}
+	
+	@Override
+	public void addFriend(int requestId, int recipientId) {
+		String sql = "insert into user_friend (user_id, friend_id) select sender_id, recipient_id from friendrequest where request_id = ? and recipient_id = ?";
+		jdbcTemplate.update(sql, requestId, recipientId);
+		sql = "update friendrequest set status_id = 1 where request_id = ? and recipient_id = ?";
+		jdbcTemplate.update(sql, requestId, recipientId);
+	}
+	
+	@Override
+	public void removeFriend(int friendId, int userId) {
+		String sql = "delete from user_friend where (user_id = ? and friend_id = ?) or (friend_id = ? and user_id = ?)";
+		jdbcTemplate.update(sql, userId, friendId, userId, friendId);
 	}
 
     @Override
@@ -85,6 +187,16 @@ public class UserSqlDAO implements UserDAO {
 
         return userCreated;
     }
+    
+    @Override
+    public String getUsername(int id)
+    {
+    	String sql = "SELECT username FROM users WHERE user_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+		if(results.next())
+				return results.getString("username");
+		return "";
+    }
 
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
@@ -94,5 +206,17 @@ public class UserSqlDAO implements UserDAO {
         user.setAuthorities(rs.getString("role"));
         user.setActivated(true);
         return user;
+    }
+    
+    private User mapRowToUserPublic(SqlRowSet rs) {
+        User user = new User();
+        user.setId(rs.getLong("user_id"));
+        user.setUsername(rs.getString("username"));
+        return user;
+    }
+    
+    private FriendRequest mapRowToFriendRequest(SqlRowSet rs) {
+    	return new FriendRequest(rs.getInt("request_id"), getUserById(rs.getInt("sender_id")), getUserById(rs.getInt("recpient_id")), rs.getInt("status_id"));
+    	
     }
 }

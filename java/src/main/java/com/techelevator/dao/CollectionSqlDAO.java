@@ -42,31 +42,41 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 	
 	@Override
+	public boolean hasComic(int comicId, int collectionId)
+	{
+		String sql = "select collection_id from collection_comic where collection_id = ? and comic_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collectionId, comicId);
+        return results.next();
+	}
+	
+	@Override
 	public void addComic(Field newComic, int collectionId) {
 		String sql = "insert into comic (comic_id, title, description, thumbnail_url) values (?, ?, ?, ?) on conflict do nothing;";
         jdbcTemplate.update(sql, newComic.getId(), newComic.getTitle(), newComic.getDescription(), newComic.getThumbnail().getPath()+newComic.getThumbnail().getExtension());
         sql = "insert into collection_comic (comic_id, collection_id) values (?, ?) on conflict do nothing;";
         jdbcTemplate.update(sql, newComic.getId(), collectionId);
-        /*for(Summary creator : newComic.getCreators().getItems())
+        for(Summary creator : newComic.getCreators().getItems())
         {
         	if(creator.getResourceURI() != null)
         	{
         		int id = 0;
         		try 
         		{
-        			id = Integer.parseInt( creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/')));
+        			id = Integer.parseInt( creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/') + 1));
 				} 
         		catch (Exception e) 
         		{
-					System.out.println(creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/')));
+					System.out.println(creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/') + 1));
 				}
-        		
-        		sql = "insert into comic_author (comic_id, author_id) values (?, ?) on conflict do nothing;";
-        		jdbcTemplate.update(sql, newComic.getId(), id);
         		sql = "insert into author (author_id, firstname, lastname, description, thumbnail_url) values (?, ?, ?, ?, ?) on conflict do nothing;";
-        		jdbcTemplate.update(sql, id, creator.getName().substring(0, ));
+        		jdbcTemplate.update(sql, id, creator.getName().substring(0, creator.getName().indexOf(' ')), creator.getName().substring(creator.getName().lastIndexOf(' ')), creator.getRole(), "");
+        		if(!comicDAO.hasAuthor(newComic.getId(), id))
+        		{
+        			sql = "insert into comic_author (comic_id, author_id) values (?, ?) on conflict do nothing;";
+        			jdbcTemplate.update(sql, newComic.getId(), id);
+        		}
         	}
-        }*/
+        }
 	}
 	
 	@Override
@@ -102,7 +112,8 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 
 	@Override
-	public List<Collection> getCollectionsByUser(long userID, boolean isPublic) {
+	public List<Collection> getCollectionsByUser(long userID, boolean isPublic) 
+	{
 		return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = ? and creator_id = ?",
 				new Object[] {isPublic, userID},
 				new int[] {java.sql.Types.BOOLEAN, java.sql.Types.INTEGER});

@@ -32,5 +32,7 @@ public interface CollectionDAO {
 	int getCollectionOwner(int collectionId);
 
 	String getThumbnail(int collectionId);
+
+	boolean hasComic(int comicId, int collectionId);
 	
 }
