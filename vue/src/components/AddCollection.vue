@@ -1,8 +1,15 @@
 <template>
   <div class="container">
-      <h2 class="header">CREATE A COLLECTION</h2>
-      <div class="form-container">
-          <form v-on:submit.prevent="addNewCollection">
+       <a
+            id="show-form-button"
+            href="#"
+            v-on:click.prevent="showForm = true"
+            v-if="showForm === false"
+            >Create a Collection</a>
+     
+      <div class="form-container" v-if="showForm === true">
+           <h2 class="header">CREATE A COLLECTION</h2>
+          <form v-on:submit.prevent="addNewCollection" >
                <div class="form-input">
                     <label for='name'>Collection Name: </label>
                     <input id='name' type='text' v-model="collection.collectionname" class="form-control"/>
@@ -14,8 +21,8 @@
                     <option>Private</option>
                 </select>
                 <div class="actions">
-                    <button class="form-submit" type='submit'>Create</button>
-                    <button class="form-cancel" v-on:click="reset">Cancel</button>
+                    <button class="form-submit" type='submit' v-on:click="addNewCollection">Create</button>
+                    <button class="form-cancel" v-on:click="showForm = false">Cancel</button>
                 </div>    
           </form>
       </div>
@@ -34,7 +41,8 @@ export default {
                  publicstatus: '',
                  datecreated: ''
             },
-            selected:''
+            selected:'',
+            showForm: false,
            
         }
     },
@@ -47,16 +55,14 @@ export default {
                 datecreated: this.collection.datecreated
             };
             
-            CollectionService.addNewCollection(newCollection).then(response => {
+            CollectionService.addCollection(newCollection).then(response => {
                 if(response.status === 201){
-
+                    
                 }
             })
             
         },
-        reset(){
-            this.$router.push('/collections');
-        }
+   
     }
 
 }
