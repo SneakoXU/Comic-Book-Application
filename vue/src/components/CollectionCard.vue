@@ -75,6 +75,9 @@ export default {
    #face:hover + .view{
     opacity: 1;
   }
+  .view:hover {
+    opacity: 1;
+  }
 
   #face {
     height: 350px;
