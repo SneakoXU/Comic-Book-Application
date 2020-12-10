@@ -7,7 +7,7 @@
             v-on:click.prevent="showForm = true"
             v-if="showForm === false"
             >Create a Collection</a>
-        <add-collection v-if="showForm === true"></add-collection>        
+        <add-collection v-if="showForm === true"></add-collection>       
     </div>
  
 </template>
@@ -17,7 +17,9 @@ import collectionService from '@/services/CollectionService.js';
 import collectionCard from '@/components/CollectionCard.vue';
 import addCollection from '../components/AddCollection.vue';
 export default {   
-        
+    components:{
+        addCollection
+    },    
     name: 'collection-display',
     data() {
         return {
