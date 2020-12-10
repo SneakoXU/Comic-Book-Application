@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import collection from '@/components/Collection.vue';
+
 
 
 export default {  
@@ -23,7 +23,6 @@ export default {
         title: 'Test',
         owner: 'Me',
         dateCreated: '',
-        comics: []
       }
     }
   },
@@ -73,6 +72,9 @@ export default {
   }
 
    #face:hover + .view{
+    opacity: 1;
+  }
+  .view:hover {
     opacity: 1;
   }
 
