@@ -35,8 +35,8 @@ public class MarvelAPIController
 	        {
 	        	sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
 	        }
-	        System.out.println(API_BASE_URL+uri+"ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString());
-	        return API_BASE_URL+uri+"ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString();
+	        System.out.println(API_BASE_URL+uri+"limit=96&ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString());
+	        return API_BASE_URL+uri+"limit=96&ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString();
 	    } 
 		catch (NoSuchAlgorithmException e) 
 		{}
