@@ -1,13 +1,8 @@
 <template>
     <div class="comic-display">
         <h2>List of Collections</h2>
-        <a
-            id="show-form-button"
-            href="#"
-            v-on:click.prevent="showForm = true"
-            v-if="showForm === false"
-            >Create a Collection</a>
-        <add-collection v-if="showForm === true"></add-collection>       
+       
+        <add-collection ></add-collection>       
     </div>
  
 </template>
