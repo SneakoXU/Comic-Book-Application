@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="form-container">
         <h2 class="header">Search for a Comic Book</h2>
         <form v-on:submit.prevent="searchByName">
@@ -10,14 +10,23 @@
             <div class="actions">
             <button class="form-search" type='submit'>Search</button>
             <button class="form-cancel">Cancel</button>
-            </div>    
+            </div> 
+              
         </form>
     </div>
+  <div class="container">
+    <div>
+    </div> 
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
-        <p>{{result.title}}</p>
+        <div class="inception">
+            <p id="title">{{result.title}}</p>
         <img :src="result.thumbnail.path + '.jpg'" alt="Comic Book Image Result" class="result-image">
+        </div>
+        
     </div>
-  </div>  
+    
+  </div> 
+  </div> 
 </template>
 
 <script>
@@ -49,9 +58,40 @@ export default {
   
 <style>
   .result-image{
-        height: 275px;
-        width: 250px;
-    }
+    height: 275px;
+    width: 250px;
+    display: flex;
+  }
 
-    
+
+
+  .result-container{
+  
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 40vh;
+      margin: 20px 30px 20px 30px;
+      
+
+  } 
+
+  .container{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+  } 
+
+  #title{
+      max-width: 250px;
+      white-space: nowrap;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+  }
+
+  #title::after {
+  content: "...";
+}
+
 </style>
