@@ -141,3 +141,6 @@ for yall doing the client <3
    -     /user/friends/request/accept/{requestId}
      - Accepts an incoming request to the logged in user matching {requestId} and adds the request sender as a friend
      - Private
+
+# Changelog
+   - v1.1b Added friends/ request system
