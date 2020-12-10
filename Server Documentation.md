@@ -157,6 +157,9 @@ for yall doing the client <3
    -     /user/friends/request/incoming
      - Gets a list of pending friend requests to the logged in user
      - Private
+   -     /user/friends/request/outgoing
+     - Gets a list of pending friend requests from the logged in user
+     - Private
    -     /user/friends/request/deny/{requestId}
      - Cancels an incoming request to the logged in user matching {requestId}
      - Private
