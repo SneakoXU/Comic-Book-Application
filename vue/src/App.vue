@@ -3,10 +3,11 @@
     <div id="nav">
       <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
       <div class="itemBox">
-      <router-link class="navItem" v-bind:to="{ name: 'home' }" v-if="$store.state.token != ''">Home</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''">Login</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="$store.state.token == ''">Register</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'collection-display' }" v-if="$store.state.token == ''">Collections</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'home' }" >Home</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'login' }" >Login</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'register' }" >Register</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
     </div>

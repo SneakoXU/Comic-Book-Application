@@ -15,15 +15,16 @@
                     <input id='name' type='text' v-model="collection.collectionname" class="form-control"/>
                 </div>
                 <label class="form-input">Visibility: </label>
-                <select name='public-status' id='public-status' class="select" v-model="selected" >
-                    <option disabled value="">Please Select</option>
-                    <option>Public</option>
-                    <option>Private</option>
+                <select name='public-status' id='public-status' class="select" v-model="collection.publicStatus" >                    
+                    <option value="true" selected>Public</option>
+                    <option value="false">Private</option>
                 </select>
                 <div class="actions">
-                    <button class="form-submit" type='submit' v-on:click="addNewCollection">Create</button>
+                    <button class="form-submit" type='submit'>Create</button>
                     <button class="form-cancel" v-on:click="showForm = false">Cancel</button>
-                </div>    
+                </div> 
+            <div class="status-message success" v-show="formAddedSuccess">Collection Created</div>
+            <div class="status-message error" v-show="formAddedFailure">{{errorMsg}}</div>
           </form>
       </div>
   </div>
@@ -34,31 +35,46 @@ import CollectionService from '../services/CollectionService.js';
 export default {
     name:'add-collection',
     data(){
-        return{
+        return{            
             collection:{
                  collectionname: '', 
                  creator_id: '',
-                 publicstatus: '',
+                 publicStatus: '',
                  datecreated: ''
             },
-            selected:'',
             showForm: false,
+            formAddedSuccess: false,
+            forAddedFailure: false,
+            errorMsg: '',
            
         }
     },
     methods:{
         addNewCollection() {
-            const newCollection = {
+            collection = {
                 collectionname: this.collection.collectionname, 
                 creator_id: this.$store.state.user.id,
-                publicstatus: this.collection.publicstatus,
-                datecreated: this.collection.datecreated
+                publicstatus: this.select.value,
+                datecreated: new Date()
             };
             
-            CollectionService.addCollection(newCollection).then(response => {
+            CollectionService.addCollection(collection).then(response => {
                 if(response.status === 201){
-                    
+                    this.$router.push({
+                        path:'/collections'                        
+                    });
+                    this.formAddedSuccess = true
                 }
+            })
+            .catch((error) =>{
+                const response =  error.response;
+                if(response.status === 500) {
+                    this.errorMsg = "Error, URL not found"
+                }
+                if(response.status === 404) {
+                    this.errorMsg = "Error, URL not found"
+                }
+                this.formAddedFailure = true;
             })
             
         },
