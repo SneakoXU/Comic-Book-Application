@@ -52,4 +52,6 @@ export default {
         height: 275px;
         width: 250px;
     }
+
+    
 </style>
