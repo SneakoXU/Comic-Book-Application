@@ -22,6 +22,7 @@ import com.techelevator.dao.CollectionDAO;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Collection;
 import com.techelevator.model.CollectionStatistics;
+import com.techelevator.model.Comment;
 
 @RestController
 @RequestMapping("/collections")
@@ -45,13 +46,13 @@ public class CollectionController {
     }
 	
 	@PreAuthorize("permitAll()")
-	@RequestMapping(value="/{collectionId}", method = RequestMethod.GET)
+	@RequestMapping(value="/{collectionId}", method = RequestMethod.POST)
     public Collection getPublicCollectionById(@PathVariable int collectionId, Principal principal){
-        Collection collection = collectionDAO.getCollectionByID(collectionId, true);
+        Collection collection = collectionDAO.getCollectionByID(collectionId, false);
         if(collection == null)
         	throw new ResponseStatusException(
         	          HttpStatus.NOT_FOUND, "Collection Not Found");
-        if((principal == null && collection.isPublic()) || verifyUser(principal, collectionId))
+        if((principal == null && collection.isPublic()) || ( principal != null && (verifyUser(principal, collectionId) || userDAO.friendExists((int)collectionDAO.getCollectionByID(collectionId, false).getUserID(), userDAO.findIdByUsername(principal.getName())))))
         	return collection;
         throw new ResponseStatusException(
   	          HttpStatus.UNAUTHORIZED, "This collection is private");
@@ -68,6 +69,12 @@ public class CollectionController {
 		else 
 			throw new ResponseStatusException(
 	      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
+    }
+	
+	@ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/{collectionId}/comment", method = RequestMethod.POST)
+    public void addComic(@RequestBody Comment comment, @PathVariable int comicId, Principal principal) {
+		collectionDAO.addComment(comment);
     }
 	
 	@ResponseStatus(HttpStatus.OK)

@@ -99,8 +99,8 @@ public class UserSqlDAO implements UserDAO {
 	@Override
 	public boolean friendExists(int userId, int friendId)
 	{
-		String sql = "SELECT user_id FROM user_friend WHERE user_id = ? and friend_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, friendId);
+		String sql = "SELECT user_id FROM user_friend WHERE (user_id = ? and friend_id = ?) or (friend_id = ? and user_id = ?)";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, friendId, userId, friendId);
 		return results.next();
 	}
 	

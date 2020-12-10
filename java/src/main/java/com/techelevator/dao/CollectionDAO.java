@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import java.util.List;
 
 import com.techelevator.model.Collection;
+import com.techelevator.model.Comment;
 import com.techelevator.model.marvel.fields.Field;
 
 public interface CollectionDAO {
@@ -34,5 +35,11 @@ public interface CollectionDAO {
 	String getThumbnail(int collectionId);
 
 	boolean hasComic(int comicId, int collectionId);
+
+	List<Comment> getComments(int collectionId);
+
+	void addComment(Comment comment);
+
+	void deleteComment(int commentId);
 	
 }

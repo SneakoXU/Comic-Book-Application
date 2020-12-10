@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import com.techelevator.model.Collection;
+import com.techelevator.model.Comment;
 import com.techelevator.model.marvel.fields.Field;
 import com.techelevator.model.marvel.fields.Summary;
 
@@ -83,6 +84,28 @@ public class CollectionSqlDAO implements CollectionDAO {
 	public void deleteComic(int collectionId, int comicId) {
 		String sql = "delete from collection_comic where comic_id = ? and collection_id = ?;";
         jdbcTemplate.update(sql, comicId, collectionId);
+	}
+	
+	@Override 
+	public void addComment(Comment comment)
+	{
+		String sql = "insert into comment (comment_id, commenter_id, collection_id, likes, text)";
+        jdbcTemplate.update(sql, comment.getId(), comment.getCommenter_id(), comment.getCollection_id(), comment.getLikes(), comment.getText());
+	}
+	
+	@Override 
+	public void deleteComment(int commentId)
+	{
+		String sql = "delete from comment where comment_id = ?";
+        jdbcTemplate.update(sql, commentId);
+	}
+	
+	@Override 
+	public List<Comment> getComments(int collectionId)
+	{
+		List<Comment> comments = new ArrayList<Comment>();
+		
+		return comments;
 	}
 
 	@Override

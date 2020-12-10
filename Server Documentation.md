@@ -174,3 +174,4 @@ for yall doing the client <3
    - v1.1b Added friends/ request system
    - v1.2b Fixed problem with listing incoming friend requests
    - v1.0 Fixed problem with accepting, denying, and canceling friend requests
+   - V2.1b Added collection comments
