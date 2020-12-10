@@ -13,9 +13,9 @@
             </div>    
         </form>
     </div>
-    <div class="result-container" v-for="result in results" v-bind:key="result.id">
+    <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
         <p>{{result.title}}</p>
-        <img :src="result.thumbnail_url" alt="Comic Book Image Result">
+        <img :src="result.thumbnail.path + '.jpg'" alt="Comic Book Image Result" class="result-image">
     </div>
   </div>  
 </template>
@@ -27,7 +27,13 @@ export default {
     data(){
         return{
            searchTerm: '',
-           results: {} 
+           results: {
+               data: {
+                   results: []
+               }
+
+           },
+
         }
     },
     methods:{
@@ -40,6 +46,12 @@ export default {
 
 }
 </script>
-
+  
 <style>
+  .result-image{
+        height: 275px;
+        width: 250px;
+    }
+
+    
 </style>
