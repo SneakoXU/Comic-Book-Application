@@ -22,7 +22,9 @@
                 <div class="actions">
                     <button class="form-submit" type='submit'>Create</button>
                     <button class="form-cancel" v-on:click="showForm = false">Cancel</button>
-                </div>    
+                </div> 
+            <div class="status-message success" v-show="formAddedSuccess">Collection Created</div>
+            <div class="status-message error" v-show="formAddedFailure">{{errorMsg}}</div>
           </form>
       </div>
   </div>
@@ -34,15 +36,16 @@ export default {
     name:'add-collection',
     data(){
         return{            
-            showForm: false,
-            
             collection:{
                  collectionname: '', 
                  creator_id: '',
                  publicStatus: '',
                  datecreated: ''
             },
-            
+            showForm: false,
+            formAddedSuccess: false,
+            forAddedFailure: false,
+            errorMsg: '',
            
         }
     },
@@ -58,15 +61,20 @@ export default {
             CollectionService.addCollection(collection).then(response => {
                 if(response.status === 201){
                     this.$router.push({
-                        path:'/collections'
+                        path:'/collections'                        
                     });
+                    this.formAddedSuccess = true
                 }
             })
             .catch((error) =>{
                 const response =  error.response;
-                if(response.status === 400) {
-
+                if(response.status === 500) {
+                    this.errorMsg = "Error, URL not found"
                 }
+                if(response.status === 404) {
+                    this.errorMsg = "Error, URL not found"
+                }
+                this.formAddedFailure = true;
             })
             
         },
