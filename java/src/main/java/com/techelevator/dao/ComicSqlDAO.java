@@ -38,6 +38,14 @@ public class ComicSqlDAO implements ComicDAO{
         }
         return "";
 	}
+	
+	@Override
+	public boolean hasAuthor(int comicId, int authorId)
+	{
+		String sql = "select comic_id from comic_author where comic_id = ? and author_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, comicId, authorId);
+        return results.next();
+	}
 
 	@Override
 	public Field addComic(long id) {

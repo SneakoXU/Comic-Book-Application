@@ -37,8 +37,23 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
+    	
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
-    	System.out.println(loginDto.getUsername() + " " + loginDto.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.createToken(authentication, false);
+        
+        User user = userDAO.findByUsername(loginDto.getUsername());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        return new ResponseEntity<>(new LoginResponse(jwt, user), httpHeaders, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/loginraw", method = RequestMethod.POST)
+    public ResponseEntity<LoginResponse> loginraw(@Valid  LoginDTO loginDto) {
     	
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -62,7 +77,6 @@ public class AuthenticationController {
             User user = userDAO.findByUsername(newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-        	System.out.println("What");
             userDAO.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole()); 
             return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
         }

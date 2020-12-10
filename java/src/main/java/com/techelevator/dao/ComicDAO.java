@@ -21,4 +21,6 @@ public interface ComicDAO {
 
 	String getThumbnail(long id);
 
+	boolean hasAuthor(int comicId, int authorId);
+
 }
