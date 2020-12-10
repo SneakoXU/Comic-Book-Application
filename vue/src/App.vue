@@ -7,6 +7,7 @@
       <router-link class="navItem" v-bind:to="{ name: 'login' }" >Login</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'register' }" >Register</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>&nbsp;|&nbsp;
+      <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>&nbsp;|&nbsp;
       <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
       </div>
     </div>

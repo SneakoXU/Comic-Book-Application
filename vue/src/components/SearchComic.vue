@@ -13,11 +13,15 @@
             </div>    
         </form>
     </div>
+    <div class="result-container" v-for="result in results" v-bind:key="result.id">
+        <p>{{result.title}}</p>
+        <img :src="result.thumbnail_url" alt="Comic Book Image Result">
+    </div>
   </div>  
 </template>
 
 <script>
-import ComicService from '../components/ComicService.js';
+import ComicService from '../services/ComicService.js';
 export default {
     name: 'search-comic',
     data(){
@@ -38,5 +42,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import CollectionService from '../services/ComicService.js'
+import CollectionService from '../services/ComicService.js';
 export default {
     name: 'add-comic',
     data(){
@@ -53,7 +53,7 @@ export default {
             CollectionService.addComicToCollection(this.$route.params.collectionId, this.$route.params.comicId)
                     .then(response => {
                         if(response.status ===201){
-                            
+
                 }
             })
         }
