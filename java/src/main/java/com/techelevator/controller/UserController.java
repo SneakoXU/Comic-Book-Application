@@ -8,12 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.techelevator.dao.UserDAO;
-import com.techelevator.model.Collection;
 import com.techelevator.model.FriendRequest;
 import com.techelevator.model.User;
 
@@ -72,6 +70,12 @@ public class UserController
 	public List<FriendRequest> getIncomingRequests(Principal principal) 
 	{
         return userDAO.getIncomingRequests(userDAO.findIdByUsername(principal.getName()));
+    }
+	
+	@RequestMapping(value="/friends/request/outgoing", method = RequestMethod.GET)
+	public List<FriendRequest> getOutgoingRequests(Principal principal) 
+	{
+        return userDAO.getOutGoingRequests(userDAO.findIdByUsername(principal.getName()));
     }
 	
 	@RequestMapping(value="/friends/request/cancel/{id}", method = RequestMethod.POST)
