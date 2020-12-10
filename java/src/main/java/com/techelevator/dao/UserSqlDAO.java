@@ -116,14 +116,14 @@ public class UserSqlDAO implements UserDAO {
 	public void changeRequestStatusSender(int senderId, int requestId, int status)
 	{
 		String sql = "update friendrequest set status_id = ? where request_id = ? and sender_id = ?";
-		jdbcTemplate.update(sql, status, requestId);
+		jdbcTemplate.update(sql, status, requestId, senderId);
 	}
 	
 	@Override
 	public void changeRequestStatusRecipient(int recipientId, int requestId, int status)
 	{
 		String sql = "update friendrequest set status_id = ? where request_id = ? and recipient_id = ?";
-		jdbcTemplate.update(sql, status, requestId);
+		jdbcTemplate.update(sql, status, requestId, recipientId);
 	}
 	
 	@Override
@@ -216,7 +216,7 @@ public class UserSqlDAO implements UserDAO {
     }
     
     private FriendRequest mapRowToFriendRequest(SqlRowSet rs) {
-    	return new FriendRequest(rs.getInt("request_id"), getUserById(rs.getInt("sender_id")), getUserById(rs.getInt("recpient_id")), rs.getInt("status_id"));
+    	return new FriendRequest(rs.getInt("request_id"), getUserById(rs.getInt("sender_id")), getUserById(rs.getInt("recipient_id")), rs.getInt("status_id"));
     	
     }
 }

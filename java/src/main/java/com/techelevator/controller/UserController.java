@@ -72,6 +72,12 @@ public class UserController
         return userDAO.getIncomingRequests(userDAO.findIdByUsername(principal.getName()));
     }
 	
+	@RequestMapping(value="/friends/request/outgoing", method = RequestMethod.GET)
+	public List<FriendRequest> getOutgoingRequests(Principal principal) 
+	{
+        return userDAO.getOutGoingRequests(userDAO.findIdByUsername(principal.getName()));
+    }
+	
 	@RequestMapping(value="/friends/request/cancel/{id}", method = RequestMethod.POST)
 	public void cancelRequest(@PathVariable int id, Principal principal) 
 	{

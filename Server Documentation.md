@@ -1,4 +1,4 @@
-# Java Server Documentation v1.1b
+# Java Server Documentation v1.0
 for yall doing the client <3
 
 ## Paths
@@ -120,6 +120,31 @@ for yall doing the client <3
 
      ***
 - ## Friends
+   - ### Friend request statuses:
+     - 0 - Pending 
+     - 1 - Accepted
+     - 2 - Denied
+     - 3 - Canceled
+     - Example: 
+     ``` 
+     {
+        "id": 1,
+        "sender": 
+        {
+          "id": 1,
+          "username": "Example1",
+          "authorities": [],
+          "friends": null
+        },
+        "recipient": 
+        {
+          "id": 2,
+          "username": "Example2",
+          "authorities": [],
+          "friends": null
+        },
+        "status": 0   <--------------- HERE
+     }
    -     /user/friends
      - Gets the friends of the logged in user
      - Private
@@ -144,3 +169,5 @@ for yall doing the client <3
 
 # Changelog
    - v1.1b Added friends/ request system
+   - v1.2b Fixed problem with listing incoming friend requests
+   - v1.0 Fixed problem with accepting, denying, and canceling friend requests
