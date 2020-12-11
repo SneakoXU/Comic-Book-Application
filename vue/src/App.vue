@@ -29,12 +29,13 @@
     font-family: "Runners", sans serif;
   }
   html{
-    background-image: url("../assets/Images/blue backgd.jpg");
+    background-image: url("../assets/Images/blue.jpg");
     background-size: cover;
+    background-size: 100%;
   }
   #nav{
     background-color: #ED1D24;
-    box-shadow: 5px 3px black;
+    box-shadow: 5px 5px black;
     transform: skew(-10deg);
     display: flex;
   }
@@ -43,6 +44,21 @@
     display: flex;
     width: 100%;
     justify-content: flex-end;
+    align-items: flex-end; 
+    padding-bottom: 5px;
+  }
+
+  .navItem{
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .navItem:hover{
+    /* color: #2A75B3; */
+    color: #0476F2;
   }
 
   /* .navItem{

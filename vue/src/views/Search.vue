@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="search-container">
       <search-comic></search-comic>
   </div>
 </template>
@@ -15,6 +15,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .app{
+       /* background-color: #2A75B3; */
+       background-color: #0476F2;
+       margin: 0px;
+    }
 </style>

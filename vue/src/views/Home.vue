@@ -31,5 +31,9 @@ export default {
    text-shadow: 2px 2px black;
    text-align: center;
  }
+
+ h1{
+   font-size: 70px;
+ }
  
 </style>

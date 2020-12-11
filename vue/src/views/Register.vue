@@ -94,7 +94,7 @@ export default {
 
 
   #register{
-    background-image: url("../../assets/Images/green.jpg");
+    background-image: url("../../assets/Images/green2.jpg");
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +104,7 @@ export default {
     transform: translate(-50%, -50%);
     background-size: 100%;
     background-repeat: no-repeat;
-    height: 450px;
+    height: 400px;
     width: 65%;
     /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%); */
   /* -moz-box-shadow:    20px 20px 50px 50px #000000;
