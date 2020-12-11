@@ -80,7 +80,7 @@ export default {
 <style scoped>
 
   #login{
-    background-image: url("../../assets/Images/green.jpg");
+    background-image: url("../../assets/Images/green2.jpg");
     display: flex;
     justify-content: center;
     align-items: center;

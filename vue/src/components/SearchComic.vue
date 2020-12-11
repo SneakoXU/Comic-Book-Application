@@ -4,7 +4,7 @@
         <h2 class="header">Search for a Comic Book</h2>
         <form v-on:submit.prevent="searchByName">
             <div class="form-input">
-            <label for="search-title">Search By Title: </label>
+            <!-- <label for="search-title">Search By Title: </label> -->
             <input type="text" id="search-title" class="search-input" v-model="searchTerm">
             </div>
             <div class="actions">
@@ -55,11 +55,23 @@ export default {
 }
 </script>
   
-<style>
+<style scoped>
+
+h2{
+    font-size: 36px;
+    color: white;
+    text-shadow: 2px 2px black;
+   text-align: center;
+}
   .result-image{
     height: 275px;
     width: 250px;
     display: flex;
+  }
+
+  .result-image:hover{
+    transform: skew(2deg);
+    cursor: pointer;
   }
 
 
@@ -91,6 +103,12 @@ export default {
 
   #title::after {
   content: "...";
+}
+
+.header, form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 </style>
