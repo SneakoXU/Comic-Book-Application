@@ -15,21 +15,25 @@
               
         </form>
     </div>
+ 
   <div class="container">
     <div>
     </div> 
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
         <div class="inception">
             <p id="title">{{result.title}}</p>
-        <img :src="result.thumbnail.path + '.jpg'" alt="Comic Book Image Result" class="result-image">
+            <!-- NEED TO FIX LOADING GIF -->
+              <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+        <img :src="result.thumbnail.path + '.jpg'" alt="Comic Book Image Result" v-if ="!isLoading" class="result-image">
         </div>
         
     </div>
   </div> 
-    <div class="next-page">
-        <button class="form-previous">Previous</button>
-        <button class="form-next" type='submit'>Next</button>
+    <div class="next-page" v-if="showNextButtons === true">
+        <button class="form-previous" v-on:click="previousPage">Previous</button>
+        <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
     </div> 
+
   </div> 
 </template>
 
@@ -39,22 +43,54 @@ export default {
     name: 'search-comic',
     data(){
         return{
+        isLoading: true,
            searchTerm: '',
-           page: '',
+           showNextButtons: false,
+           page: 1,
            results: {
                data: {
                    results: []
                }
 
            },
+         
 
         }
+    },
+
+    beforeCreate(){
+        
     },
     methods:{
         searchByName(){
             ComicService.searchComicsByName(this.searchTerm).then(response => {
                 this.results = response.data;
+                this.showNextButtons = true;
+                this.isLoading = false;
             })
+        },
+
+        nextPage(){
+            ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
+                this.results = response.data;
+                this.increment();
+            })
+        },
+        increment(){
+            this.page++;
+        },
+
+        
+        //NEED TO FIX - doesn't work properly (page decrements but returns new results)
+        previousPage(){
+             ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
+                this.results = response.data;
+                this.decrement();
+            })
+        },
+
+        decrement(){
+            this.page--;
         }
     }
 
@@ -76,7 +112,6 @@ h2{
   }
 
   .result-image:hover{
-    transform: skew(2deg);
     cursor: pointer;
   }
 

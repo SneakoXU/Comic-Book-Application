@@ -16,9 +16,8 @@ export default {
 </script>
 
 <style scoped>
-    .app{
-       /* background-color: #2A75B3; */
+/*     .search-container{
+       background-color: #2A75B3;
        background-color: #0476F2;
-       margin: 0px;
-    }
+    } */
 </style>

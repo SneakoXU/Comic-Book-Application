@@ -6,6 +6,10 @@ export default{
         return axios.get(`/comics/query/title/${name}`);
     },
 
+    nextComicsSearch(name, page){
+        return axios.get(`/comics/query/title/${name}/${page}`)
+    },
+
     searchComicById(id){
         return axios.get(`/comics/query/id/${id}`);
     },
