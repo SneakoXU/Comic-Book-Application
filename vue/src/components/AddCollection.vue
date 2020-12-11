@@ -51,14 +51,14 @@ export default {
     },
     methods:{
         addNewCollection() {
-            collection = {
+            const newCollection = {
                 collectionname: this.collection.collectionname, 
-                creator_id: this.$store.state.user.id,
+                creator_id: this.$store.state.user,
                 publicstatus: this.select.value,
                 datecreated: new Date()
             };
             
-            CollectionService.addCollection(collection).then(response => {
+            CollectionService.addCollection(newCollection).then(response => {
                 if(response.status === 201){
                     this.$router.push({
                         path:'/collections'                        
