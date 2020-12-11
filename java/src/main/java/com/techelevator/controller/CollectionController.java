@@ -136,7 +136,7 @@ public class CollectionController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public void addCollection(@RequestBody Collection collection, Principal principal) {
 		if(collection != null)
-			System.out.println("Attempting to create collection " + collection.getName() + " with values:\n userId: " + collection.getUserID());
+			System.out.println("Attempting to create collection " + collection.getName() + " with values:\nuserId: " + collection.getUserID() + "\nisPublic: " + collection.isPublic());
 		else 
 			System.out.println("Collection posted is null");
 		
