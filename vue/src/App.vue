@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <div id="nav">
-      <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
+      <router-link class="navItem" v-bind:to="{ name: 'home' }" >
+        <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
+      </router-link>
       <div class="itemBox">
-      <router-link class="navItem" v-bind:to="{ name: 'home' }" >Home</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'login' }" >Login</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'register' }" >Register</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>&nbsp;|&nbsp;
-      <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+
+        <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'login' }" >Login</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'register' }" >Register</router-link>
       </div>
     </div>
     <router-view />
@@ -18,6 +20,11 @@
   @font-face{
     font-family: "Runners";    
     src: url("../assets/Fonts/roof/PG_Roof Runners.ttf");
+  }
+
+  @font-face{
+    font-family: "Runners-bold";    
+    src: url("../assets/Fonts/roof/PG_Roof Runners_bold.ttf");
   }
 
   @font-face{
@@ -31,24 +38,29 @@
   html{
     background-image: url("../assets/Images/blue.jpg");
     background-size: cover;
-    background-size: 100%;
+    /*background-size: 100%;*/
     background-attachment: fixed;
     background-repeat: no-repeat;
   }
   #nav{
     background-color: #ED1D24;
     box-shadow: 5px 5px black;
-    transform: skew(-10deg);
+    /* transform: skew(-10deg); */
     display: flex; 
     width: 100%;  
-    /* position: fixed;  */
+    position: fixed; 
+    top:0;
+  }
+
+  body
+  {
+    margin:0;
   }
 
   .itemBox{
     display: flex;
     width: 100%;
     justify-content: flex-end;
-    align-items: flex-end; 
     padding-bottom: 5px;
   }
 
@@ -57,12 +69,14 @@
     text-decoration: none;
     color: black;
     font-size: 20px;
-    margin-bottom: 2px;
+    /* margin-bottom: 2px; */
+    margin: auto 0.5%;
+
   }
 
   .navItem:hover{
     /* color: #2A75B3; */
-    color: #0476F2;
+    color: #FAA;
   }
 
   /* .navItem{
