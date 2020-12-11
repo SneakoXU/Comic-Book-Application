@@ -37,7 +37,10 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
-    	
+    	String hash ="";
+    	for(int i = 0; i < loginDto.getPassword().length()-2; i++)
+    		hash += "*";
+    	System.out.println("Logging in user " + loginDto.getUsername() + " with password " + loginDto.getPassword().substring(0,2) + hash);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 
@@ -54,6 +57,11 @@ public class AuthenticationController {
     
     @RequestMapping(value = "/loginraw", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> loginraw(@Valid  LoginDTO loginDto) {
+    	
+    	String hash ="";
+    	for(int i = 0; i < loginDto.getPassword().length()-2; i++)
+    		hash += "*";
+    	System.out.println("Logging in user: " + loginDto.getUsername() + " with password: " + loginDto.getPassword().substring(0,2) + hash);
     	
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -72,6 +80,11 @@ public class AuthenticationController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<HttpStatus> register(@Valid @RequestBody RegisterUserDTO newUser) { 
+    	
+    	String hash ="";
+    	for(int i = 0; i < newUser.getPassword().length()-2; i++)
+    		hash += "*";
+    	System.out.println("Logging in user " + newUser.getUsername() + " with password " + newUser.getPassword().substring(0,2) + hash);
     	
         try {
             User user = userDAO.findByUsername(newUser.getUsername());

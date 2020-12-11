@@ -6,9 +6,11 @@ for yall doing the client <3
 ***
 - ## Comics 
     -     /comics/query/title/{name}
-         - Makes request to Marvel API to get the first 100 comics that begin with {name}
+         - Makes request to Marvel API to get the first 30 comics that begin with {name}
          - Public
-  
+    -     /comics/query/title/{name}/{page}
+         - add a {page} parameter to change which 30 results you get
+         - Public
     -     /comics/query/id/{id}
          - Makes request to Marvel API to get a comic with the matching {id}.
          - Public

@@ -23,6 +23,7 @@ import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Collection;
 import com.techelevator.model.CollectionStatistics;
 import com.techelevator.model.Comment;
+import com.techelevator.model.marvel.fields.Field;
 
 @RestController
 @RequestMapping("/collections")
@@ -41,7 +42,7 @@ public class CollectionController {
 	@RequestMapping(value="/public", method = RequestMethod.GET)
     public List<Collection> getPublicCollections(Principal principal) {
         List<Collection> collections = collectionDAO.getCollections(true);
-        System.out.println(principal.getName());
+        //System.out.println(principal.getName());
         return collections;
     }
 	
@@ -65,7 +66,11 @@ public class CollectionController {
 			throw new ResponseStatusException(
 	      	          HttpStatus.CONFLICT, "You cannot add duplicate comics to a collection");
 		if(verifyUser(principal, collectionId))
-			collectionDAO.addComic(MarvelAPIController.Comic.getComic(comicId).getData().getResults()[0], collectionId);
+		{
+			Field comic = MarvelAPIController.Comic.getComic(comicId).getData().getResults()[0];
+			System.out.println("Adding comic " + comic.getTitle() + " to Collection " + collectionDAO.getCollectionByID(collectionId, false).getName());
+			collectionDAO.addComic(comic, collectionId);
+		}
 		else 
 			throw new ResponseStatusException(
 	      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
@@ -81,7 +86,10 @@ public class CollectionController {
 	@RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)
 	public void deleteComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
 		if(verifyUser(principal, collectionId))
+		{
+			System.out.println("Deleting comic by id " + comicId + " from Collections by id " + collectionId);
 			collectionDAO.deleteComic(collectionId, comicId);
+		}
 		else 
 			throw new ResponseStatusException(
 		      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
@@ -92,7 +100,9 @@ public class CollectionController {
 	@RequestMapping(value = "/thumbnail/{collectionId}", method = RequestMethod.GET)
 	public String getThumbnail(@PathVariable int collectionId, Principal principal) {
 		//if(verifyUser(principal, collectionId))
-			return collectionDAO.getThumbnail(collectionId);
+		String thumbnail = collectionDAO.getThumbnail(collectionId);
+		System.out.println("Getting thumbnail URL from collection by id " + collectionId + ". Returning thumbnail " + thumbnail);
+		return thumbnail;
 		//else 
 			//throw new ResponseStatusException(
 		      	          //HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
@@ -102,7 +112,10 @@ public class CollectionController {
 	@RequestMapping(value = "/delete/{collectionId}", method = RequestMethod.POST)
 	public void removeCollection(@PathVariable int collectionId, Principal principal) {
 		if(verifyUser(principal, collectionId))
+		{
+			System.out.println("Deleting collection by id " + collectionId);
 			collectionDAO.removeCollection(collectionId);
+		}
 		else 
 			throw new ResponseStatusException(
 	      	          HttpStatus.UNAUTHORIZED, "You cannot delete others' collections");
@@ -116,7 +129,10 @@ public class CollectionController {
 			throw new ResponseStatusException(
       	          HttpStatus.BAD_REQUEST, "Empty Request");
 		else
+		{
+			System.out.println("Creating collection " + collection.getName() + " as user " + principal.getName());
 			collectionDAO.addCollection(collection.setDateCreated(Date.valueOf( LocalDate.now())).setUserID(userDAO.findIdByUsername(principal.getName())));
+		}
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
