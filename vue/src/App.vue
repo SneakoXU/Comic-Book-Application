@@ -32,12 +32,16 @@
     background-image: url("../assets/Images/blue.jpg");
     background-size: cover;
     background-size: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
   }
   #nav{
     background-color: #ED1D24;
     box-shadow: 5px 5px black;
     transform: skew(-10deg);
-    display: flex;
+    display: flex; 
+    width: 100%;  
+    /* position: fixed;  */
   }
 
   .itemBox{

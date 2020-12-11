@@ -3,6 +3,7 @@
     <div class="form-container">
         <h2 class="header">Search for a Comic Book</h2>
         <form v-on:submit.prevent="searchByName">
+            <div class="search-form">
             <div class="form-input">
             <!-- <label for="search-title">Search By Title: </label> -->
             <input type="text" id="search-title" class="search-input" v-model="searchTerm">
@@ -11,7 +12,7 @@
             <button class="form-search" type='submit'>Search</button>
             <button class="form-cancel">Cancel</button>
             </div> 
-          
+          </div>
               
         </form>
     </div>
@@ -20,11 +21,11 @@
     <div>
     </div> 
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
-        <div class="inception">
+        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+        <div class="inception"  v-if ="!isLoading">
             <p id="title">{{result.title}}</p>
-            <!-- NEED TO FIX LOADING GIF -->
-              <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-        <img :src="result.thumbnail.path + '.jpg'" alt="Comic Book Image Result" v-if ="!isLoading" class="result-image">
+            <!-- NEED TO FIX LOADING GIF -->              
+        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" class="result-image">
         </div>
         
     </div>
@@ -32,6 +33,7 @@
     <div class="next-page" v-if="showNextButtons === true">
         <button class="form-previous" v-on:click="previousPage">Previous</button>
         <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
+        <p class="page-number">Displaying Page {{page+1}} of {{Math.ceil(this.results.data.total/30)}}</p>
     </div> 
 
   </div> 
@@ -39,6 +41,7 @@
 
 <script>
 import ComicService from '../services/ComicService.js';
+
 export default {
     name: 'search-comic',
     data(){
@@ -46,7 +49,7 @@ export default {
         isLoading: true,
            searchTerm: '',
            showNextButtons: false,
-           page: 1,
+           page: 0,
            results: {
                data: {
                    results: []
@@ -61,9 +64,13 @@ export default {
     beforeCreate(){
         
     },
+    created(){
+
+    },
+
     methods:{
         searchByName(){
-            ComicService.searchComicsByName(this.searchTerm).then(response => {
+            ComicService.nextComicSearch(this.searchTerm, 0).then(response => {
                 this.results = response.data;
                 this.showNextButtons = true;
                 this.isLoading = false;
@@ -71,9 +78,9 @@ export default {
         },
 
         nextPage(){
+            this.increment();
             ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
-                this.results = response.data;
-                this.increment();
+                this.results = response.data;                
             })
         },
         increment(){
@@ -83,14 +90,18 @@ export default {
         
         //NEED TO FIX - doesn't work properly (page decrements but returns new results)
         previousPage(){
+            this.decrement();
              ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
-                this.results = response.data;
-                this.decrement();
+                this.results = response.data;                
             })
         },
 
         decrement(){
-            this.page--;
+            if(this.page > 0)
+            {
+                this.page--;
+            }
+            
         }
     }
 
@@ -151,5 +162,13 @@ h2{
     display: flex;
     justify-content: center;
 }
+
+.next-page {
+    display: flex;
+    align-content: center;
+    
+    
+}
+
 
 </style>
