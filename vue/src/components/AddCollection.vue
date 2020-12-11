@@ -12,13 +12,15 @@
           <form v-on:submit.prevent="addNewCollection" >
                <div class="form-input">
                     <label for='name'>Collection Name: </label>
-                    <input id='name' type='text' v-model="collection.collectionname" class="form-control"/>
+                    <input id='name' type='text' v-model="collection.name" class="form-control"/>
                 </div>
                 <label class="form-input">Visibility: </label>
-                <select name='public-status' id='public-status' class="select" v-model="collection.publicStatus" >                    
-                    <option value="true" selected>Public</option>
-                    <option value="false">Private</option>
-                </select>
+                <!-- <select name='public-status' id='public-status' class="select" v-model="collection.isPublic" >                    
+                    <option value=true selected>Public</option>
+                    <option value=false>Private</option>
+                </select> -->
+                <input type="checkbox" class="public-status" checked="checked" 
+                v-model="collection.public" v-on:checked="collection.public = !collection.public">
                 <div class="actions">
                     <button class="form-submit" type='submit'>Create</button>
                     <button class="form-cancel" v-on:click="showForm = false">Cancel</button>
@@ -37,46 +39,49 @@ export default {
     data(){
         return{            
             collection:{
-                 collectionname: '', 
-                 creator_id: '',
-                 publicStatus: '',
-                 datecreated: ''
+                 name: '', 
+                 userId: '',
+                 public: true,
+                 dateCreated: ''
             },
             showForm: false,
             formAddedSuccess: false,
-            forAddedFailure: false,
-            errorMsg: '',
+            formAddedFailure: false,
+            errorMsg: ''
            
         }
     },
     methods:{
         addNewCollection() {
-            collection = {
-                collectionname: this.collection.collectionname, 
-                creator_id: this.$store.state.user,
-                publicstatus: this.select.value,
-                datecreated: new Date()
+            this.collection = {
+                name: this.collection.name, 
+                userId: this.$store.state.user,
+                public: this.collection.public              
             };
             
-            CollectionService.addCollection(collection).then(response => {
+            CollectionService.addCollection(this.collection).then(response => {
                 if(response.status === 201){
                     this.$router.push({
                         path:'/collections'                        
                     });
                     this.formAddedSuccess = true
+                    this.collection.name = "";
                 }
             })
             .catch((error) =>{
                 const response =  error.response;
                 if(response.status === 500) {
-                    this.errorMsg = "Error, URL not found"
+                    this.errorMsg = "Error, Hulk smashed the server"
                 }
-                if(response.status === 404) {
-                    this.errorMsg = "Error, URL not found"
+                else if(response.status === 404) {
+                    this.errorMsg = "Error, Wolverine sliced up this URL"
+                }
+                else{
+                    this.errorMsg = "Error, X-Men not found. They're only functions."
                 }
                 this.formAddedFailure = true;
-            })
-            
+
+            })            
         },
    
     }
@@ -85,5 +90,13 @@ export default {
 </script>
 
 <style>
-
+    .container{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 70px;
+    }
+    #show-form-button{
+        margin-top: 20px;
+    }
 </style>

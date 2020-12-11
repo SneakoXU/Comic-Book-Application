@@ -54,10 +54,7 @@ export default {
                data: {
                    results: []
                }
-
            },
-         
-
         }
     },
 
