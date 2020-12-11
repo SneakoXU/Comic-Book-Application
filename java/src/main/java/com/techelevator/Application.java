@@ -15,6 +15,7 @@ public class Application {
     	//System.exit(0);
     	
         SpringApplication.run(Application.class, args);
+        System.out.println("Server version ");
     }
 
 }
