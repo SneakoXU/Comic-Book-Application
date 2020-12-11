@@ -23,7 +23,7 @@ export default{
     },
 
     addCollection(collection){
-        return axios.post('/collections/create', collection)
+        return axios.post('/collections/createraw', collection)
     },
 
     getCollectionThumbnail(id) {
