@@ -47,6 +47,12 @@ export default {
   #face {
     transition: .5s ease;
     opacity: 1;
+    box-shadow: 7px 7px 5px rgba(0,0,0,.5);
+    border-color: #000;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 3px;
+    
   }
 
   .view {

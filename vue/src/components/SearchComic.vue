@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="main">
+      <div id="backgd"></div>
     <div class="form-container">
         <h2 class="header">Search for a Comic Book</h2>
         <form v-on:submit.prevent="searchByName">
@@ -18,22 +19,21 @@
     </div>
  
   <div class="container">
-    <div>
-    </div> 
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
         <div class="inception"  v-if ="!isLoading">
             <p id="title">{{result.title}}</p>
             <!-- NEED TO FIX LOADING GIF -->              
-        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" class="result-image">
         </div>
+        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
         
     </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
         <button class="form-previous" v-on:click="previousPage">Previous</button>
-        <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
+        
         <p class="page-number">Displaying Page {{page+1}} of {{Math.ceil(this.results.data.total/30)}}</p>
+        <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
     </div> 
 
   </div> 
@@ -117,58 +117,110 @@ h2{
     text-shadow: 2px 2px black;
    text-align: center;
 }
+
+#backgd
+{
+    position: fixed;
+    top:0;
+    height:100vh;
+    width:100vw;
+    background: #EEE;
+    /* background-color: #114b5f; */
+    
+    z-index: -100;
+}
+
   .result-image{
     height: 275px;
     width: 250px;
     display: flex;
+    box-shadow: 7px 7px 5px rgba(0,0,0,.5);
+    border-color: #000;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 3px;
   }
+
+
+.form-container
+{
+    position: fixed;
+    top:0;
+    max-width: 15vw;
+    padding:1%;
+    height:100%;
+    z-index: -1;
+}
 
   .result-image:hover{
     cursor: pointer;
   }
 
-
+    .inception
+    {
+        width: 100%;
+    }
 
   .result-container{
-  
+      width:200px;
       display: flex;
       flex-wrap: wrap;
       max-height: 40vh;
       margin: 20px 30px 20px 30px;
+      justify-content: center;
       
 
   } 
 
   .container{
+      margin-top:5%;
+      max-width: 85vw;
+      float:right;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-evenly;
   } 
 
   #title{
-      max-width: 250px;
-      white-space: nowrap;
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    font-family: "Runners-bold";
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: black;
+    text-shadow: 1px 1px gray;
+    text-align: center;
+    display: block;
+    font-size: 120%;
       
   }
 
-  #title::after {
-  content: "...";
+.header{
+    color:black;
+    text-shadow: 2px 2px gray;
+    padding-top: 50%;
 }
 
 .header, form{
+    
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .next-page {
+    
+    background-color: #ED1D24;
+    width: 100vw;
     display: flex;
-    align-content: center;
-    
-    
+    justify-content: center;
+    position: fixed;
+    bottom:0;
+}
+
+.form-previous, .form-next, .page-number
+{
+    font-family: "Runners-bold";
 }
 
 
