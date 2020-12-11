@@ -26,7 +26,9 @@ import com.techelevator.model.CollectionStatistics;
 import com.techelevator.model.Comment;
 import com.techelevator.model.marvel.fields.Field;
 
+
 @RestController
+@CrossOrigin
 @RequestMapping("/collections")
 @PreAuthorize("isAuthenticated()")
 public class CollectionController {
@@ -39,7 +41,7 @@ public class CollectionController {
 		this.userDAO = userDAO;
 	}
 	
-	@CrossOrigin
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/public", method = RequestMethod.GET)
     public List<Collection> getPublicCollections(Principal principal) {
@@ -48,7 +50,7 @@ public class CollectionController {
         return collections;
     }
 	
-	@CrossOrigin
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{collectionId}", method = RequestMethod.POST)
     public Collection getPublicCollectionById(@PathVariable int collectionId, Principal principal){
@@ -62,7 +64,7 @@ public class CollectionController {
   	          HttpStatus.UNAUTHORIZED, "This collection is private");
     }
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/{collectionId}/add/{comicId}", method = RequestMethod.POST)
     public void addComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
@@ -80,14 +82,14 @@ public class CollectionController {
 	      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
     }
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/{collectionId}/comment", method = RequestMethod.POST)
     public void addComic(@RequestBody Comment comment, @PathVariable int comicId, Principal principal) {
 		collectionDAO.addComment(comment);
     }
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)
 	public void deleteComic(@PathVariable int comicId, @PathVariable int collectionId, Principal principal) {
@@ -101,7 +103,7 @@ public class CollectionController {
 		      	          HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
 	}
 		
-	@CrossOrigin
+	
 	@PreAuthorize("permitAll()")
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/thumbnail/{collectionId}", method = RequestMethod.GET)
@@ -115,7 +117,7 @@ public class CollectionController {
 		      	          //HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
 	}
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/delete/{collectionId}", method = RequestMethod.POST)
 	public void removeCollection(@PathVariable int collectionId, Principal principal) {
@@ -129,11 +131,15 @@ public class CollectionController {
 	      	          HttpStatus.UNAUTHORIZED, "You cannot delete others' collections");
 	}
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public void addCollection(@RequestBody Collection collection, Principal principal) {
-
+		if(collection != null)
+			System.out.println("Attempting to create collection " + collection.getName() + " with values:\n userId: " + collection.getUserID());
+		else 
+			System.out.println("Collection posted is null");
+		
 		if(collection == null || collection.getName() == null)
 			throw new ResponseStatusException(
       	          HttpStatus.BAD_REQUEST, "Empty Request");
@@ -144,11 +150,11 @@ public class CollectionController {
 		}
 	}
 	
-	@CrossOrigin
+	
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(value = "/createraw", method = RequestMethod.POST)
 	public void addCollectionRaw(Collection collection, Principal principal) {
-
+		
 		if(collection == null || collection.getName() == null)
 			throw new ResponseStatusException(
       	          HttpStatus.BAD_REQUEST, "Empty Request");
@@ -156,7 +162,7 @@ public class CollectionController {
 			collectionDAO.addCollection(collection.setDateCreated(Date.valueOf( LocalDate.now())).setUserID(userDAO.findIdByUsername(principal.getName())));
 	}
 	
-	@CrossOrigin
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "/stat/{collectionId}", method = RequestMethod.GET)
 	public CollectionStatistics addCollection(@PathVariable int collectionId, Principal principal) {
