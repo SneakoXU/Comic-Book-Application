@@ -38,6 +38,14 @@ public class ComicController
         return MarvelAPIController.Comic.getComicsByName(name);
     }
 	
+	@CrossOrigin
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/query/title/{name}/{pageNumber}", method = RequestMethod.GET)
+    public DataWrapper getTransfer(@PathVariable String name, @PathVariable int pageNumber, Principal principal) 
+	{
+        return MarvelAPIController.Comic.getComicsByName(name, pageNumber);
+    }
+	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/query/id/{id}", method = RequestMethod.GET)
     public DataWrapper getTransfer(@PathVariable int id, Principal principal) 

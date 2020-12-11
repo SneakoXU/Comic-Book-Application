@@ -36,7 +36,7 @@ public class MarvelAPIController
 	        	sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
 	        }
 	        System.out.println(API_BASE_URL+uri+"limit=96&ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString());
-	        return API_BASE_URL+uri+"limit=96&ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString();
+	        return API_BASE_URL+uri+"ts="+time+"&apikey="+API_PUBLIC_HASH+"&hash="+sb.toString();
 	    } 
 		catch (NoSuchAlgorithmException e) 
 		{}
@@ -116,7 +116,12 @@ public class MarvelAPIController
 		
 		public static DataWrapper getComicsByName(String name) 
 		{
-			return getDataWrapper("public/comics?titleStartsWith="+name);
+			return getDataWrapper("public/comics?titleStartsWith="+name + "&limit=96");
+		}
+		
+		public static DataWrapper getComicsByName(String name, int pageNumber) 
+		{
+			return getDataWrapper("public/comics?titleStartsWith="+name + "&limit=96&offset="+(pageNumber*96));
 		}
 		
 		public static DataWrapper getComicsByCharacter(int id) 
