@@ -70,6 +70,7 @@ export default {
 
     methods:{
         searchByName(){
+            this.page = 0;
             ComicService.nextComicsSearch(this.searchTerm, 0).then(response => {
                 this.results = response.data;
                 this.showNextButtons = true;
