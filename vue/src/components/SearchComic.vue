@@ -11,6 +11,7 @@
             <button class="form-search" type='submit'>Search</button>
             <button class="form-cancel">Cancel</button>
             </div> 
+          
               
         </form>
     </div>
@@ -25,6 +26,10 @@
         
     </div>
   </div> 
+    <div class="next-page">
+        <button class="form-previous">Previous</button>
+        <button class="form-next" type='submit'>Next</button>
+    </div> 
   </div> 
 </template>
 
@@ -35,6 +40,7 @@ export default {
     data(){
         return{
            searchTerm: '',
+           page: '',
            results: {
                data: {
                    results: []
