@@ -19,10 +19,11 @@ export default {
     data() {
         return {
             comic:{
+                
                 title: '',
                 author: '',
                 description: '',
-                image: ''
+                image: '' 
 
             }
         }

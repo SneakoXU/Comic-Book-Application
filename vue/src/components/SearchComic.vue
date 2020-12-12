@@ -17,7 +17,6 @@
               
         </form>
     </div>
- 
   <div class="search-container">
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
@@ -25,8 +24,9 @@
             <p id="title">{{result.title}}</p>
             <!-- NEED TO FIX LOADING GIF -->              
         </div>
+        <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true">
         <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
-        
+        </router-link>
     </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
@@ -41,6 +41,7 @@
 
 <script>
 import ComicService from '../services/ComicService.js';
+import ComicDetail from '../components/SearchComic.vue';
 
 export default {
     name: 'search-comic',
