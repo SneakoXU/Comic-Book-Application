@@ -10,6 +10,10 @@ export default{
         return axios.get('/collections/public');
     },
 
+    getLimitedCollections(limit){
+        return axios.get(`/collections/public/${limit}`);
+    },
+
     getCollectionsById(id){
         return axios.get(`/collections/${id}`);
     },
@@ -29,6 +33,9 @@ export default{
 
     getCollectionThumbnail(id) {
         return axios.get(`/collections/thumbnail/${id}`);
+    },
+    getUserById(id) {
+        return axios.get(`//${id}`);
     },
 
     viewCollection(id){

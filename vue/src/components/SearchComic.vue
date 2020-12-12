@@ -11,14 +11,14 @@
             </div>
             <div class="actions">
             <button class="form-search" type='submit'>Search</button>
-            <button class="form-cancel">Cancel</button>
+            <button class="form-add">Add</button>
             </div> 
           </div>
               
         </form>
     </div>
  
-  <div class="container">
+  <div class="search-container">
     <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
         <div class="inception"  v-if ="!isLoading">
@@ -47,14 +47,14 @@ export default {
     data(){
         return{
         isLoading: true,
-           searchTerm: '',
-           showNextButtons: false,
-           page: 0,
-           results: {
-               data: {
-                   results: []
-               }
-           },
+        searchTerm: '',
+        showNextButtons: false,
+        page: 0,
+        results: {
+            data: {
+                results: []
+            }
+        },
         }
     },
 
@@ -99,10 +99,8 @@ export default {
             {
                 this.page--;
             }
-            
         }
     }
-
 }
 </script>
   
@@ -146,6 +144,7 @@ h2{
     max-width: 15vw;
     padding:1%;
     height:100%;
+    margin-left:1%;
     z-index: -1;
 }
 
@@ -169,9 +168,9 @@ h2{
 
   } 
 
-  .container{
+  .search-container{
       margin-top:5%;
-      max-width: 85vw;
+      max-width: 80vw;
       float:right;
       display: flex;
       flex-wrap: wrap;

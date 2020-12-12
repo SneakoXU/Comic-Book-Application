@@ -1,5 +1,5 @@
 <template>
-  <div id="login" class="text-center">
+  <div  class="popup">
 <form class="form-signin" @submit.prevent="login">
       <h1 class="h1 mb-3 font-weight-normal">Please Sign In</h1>
       <div

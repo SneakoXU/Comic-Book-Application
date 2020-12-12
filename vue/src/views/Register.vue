@@ -1,7 +1,7 @@
 <template>
-  <div id="register" class="text-center">
+  <div  class="popup">
     <form class="form-register" @submit.prevent="register">
-      <h1 class="h1 mb-3 font-weight-normal">Create Account</h1>
+      <h1 >Create Account</h1>
       <div class="alert alert-danger" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
@@ -93,27 +93,6 @@ export default {
 <style scoped>
 
 
-  #register{
-    background-image: url("../../assets/Images/green2.jpg");
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    height: 400px;
-    width: 65%;
-    /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%); */
-  /* -moz-box-shadow:    20px 20px 50px 50px #000000;
-  -webkit-box-shadow: 20px 20px 50px 50px #000000;
-  box-shadow:         20px 20px 20px 30px #000000; */
-  border-radius: 30px;
-  box-shadow: 6px 12px black;
-    margin-top: 10px;
-  } 
     .form-register{
     display: flex;
     align-items: center;
@@ -144,7 +123,7 @@ export default {
      font-size: 24px;
   }
 
-  #username:hover, #password:hover, #confirmPassword:hover{
+  #username:focus, #password:focus, #confirmPassword:focus{
     width: 270px; 
     box-shadow: 2px 5px;
     
@@ -156,8 +135,9 @@ export default {
   }
 
   h1{
-    font-family: "SBoom";
+    /* font-family: "SBoom"; */
     font-size: 40px;
+    margin-top:-4%;
   }
 
  

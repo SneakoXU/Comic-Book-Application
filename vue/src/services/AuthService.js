@@ -8,6 +8,11 @@ export default {
 
   register(user) {
     return axios.post('/register', user)
+  },
+
+  getUserById(id)
+  {
+    return axios.get(`/user/${id}`)
   }
 
 }

@@ -1,16 +1,20 @@
 <template>
   <div id="app">
+    
     <div id="nav">
       <router-link class="navItem" v-bind:to="{ name: 'home' }" >
         <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
       </router-link>
       <div class="itemBox">
 
-        <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Friends</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''">Login</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="$store.state.token == ''">Register</router-link>
+        <router-link class="navItem" id="usr" v-bind:to="{ name: 'register' }" v-if="$store.state.token != ''">{{$store.state.user.username}}</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'login' }" >Login</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'register' }" >Register</router-link>
+
       </div>
     </div>
     <router-view />
@@ -91,6 +95,83 @@
     height: 70px;
     width: 100px;
   }
+
+  input, select
+    {
+        font-size: 20px;
+        padding: 5px;
+        box-sizing:border-box;
+        box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+        border-color: #000;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 3px;
+        font-family: Runners-bold;
+        outline:none;
+    }
+
+    button
+    {
+        padding:10px;
+        font-size: 110%;
+        font-family: Runners-bold;
+        box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+        border-color: #000;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 3px;
+        outline:0;
+    }
+
+    .form-submit, .form-add
+    {
+        background-color: #0C2;
+    }
+    .form-submit:hover, .form-add:hover
+    {
+      color:#CFC;
+    }
+
+    .form-create
+    {
+        background-color: #1a65c9;
+    }
+    .form-create:hover
+    {
+      color:#c4d9f5;
+    }
+
+    .form-cancel
+    {
+        background-color: #ED1D24;
+    }
+
+    .form-cancel:hover
+    {
+      color:#FCC;
+    }
+
+    .popup
+    {
+        left:25%;
+        top:20%;
+        background-color: #FFF;
+        position: fixed;
+        width:40%;
+        height:30%;
+        display: flex;
+        flex-direction: column;
+        padding:2% 5%;
+        border-width: 2px;
+        box-shadow: 7px 7px 5px rgba(0,0,0,.5);
+        border-color: #000;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 3px;
+        
+    }
+
+    
 </style>
 
 

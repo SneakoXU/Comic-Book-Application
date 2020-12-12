@@ -160,5 +160,43 @@ CREATE TABLE user_friend
         constraint fk_user_friend_friend foreign key(user_id) references users(user_id)
 );
 
+CREATE TABLE requeststatus
+(
+        status_id int,
+        status varchar(8),
+	
+		constraint pk_requeststatus primary key(status_id)
+);
+
+INSERT INTO requeststatus (status_id, status) VALUES (0, 'PENDING');
+INSERT INTO requeststatus (status_id, status) VALUES (1, 'ACCEPTED');
+INSERT INTO requeststatus (status_id, status) VALUES (2, 'DENIED');
+INSERT INTO requeststatus (status_id, status) VALUES (3, 'CANCELED');
+
+CREATE TABLE friendrequest
+(
+        request_id serial,
+        recipient_id int,
+        sender_id int,
+        status_id int,
+    	    
+        constraint pk_friendrequest primary key(request_id),
+		constraint fk_friendrequest_recipient foreign key(recipient_id) references users(user_id),
+		constraint fk_friendrequest_sender foreign key(sender_id) references users(user_id),
+		constraint fk_friendrequest_status foreign key(status_id references requeststatus(status_id)
+);
+	
+CREATE TABLE comment
+(
+        comment_id serial,
+        commenter_id int,
+		collection_id int,
+        likes int,
+        text varchar(140) ,
+    	    
+        constraint pk_comment primary key(comment_id),
+		constraint fk_comment_commenter foreign key(commenter_id) references users(user_id),
+		constraint fk_comment_collection foreign key(collection_id) references collections(collection_id)
+);
 
 COMMIT;

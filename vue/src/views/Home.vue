@@ -2,20 +2,34 @@
   <div class="home"> 
     <h1>Welcome to BT Comics</h1>  
     <div class="container">
-      <collection-card></collection-card>
+      <collection-card v-for="collection in collections" v-bind:key="collection.name" :collection="collection"></collection-card>
     </div>
   </div>
 </template>
 
 <script>
 import CollectionCard from "../components/CollectionCard.vue";
+import CollectionService from '../services/CollectionService.js';
 
 export default {
   name: "home",
   components: {
     CollectionCard
-  }
-};
+  },
+  data()
+  {
+    return {
+      collections:[]
+    }
+  },
+  created()
+  {
+    CollectionService.getLimitedCollections(4).then(response => 
+    {
+      this.collections = response.data;
+    });
+  } 
+}
 </script>
 
 <style>
@@ -33,6 +47,7 @@ export default {
  }
 
  h1{
+   margin-top:10%;
    font-size: 70px;
  }
  

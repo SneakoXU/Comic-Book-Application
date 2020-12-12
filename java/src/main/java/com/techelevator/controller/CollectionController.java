@@ -50,6 +50,15 @@ public class CollectionController {
         return collections;
     }
 	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/public/{limit}", method = RequestMethod.GET)
+    public List<Collection> getPublicCollectionsLimited(@PathVariable int limit, Principal principal) {
+        List<Collection> collections = collectionDAO.getCollections(true);
+        if(collections.size() > limit)
+        	collections = collections.subList(0,4);
+        return collections;
+    }
+	
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{collectionId}", method = RequestMethod.POST)

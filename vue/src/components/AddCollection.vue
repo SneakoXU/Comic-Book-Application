@@ -1,32 +1,34 @@
 <template>
   <div class="container">
-       <a
+       <button
             id="show-form-button"
+            class="form-create"
             href="#"
             v-on:click.prevent="showForm = true"
-            v-if="showForm === false"
-            >Create a Collection</a>
+            >Add Collection</button>
      
       <div class="form-container" v-if="showForm === true">
-           <h2 class="header">CREATE A COLLECTION</h2>
-          <form v-on:submit.prevent="addNewCollection" >
-               <div class="form-input">
-                    <label for='name'>Collection Name: </label>
+           
+          <form v-on:submit.prevent="addNewCollection" class="popup">
+              <h2 class="header">{{responseMessage}}</h2>
+               <div v-show="!formAddedSuccess" class="form-input">
+                    <label for='name'>Collection Name: </label><br>
                     <input id='name' type='text' v-model="collection.name" class="form-control"/>
+                </div><br>
+                <div v-show="!formAddedSuccess">
+                    <label class="form-input collection-name-input">Collection is: </label><br>
+                    <select name='public-status' id='public-status' class="select" v-model="collection.public" >      
+                        <option value=true selected>Public</option>
+                        <option value=false>Private</option>
+                    </select>
                 </div>
-                <label class="form-input">Visibility: </label>
-                <!-- <select name='public-status' id='public-status' class="select" v-model="collection.isPublic" >                    
-                    <option value=true selected>Public</option>
-                    <option value=false>Private</option>
-                </select> -->
-                <input type="checkbox" class="public-status" checked="checked" 
-                v-model="collection.public" v-on:checked="collection.public = !collection.public">
+                <!-- <input type="checkbox" class="public-status" checked="checked" 
+                v-model="collection.public" v-on:checked="collection.public = !collection.public"><br> -->
                 <div class="actions">
-                    <button class="form-submit" type='submit'>Create</button>
-                    <button class="form-cancel" v-on:click="showForm = false">Cancel</button>
+                    <button v-show="!formAddedSuccess" class="form-submit" type='submit'>Create</button>
+                    <button class="form-cancel" v-on:click=closeCreateCollection()>Close</button>
                 </div> 
-            <div class="status-message success" v-show="formAddedSuccess">Collection Created</div>
-            <div class="status-message error" v-show="formAddedFailure">{{errorMsg}}</div>
+
           </form>
       </div>
   </div>
@@ -47,11 +49,22 @@ export default {
             showForm: false,
             formAddedSuccess: false,
             formAddedFailure: false,
-            errorMsg: ''
+            responseMessage: ''
            
         }
     },
+    created()
+    {
+        this.responseMessage = "Create a Collection";
+    },
     methods:{
+        closeCreateCollection()
+        {
+            this.showForm = false;
+            this.formAddedSuccess = false;
+            this.formAddedFailure = false;
+            this.responseMessage = "Create a Collection";
+        },
         addNewCollection() {
             this.collection = {
                 name: this.collection.name, 
@@ -66,22 +79,25 @@ export default {
                     });
                     this.formAddedSuccess = true
                     this.collection.name = "";
+                    this.responseMessage = "Collection added!"
                 }
             })
             .catch((error) =>{
                 const response =  error.response;
                 if(response.status === 500) {
-                    this.errorMsg = "Error, Hulk smashed the server"
+                    this.responseMessage = "Error, Hulk smashed the server"
                 }
                 else if(response.status === 404) {
-                    this.errorMsg = "Error, Wolverine sliced up this URL"
+                    this.responseMessage = "Error, Wolverine sliced up this URL"
                 }
                 else{
-                    this.errorMsg = "Error, X-Men not found. They're only functions."
+                    this.responseMessage = "Error, X-Men not found. They're only functions."
                 }
                 this.formAddedFailure = true;
 
-            })            
+            })   
+            
+            
         },
    
     }
@@ -99,4 +115,39 @@ export default {
     #show-form-button{
         margin-top: 20px;
     }
+
+    
+
+    
+
+    collection-name-input
+    {
+        width: 50%;
+    }
+
+    .actions
+    {
+        margin-top:10%;
+        width:100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .actions button
+    {
+        padding:10px;
+        font-size: 110%;
+        font-family: Runners-bold;
+        box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+        border-color: #000;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 3px;
+        outline:0;
+    }
+
+    
+
+
+
 </style>

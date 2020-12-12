@@ -44,7 +44,6 @@ public class Collection {
 	}
 	
 	public boolean isPublic() {
-		System.out.println(isPublic);
 		return isPublic;
 	}
 
