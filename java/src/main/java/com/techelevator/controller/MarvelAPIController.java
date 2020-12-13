@@ -3,6 +3,12 @@ package com.techelevator.controller;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
@@ -18,6 +24,24 @@ public class MarvelAPIController
 	private static final String API_PUBLIC_HASH = "7e740b39912d2877c3f183a21d4d53b1";
 	private static final String API_PRIVATE_HASH = "03aba47b1aa53fece1a0c748f1af03004ed6622a";
 
+	public static SortedMap<String, String> ILLEGAL_CHARACTERS = new TreeMap<String, String>();
+	static 
+	{
+
+		//ILLEGAL_CHARACTERS.put("%" , "%25");
+		ILLEGAL_CHARACTERS.put(" " , "+");
+		ILLEGAL_CHARACTERS.put("!" , "%21");
+		ILLEGAL_CHARACTERS.put("@" , "%40");
+		ILLEGAL_CHARACTERS.put("#" , "%23");
+		ILLEGAL_CHARACTERS.put("//$" , "%24");
+		//ILLEGAL_CHARACTERS.put("^" , "%5E");
+		ILLEGAL_CHARACTERS.put("&" , "%26");
+		ILLEGAL_CHARACTERS.put("\"" , "%27");
+		ILLEGAL_CHARACTERS.put("\\(" , "%28");
+		ILLEGAL_CHARACTERS.put("\\)" , "%29");
+		ILLEGAL_CHARACTERS.put("," , "%2C");
+	}
+	
 	public static RestTemplate restTemplate = new RestTemplate();
 	public static ObjectMapper mapper = new ObjectMapper();
 	
@@ -117,14 +141,28 @@ public class MarvelAPIController
 		
 		public static DataWrapper getComicsByName(String name) 
 		{
+
+			name = name.replaceAll("%", "%25");
+			for(Entry<String,String> entry : ILLEGAL_CHARACTERS.entrySet())
+			{
+				name = name.replaceAll(entry.getKey(), entry.getValue());
+			}
 			System.out.println("Getting 30 comics by name " + name);
-			return getDataWrapper("public/comics?titleStartsWith="+name + "&limit=30");
+			return getDataWrapper("public/comics?"+ (name.equals("0")?"": "titleStartsWith="+name + "&") + "limit=30");
 		}
 		
 		public static DataWrapper getComicsByName(String name, int pageNumber) 
 		{
+			if(name.equals("0"))
+				name="";
+			name = name.replaceAll("%", "%25");
+			for(Entry<String,String> entry : ILLEGAL_CHARACTERS.entrySet())
+			{
+				
+				name = name.replaceAll(entry.getKey(), entry.getValue());
+			}
 			System.out.println("Getting page " + pageNumber + " of comics by name " + name);
-			return getDataWrapper("public/comics?titleStartsWith="+name + "&limit=30&offset="+(pageNumber*30));
+			return getDataWrapper("public/comics?"+ (name.equals("0")?"": "titleStartsWith="+name + "&") + "limit=30&offset="+(pageNumber*30));
 		}
 		
 		public static DataWrapper getComicsByCharacter(int id) 

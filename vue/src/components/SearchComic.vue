@@ -7,12 +7,12 @@
             <div class="search-form">
             <div class="form-input">
             <!-- <label for="search-title">Search By Title: </label> -->
-            <select name='public-status' id='public-status' class="select" v-model="searchType">      
+            <select name='public-status' id='public-status' class="select" v-model="searchType" @change="resetResults()">      
                         <option value="Comic Book" selected>Comics</option>
                         <option value="Collection">Collections</option>
                         <option value="User">Users</option>
             </select>
-            <input type="text" id="search-title" class="search-input" v-model="searchTerm">
+            <input type="text" id="search-title" class="search-input" @change="fixString()" v-model="inputTerm">
             </div>
             <div class="actions">
             <button class="form-search" type='submit'>Search</button>
@@ -24,8 +24,8 @@
     </div>
   <div class="search-container">
 
-    <div v-if="searchType == 'Comic Book'">
-        <div class="result-container"  v-for="result in results.data.results" v-bind:key="result.id">
+    <div class="show-div" v-if="searchType == 'Comic Book'">
+        <div class="result-container"  v-for="result in results.data.results" v-bind:key="'comic:' +result.id">
             <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
             <div class="inception"  v-if ="!isLoading">
                 <p id="title">{{result.title}}</p>
@@ -36,33 +36,38 @@
             
         </div>
     </div>
-    <div class="result-container" v-show="searchType == 'Collection'" v-for="result in results.data.results" v-bind:key="result.id">
-        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-        <div class="inception"  v-if ="!isLoading">
-            <p id="title">{{result.name}}</p>
-            <!-- NEED TO FIX LOADING GIF -->              
+    <div class="show-div" v-if="searchType == 'Collection'">
+        <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
+            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+            <div class="inception"  v-if ="!isLoading">
+                <p id="title">{{result.name}}</p>
+                <!-- NEED TO FIX LOADING GIF -->              
+            </div>
+            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+            <img :src="getCollectionImage(result)" alt="Comic Book Image Result" :title="result.title" class="result-image">
+            
         </div>
-        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-        <!-- <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image"> -->
-        
     </div>
-    <div class="result-container" v-show="searchType == 'User'" v-for="result in results.data.results" v-bind:key="result.id">
-        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-        <div class="inception"  v-if ="!isLoading">
-            <p id="title">{{result.username}}</p>
-            <!-- NEED TO FIX LOADING GIF -->              
-        </div>
+    <div class="result-container" v-show="searchType == 'User'" v-for="result in results.data.results" v-bind:key="'user:' +result.id">
+        <router-link class="result-container" v-bind:to="{ name: 'user', params: {username: result.username}}">
+            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+            <div class="inception"  v-if ="!isLoading">
+                <p id="title">{{result.username}}</p>
+                <!-- NEED TO FIX LOADING GIF -->              
+            </div>
+        
         <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-        <!-- <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image"> -->
+            <img src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg" :title="result.title" class="result-image">
+        </router-link>
         
     </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
         <div>
-        <button class="form-previous" v-on:click="previousPage">Previous</button>
+        <button class="form-previous" v-show="page > 0" v-on:click="previousPage">Previous</button>
         
-        <p class="page-number">Displaying Page {{page+1}} of {{Math.ceil(this.results.data.total/30)}}</p>
-        <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
+        <p class="page-number">Displaying Page {{page+1}} of {{totalPages}}</p>
+        <button class="form-next" type='submit' v-show="page+1 < totalPages" v-on:click="nextPage">Next</button>
         </div>
     </div> 
 
@@ -73,18 +78,24 @@
 import ComicService from '../services/ComicService.js';
 import AuthService from '../services/AuthService.js';
 import CollectionService from '../services/CollectionService.js';
+import CollectionCard from "../components/CollectionCard.vue";
 
 
 export default {
     name: 'search-comic',
+    components: {
+    CollectionCard
+  },
     data()
     {
         return{
             searchType : 'Comic Book',
             isLoading: true,
+            inputTerm : '',
             searchTerm: '',
             showNextButtons: false,
             page: 0,
+            totalPages : 0,
             results: 
             {
                 data: 
@@ -105,6 +116,51 @@ export default {
     },
 
     methods:{
+        getCollectionImage(result)
+        {
+            let comic = result.comicBookIDs;
+            return comic[0] == undefined? "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg":comic[0].thumbnail.path.substring(0, comic[0].thumbnail.path.length -4) + "/portrait_xlarge.jpg";
+        },
+        fixString()
+        {
+            let tempString = this.inputTerm;
+            let illegalCharacters= 
+            {
+                '%' : '%25',
+                ' ' : '+',
+                '!' : '%21',
+                '@' : '%40',
+                '#' : '%23',
+                '$' : '%24',
+                '^' : '%5E',
+                '&' : '%26',
+                '"' : '%27',
+                '(' : '%28',
+                ')' : '%29',
+                ',' : '%2C',
+                
+            }
+            for (let key in illegalCharacters)
+            {
+                tempString = tempString.replaceAll(key, illegalCharacters[key])
+            }
+            console.log(tempString);
+            if(tempString.length != 0)
+                tempString += '/';
+            this.searchTerm = tempString;
+        },
+        resetResults()
+        {
+            this.results = {
+                data: 
+                {
+                    results: []
+                }
+            };
+  
+            this.showNextButtons = false;
+
+        },
         searchByName()
         {
             this.page = 0;
@@ -112,33 +168,31 @@ export default {
             {
                 ComicService.nextComicsSearch(this.searchTerm, 0).then(response => 
                 {
-                    console.log(response);
-                    this.results = response.data;
-                    this.showNextButtons = true;
-                    this.isLoading = false;               
+                    this.updateSearch(response);             
                 })
             }
             else if(this.searchType == "User")
             {
                 AuthService.getUsers(this.searchTerm, 0).then(response => 
                 {
-                    this.results = response.data;
-                    this.showNextButtons = true;
-                    this.isLoading = false;               
+                    this.updateSearch(response);           
                 })
             }
             else if(this.searchType == "Collection")
             {
                 CollectionService.getCollectionsPages(this.searchTerm, 0).then(response => 
                 {
-                    
-                    this.results = response.data;
-                    this.showNextButtons = true;
-                    this.isLoading = false;          
+                    this.updateSearch(response);       
                 })
             }
-
-            
+        },
+        updateSearch(response)
+        {
+            this.totalPages = Math.ceil(response.data.data.total/30);
+            console.log(response);
+            this.results = response.data;
+            this.showNextButtons = this.totalPages > 1;
+            this.isLoading = false;
         },
 
         nextPage()
@@ -217,6 +271,12 @@ h2{
    text-align: center;
 }
 
+router-link
+{
+    max-width:200px;
+}
+
+
 #backgd
 {
     position: fixed;
@@ -227,6 +287,14 @@ h2{
     /* background-color: #114b5f; */
     
     z-index: -100;
+}
+
+.show-div
+{
+    width: 70vw;
+    max-width: 70vw;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 select
@@ -246,16 +314,7 @@ input
     display: flex;
 }
 
-.result-image{
-height: 275px;
-width: 250px;
-display: flex;
-box-shadow: 7px 7px 5px rgba(0,0,0,.5);
-border-color: #000;
-border-width: 2px;
-border-style: solid;
-border-radius: 3px;
-}
+
 
 
 .form-container
@@ -278,24 +337,16 @@ cursor: pointer;
     width: 100%;
 }
 
-.result-container{
-    width:200px;
-    display: flex;
-    flex-wrap: wrap;
-    max-height: 40vh;
-    margin: 20px 30px 20px 30px;
-    justify-content: center;
-    
 
-} 
 
 .search-container{
     margin-top:5%;
     max-width: 70vw;
+    width:70vw;
     float:right;
     display: flex;
     flex-wrap: wrap;
-
+    padding-bottom: 5%;
     justify-content: left;
 } 
 

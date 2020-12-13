@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import store from '../store/index'
 import Collection from '../views/Collection.vue'
 import Search from '../views/Search.vue'
+import User from '../views/User.vue'
 
 Vue.use(Router)
 
@@ -72,6 +73,15 @@ const router = new Router({
         requiresAuth: false
       }
     },
+
+    {
+      path: "/user/:username",
+      name: "user",
+      component: User,
+      meta: {
+        requiresAuth: false
+      }
+    }
 
 
   ]

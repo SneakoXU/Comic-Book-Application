@@ -7,7 +7,7 @@ export default{
     },
 
     nextComicsSearch(name, page){
-        return axios.get(`/comics/query/title/${name}/${page}`)
+        return axios.get(`/comics/query/title/${name}${page}`)
     },
 
     searchComicById(id){

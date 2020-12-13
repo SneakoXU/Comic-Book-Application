@@ -17,7 +17,7 @@ export default {
 
   getUsers(name, page)
   {
-    return axios.get(`/user/${name}/30/${page}`)
+    return axios.get(`/user/${name}30/${page}`)
   }
 
 }

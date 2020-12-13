@@ -7,7 +7,7 @@ export default{
     },
 
     getCollectionsPages(name, page){
-        return axios.get(`/collections/${name}/30/${page}`);
+        return axios.get(`/collections/${name}30/${page}`);
     },
 
     getPublicCollections(){
@@ -20,6 +20,10 @@ export default{
 
     getCollectionsById(id){
         return axios.get(`/collections/${id}`);
+    },
+
+    getCollectionsByOwner(username){
+        return axios.get(`/collections/owner/${username}`);
     },
 
     addComicToCollection(collectionId, comicId){

@@ -1,7 +1,7 @@
 <template>
   <div class="home"> 
     <h1>Welcome to BT Comics</h1>  
-    <div class="container">
+    <div class="collection-container">
       <collection-card v-for="collection in collections" v-bind:key="collection.name" :collection="collection"></collection-card>
     </div>
   </div>
@@ -10,6 +10,7 @@
 <script>
 import CollectionCard from "../components/CollectionCard.vue";
 import CollectionService from '../services/CollectionService.js';
+import router from '../router/index'
 
 export default {
   name: "home",
@@ -44,11 +45,22 @@ export default {
    color: white;
    text-shadow: 2px 2px black;
    text-align: center;
+   margin:0;
+   
  }
 
  h1{
    margin-top:10%;
    font-size: 70px;
+ }
+
+ .collection-container
+ {
+
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   margin:0;
  }
  
 </style>

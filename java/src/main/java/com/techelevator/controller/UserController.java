@@ -35,9 +35,17 @@ public class UserController
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{name}/{number}/{page}", method = RequestMethod.GET)
-    public DataWrapper getUsers(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) 
+    public DataWrapper getUsersByName(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) 
 	{
 		List<User> users = userDAO.getUsers(name, number, page);
+        return new DataWrapper().setData(new Container().setResultsList(users).setCount(users.size()).setTotal(userDAO.getUsers("", Integer.MAX_VALUE, 0).size()));
+    }
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/{number}/{page}", method = RequestMethod.GET)
+    public DataWrapper getUsers(@PathVariable int number, @PathVariable int page, Principal principal) 
+	{
+		List<User> users = userDAO.getUsers("", number, page);
         return new DataWrapper().setData(new Container().setResultsList(users).setCount(users.size()).setTotal(userDAO.getUsers("", Integer.MAX_VALUE, 0).size()));
     }
 	

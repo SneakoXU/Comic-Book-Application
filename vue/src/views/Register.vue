@@ -32,7 +32,7 @@
         v-model="user.confirmPassword"
         required
       />
-      <router-link :to="{ name: 'login' }">Have an account?</router-link>
+      <router-link class="link" :to="{ name: 'login' }">Have an account?</router-link>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
       </button>
@@ -114,8 +114,8 @@ export default {
   }
 
   label{
-    font-family: "SBoom";
-  }
+
+    }
 
   input{
     height: 30px;
@@ -130,10 +130,10 @@ export default {
     
   }
 
-  #username, #password, #confirmPassword{
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  #password, #confirmPassword{
+    
   }
-
+  
   h1{
     /* font-family: "SBoom"; */
     font-size: 40px;

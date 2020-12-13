@@ -45,7 +45,7 @@ public class CollectionController {
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{name}/{number}/{page}", method = RequestMethod.GET)
-    public DataWrapper getCollections(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) {
+    public DataWrapper getCollectionsNameNumber(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) {
 		List<Collection> collections;
 		System.out.println("Getting page " + page + " of collections by name " + name + " limited to " + number);
 		if(principal == null)
@@ -60,6 +60,44 @@ public class CollectionController {
 		}
 		System.out.println("Returning " + collections.size() + " collections");
 		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collectionDAO.getCollections("", Integer.MAX_VALUE, 0).size()));
+    }
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/{number}/{page}", method = RequestMethod.GET)
+    public DataWrapper getCollections(@PathVariable int number, @PathVariable int page, Principal principal) {
+		List<Collection> collections;
+		System.out.println("Getting page " + page + " of collections limited to " + number);
+		if(principal == null)
+		{
+			System.out.println("Logged out");
+			collections = collectionDAO.getCollections("", number, page);
+		}
+		else 
+		{
+			System.out.println("Logged in");
+			collections = collectionDAO.getCollections("", number, page, userDAO.findIdByUsername(principal.getName()));
+		}
+		System.out.println("Returning " + collections.size() + " collections");
+		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collectionDAO.getCollections("", Integer.MAX_VALUE, 0).size()));
+    }
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/owner/{username}", method = RequestMethod.GET)
+    public DataWrapper getCollectionsByUsername(@PathVariable String username, Principal principal) {
+		List<Collection> collections;
+		System.out.println("Getting " + username + "'s collections");
+		if(principal == null)
+		{
+			System.out.println("Logged out");
+			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), true);
+		}
+		else 
+		{
+			System.out.println("Logged in");
+			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), false);
+		}
+		System.out.println("Returning " + collections.size() + " collections");
+		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collections.size()));
     }
 	
 	

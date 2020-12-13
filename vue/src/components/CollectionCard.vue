@@ -4,7 +4,7 @@
   <h2 class="title">{{collection.name}}</h2>
   <h3 class="owner">By: {{username}}</h3>
   <div class="image-container">
-    <img class="face" :src="this.collection.comicBookIDs[0].thumbnail.path" alt="">
+    <img class="face" :src="thumbnail" alt="">
     <div class="view">
       Click to view more
     </div>
@@ -35,6 +35,16 @@ export default {
       {
           this.username = response.data.username;      
       })
+  },
+  computed:
+  {
+    thumbnail()
+    {
+      if(this.collection.comicBookIDs[0] != undefined)
+        return this.collection.comicBookIDs[0].thumbnail.path;
+      else
+        return "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg";
+    }
   }
   
    
@@ -50,7 +60,7 @@ export default {
     
     transition: .5s ease;
     margin: 30px;
-    width: 25vw;
+    width: 20vw;
     height: 30vh;
   }
 

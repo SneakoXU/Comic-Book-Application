@@ -12,7 +12,7 @@
         <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Friends</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="!loggedIn">Login</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="!loggedIn">Register</router-link>
-        <router-link class="navItem" id="usr" v-bind:to="{ name: 'register' }" v-if="loggedIn">{{$store.state.user.username}}</router-link>
+        <router-link class="navItem" id="usr" v-bind:to="{ name: 'user', params: {username: $store.state.user.username}}" v-if="loggedIn">{{$store.state.user.username}}</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Logout</router-link>
 
       </div>
@@ -47,8 +47,19 @@ export default {
      src: url("../assets/Fonts/super_boom/SUPER BOOM.ttf");
   }
   
+  
   *{
     font-family: "Runners", sans serif;
+  }
+
+  input::placeholder
+  {
+    font-family: 'Runners';
+  }
+
+  input[type="password"]
+  {
+    font-family: 'Courier New', Courier, monospace;
   }
   html{
     background-image: url("../assets/Images/blue.jpg");
@@ -162,6 +173,17 @@ export default {
       color:#FCC;
     }
 
+    
+.link
+{
+  color:#ED1D24;
+}
+
+.link:visited
+{
+  color: #ED1D24;
+}
+
     .popup
     {
         left:25%;
@@ -181,6 +203,32 @@ export default {
         border-radius: 3px;
         
     }
+
+    .result-container{
+    width:200px;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 40vh;
+    margin: 20px 30px 20px 30px;
+    justify-content: center;
+    text-decoration: none;
+
+} 
+.result-container:visited
+{
+  text-decoration: none;
+}
+
+.result-image{
+height: 275px;
+width: 250px;
+display: flex;
+box-shadow: 7px 7px 5px rgba(0,0,0,.5);
+border-color: #000;
+border-width: 2px;
+border-style: solid;
+border-radius: 3px;
+}
 
     
 </style>

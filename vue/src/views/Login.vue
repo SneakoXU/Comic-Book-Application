@@ -33,7 +33,7 @@
         v-model="user.password"
         required
       />
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      <router-link class="link" :to="{ name: 'register' }">Need an account?</router-link>
       <button type="submit">Sign in</button>
     </form>
     
@@ -102,21 +102,21 @@ export default {
   } 
 
   .form-signin{
+
     display: flex;
     align-items: center;
     flex-direction: column;
     
   }
 
-   #username:hover, #password:hover{
+   #username:focus, #password:focus{
      width: 270px;
      box-shadow: 2px 5px;
    }
 
    #username, #password{
      margin-bottom: 15px;
-     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-   }
+        }
 
    #password{
      
@@ -138,13 +138,13 @@ export default {
      font-size: 24px;
    }
 
+
    h1{
-     font-family: "SBoom";
+     margin-top:0;
      font-size: 40px;
    }
 
    label{
-     font-family: "SBoom";
    }
 
 

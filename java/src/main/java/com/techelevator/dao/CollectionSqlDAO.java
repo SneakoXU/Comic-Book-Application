@@ -165,11 +165,18 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 
 	@Override
-	public List<Collection> getCollectionsByUser(long userID, boolean isPublic) 
+	public List<Collection> getCollectionsByUser(long userID, boolean isPublic)
 	{
-		return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = ? and creator_id = ?",
-				new Object[] {isPublic, userID},
-				new int[] {java.sql.Types.BOOLEAN, java.sql.Types.INTEGER});
+		if(isPublic)
+		{
+			return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = true and creator_id = ?",
+				new Object[] {userID},
+				new int[] {java.sql.Types.INTEGER});
+		}
+		return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where creator_id = ?",
+				new Object[] {userID},
+				new int[] {java.sql.Types.INTEGER});
+		
 	}
 	
 	@Override
