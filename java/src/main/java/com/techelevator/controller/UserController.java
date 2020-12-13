@@ -30,6 +30,13 @@ public class UserController
 	}
 	
 	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/{name}/{number}/{page}", method = RequestMethod.GET)
+    public List<User> getUsers(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) 
+	{
+        return userDAO.getUsers(name, number, page);
+    }
+	
+	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id, Principal principal) 
 	{

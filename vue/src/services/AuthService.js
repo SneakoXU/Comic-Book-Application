@@ -13,6 +13,11 @@ export default {
   getUserById(id)
   {
     return axios.get(`/user/${id}`)
+  },
+
+  getUsers(name, page)
+  {
+    return axios.get(`/user/${name}/30/${page}`)
   }
 
 }

@@ -2,11 +2,16 @@
   <div class="main">
       <div id="backgd"></div>
     <div class="form-container">
-        <h2 class="header">Search for a Comic Book</h2>
+        <h2 class="header">Search for a {{this.searchType}}</h2>
         <form v-on:submit.prevent="searchByName">
             <div class="search-form">
             <div class="form-input">
             <!-- <label for="search-title">Search By Title: </label> -->
+            <select name='public-status' id='public-status' class="select" v-model="searchType">      
+                        <option value="Comic Book" selected>Comics</option>
+                        <option value="Collection">Collections</option>
+                        <option value="User">Users</option>
+            </select>
             <input type="text" id="search-title" class="search-input" v-model="searchTerm">
             </div>
             <div class="actions">
@@ -18,22 +23,45 @@
         </form>
     </div>
   <div class="search-container">
-    <div class="result-container" v-for="result in results.data.results" v-bind:key="result.id">
+    <div class="result-container" v-show="searchType == 'Comic Book'" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
         <div class="inception"  v-if ="!isLoading">
             <p id="title">{{result.title}}</p>
             <!-- NEED TO FIX LOADING GIF -->              
         </div>
-        <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true">
+        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
         <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
-        </router-link>
+        
+    </div>
+    <div class="result-container" v-show="searchType == 'Collection'" v-for="result in results.data.results" v-bind:key="result.id">
+        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+        <div class="inception"  v-if ="!isLoading">
+            <p id="title">{{result.title}}</p>
+            <!-- NEED TO FIX LOADING GIF -->              
+        </div>
+        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+        
+    </div>
+
+    <div class="result-container" v-show="searchType == 'User'" v-for="result in results.data.results" v-bind:key="result.id">
+        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+        <div class="inception"  v-if ="!isLoading">
+            <p id="title">{{result.title}}</p>
+            <!-- NEED TO FIX LOADING GIF -->              
+        </div>
+        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+        
     </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
+        <div>
         <button class="form-previous" v-on:click="previousPage">Previous</button>
         
         <p class="page-number">Displaying Page {{page+1}} of {{Math.ceil(this.results.data.total/30)}}</p>
         <button class="form-next" type='submit' v-on:click="nextPage">Next</button>
+        </div>
     </div> 
 
   </div> 
@@ -41,44 +69,70 @@
 
 <script>
 import ComicService from '../services/ComicService.js';
-import ComicDetail from '../components/SearchComic.vue';
+import AuthService from '../services/AuthService.js';
+
 
 export default {
     name: 'search-comic',
-    data(){
+    data()
+    {
         return{
-        isLoading: true,
-        searchTerm: '',
-        showNextButtons: false,
-        page: 0,
-        results: {
-            data: {
-                results: []
-            }
-        },
+            searchType : 'Comic Book',
+            isLoading: true,
+            searchTerm: '',
+            showNextButtons: false,
+            page: 0,
+            results: 
+            {
+                data: 
+                {
+                    results: []
+                }
+            },
         }
     },
 
-    beforeCreate(){
+    beforeCreate()
+    {
         
     },
-    created(){
+    created()
+    {
 
     },
 
     methods:{
-        searchByName(){
+        searchByName()
+        {
             this.page = 0;
-            ComicService.nextComicsSearch(this.searchTerm, 0).then(response => {
-                this.results = response.data;
-                this.showNextButtons = true;
-                this.isLoading = false;
-            })
+            if(this.searchType == "Comic Book")
+            {
+                
+                ComicService.nextComicsSearch(this.searchTerm, 0).then(response => 
+                {
+                    this.results = response.data;
+                    this.showNextButtons = true;
+                    this.isLoading = false;
+                })
+            }
+
+            else if(this.searchType == "User")
+            {
+                
+                AuthService.nextComicsSearch(this.searchTerm).then(response => 
+                {
+                    this.results = response.data;
+                    this.showNextButtons = true;
+                    this.isLoading = false;
+                })
+            }
         },
 
-        nextPage(){
+        nextPage()
+        {
             this.increment();
-            ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
+            ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => 
+            {
                 this.results = response.data;                
             })
         },
@@ -126,71 +180,89 @@ h2{
     z-index: -100;
 }
 
-  .result-image{
-    height: 275px;
-    width: 250px;
+select
+{
+    width: 50%;
+    border-radius: 3px 0px 0px 3px;
+}
+
+input
+{
+    width: 100%;
+    border-radius: 0px 3px 3px 0px;
+}
+
+.form-input
+{
     display: flex;
-    box-shadow: 7px 7px 5px rgba(0,0,0,.5);
-    border-color: #000;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 3px;
-  }
+}
+
+.result-image{
+height: 275px;
+width: 250px;
+display: flex;
+box-shadow: 7px 7px 5px rgba(0,0,0,.5);
+border-color: #000;
+border-width: 2px;
+border-style: solid;
+border-radius: 3px;
+}
 
 
 .form-container
 {
     position: fixed;
     top:0;
-    max-width: 15vw;
+    max-width: 20vw;
     padding:1%;
     height:100%;
     margin-left:1%;
     z-index: -1;
 }
 
-  .result-image:hover{
-    cursor: pointer;
-  }
+.result-image:hover{
+cursor: pointer;
+}
 
-    .inception
-    {
-        width: 100%;
-    }
+.inception
+{
+    width: 100%;
+}
 
-  .result-container{
-      width:200px;
-      display: flex;
-      flex-wrap: wrap;
-      max-height: 40vh;
-      margin: 20px 30px 20px 30px;
-      justify-content: center;
-      
+.result-container{
+    width:200px;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 40vh;
+    margin: 20px 30px 20px 30px;
+    justify-content: center;
+    
 
-  } 
+} 
 
-  .search-container{
-      margin-top:5%;
-      max-width: 80vw;
-      float:right;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-evenly;
-  } 
+.search-container{
+    margin-top:5%;
+    max-width: 70vw;
+    float:right;
+    display: flex;
+    flex-wrap: wrap;
 
-  #title{
-    font-family: "Runners-bold";
-    white-space: nowrap;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: black;
-    text-shadow: 1px 1px gray;
-    text-align: center;
-    display: block;
-    font-size: 120%;
-      
-  }
+    justify-content: left;
+} 
+
+#title{
+font-family: "Runners-bold";
+white-space: nowrap;
+text-align: center;
+overflow: hidden;
+text-overflow: ellipsis;
+color: black;
+text-shadow: 1px 1px gray;
+text-align: center;
+display: block;
+font-size: 120%;
+    
+}
 
 .header{
     color:black;
@@ -213,6 +285,12 @@ h2{
     justify-content: center;
     position: fixed;
     bottom:0;
+}
+
+.next-page div{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .form-previous, .form-next, .page-number

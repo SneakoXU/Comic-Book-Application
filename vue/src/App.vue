@@ -8,18 +8,29 @@
       <div class="itemBox">
 
         <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'collection-display' }">Collections</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Friends</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="$store.state.token == ''">Login</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="$store.state.token == ''">Register</router-link>
-        <router-link class="navItem" id="usr" v-bind:to="{ name: 'register' }" v-if="$store.state.token != ''">{{$store.state.user.username}}</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'collection-display' }" v-if="loggedIn">Collections</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Friends</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="!loggedIn">Login</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="!loggedIn">Register</router-link>
+        <router-link class="navItem" id="usr" v-bind:to="{ name: 'register' }" v-if="loggedIn">{{$store.state.user.username}}</router-link>
+        <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Logout</router-link>
 
       </div>
     </div>
     <router-view />
   </div>
 </template>
+<script>
+export default {
+  computed:
+  {
+    loggedIn()
+    {
+      return this.$store.state.token != '';
+    }
+  }
+}
+</script>
 <style>
   @font-face{
     font-family: "Runners";    

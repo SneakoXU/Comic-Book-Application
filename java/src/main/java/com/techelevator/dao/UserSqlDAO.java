@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.openmbean.ArrayType;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -26,6 +28,18 @@ public class UserSqlDAO implements UserDAO {
     @Override
     public int findIdByUsername(String username) {
         return jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
+    }
+    
+    @Override
+    public List<User> getUsers(String name, int number, int page)
+    {
+    	List<User> users = new ArrayList<>();
+    	String sql = "select * from users where username ilike ? limit ? offset ?;";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, "%" + name + "%", number, page*number);
+		while(results.next()) {
+			users.add (mapRowToUserPublic(results));
+		}
+		return users;
     }
 
 	@Override

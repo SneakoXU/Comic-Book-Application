@@ -40,4 +40,6 @@ public interface UserDAO {
 	void removeFriend(int friendId, int userId);
 
 	String getUsername(int id);
+
+	List<User> getUsers(String name, int number, int page);
 }
