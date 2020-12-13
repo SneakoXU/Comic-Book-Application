@@ -24,6 +24,8 @@ import com.techelevator.dao.UserDAO;
 import com.techelevator.model.Collection;
 import com.techelevator.model.CollectionStatistics;
 import com.techelevator.model.Comment;
+import com.techelevator.model.marvel.fields.Container;
+import com.techelevator.model.marvel.fields.DataWrapper;
 import com.techelevator.model.marvel.fields.Field;
 
 
@@ -40,6 +42,25 @@ public class CollectionController {
 		this.collectionDAO = collectionDAO;
 		this.userDAO = userDAO;
 	}
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/{name}/{number}/{page}", method = RequestMethod.GET)
+    public DataWrapper getCollections(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) {
+		List<Collection> collections;
+		System.out.println("Getting page " + page + " of collections by name " + name + " limited to " + number);
+		if(principal == null)
+		{
+			System.out.println("Logged out");
+			collections = collectionDAO.getCollections(name, number, page);
+		}
+		else 
+		{
+			System.out.println("Logged in");
+			collections = collectionDAO.getCollections(name, number, page, userDAO.findIdByUsername(principal.getName()));
+		}
+		System.out.println("Returning " + collections.size() + " collections");
+		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collectionDAO.getCollections("", Integer.MAX_VALUE, 0).size()));
+    }
 	
 	
 	@PreAuthorize("permitAll()")

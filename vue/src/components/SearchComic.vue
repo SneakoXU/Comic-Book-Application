@@ -23,35 +23,37 @@
         </form>
     </div>
   <div class="search-container">
-    <div class="result-container" v-show="searchType == 'Comic Book'" v-for="result in results.data.results" v-bind:key="result.id">
-        <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-        <div class="inception"  v-if ="!isLoading">
-            <p id="title">{{result.title}}</p>
-            <!-- NEED TO FIX LOADING GIF -->              
+
+    <div v-if="searchType == 'Comic Book'">
+        <div class="result-container"  v-for="result in results.data.results" v-bind:key="result.id">
+            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+            <div class="inception"  v-if ="!isLoading">
+                <p id="title">{{result.title}}</p>
+                <!-- NEED TO FIX LOADING GIF -->              
+            </div>
+            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+            <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+            
         </div>
-        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
-        
     </div>
     <div class="result-container" v-show="searchType == 'Collection'" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
         <div class="inception"  v-if ="!isLoading">
-            <p id="title">{{result.title}}</p>
+            <p id="title">{{result.name}}</p>
             <!-- NEED TO FIX LOADING GIF -->              
         </div>
         <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+        <!-- <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image"> -->
         
     </div>
-
     <div class="result-container" v-show="searchType == 'User'" v-for="result in results.data.results" v-bind:key="result.id">
         <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
         <div class="inception"  v-if ="!isLoading">
-            <p id="title">{{result.title}}</p>
+            <p id="title">{{result.username}}</p>
             <!-- NEED TO FIX LOADING GIF -->              
         </div>
         <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-        <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+        <!-- <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image"> -->
         
     </div>
   </div> 
@@ -70,6 +72,7 @@
 <script>
 import ComicService from '../services/ComicService.js';
 import AuthService from '../services/AuthService.js';
+import CollectionService from '../services/CollectionService.js';
 
 
 export default {
@@ -88,7 +91,7 @@ export default {
                 {
                     results: []
                 }
-            },
+            }
         }
     },
 
@@ -107,34 +110,62 @@ export default {
             this.page = 0;
             if(this.searchType == "Comic Book")
             {
-                
                 ComicService.nextComicsSearch(this.searchTerm, 0).then(response => 
+                {
+                    console.log(response);
+                    this.results = response.data;
+                    this.showNextButtons = true;
+                    this.isLoading = false;               
+                })
+            }
+            else if(this.searchType == "User")
+            {
+                AuthService.getUsers(this.searchTerm, 0).then(response => 
                 {
                     this.results = response.data;
                     this.showNextButtons = true;
-                    this.isLoading = false;
+                    this.isLoading = false;               
+                })
+            }
+            else if(this.searchType == "Collection")
+            {
+                CollectionService.getCollectionsPages(this.searchTerm, 0).then(response => 
+                {
+                    
+                    this.results = response.data;
+                    this.showNextButtons = true;
+                    this.isLoading = false;          
                 })
             }
 
-            else if(this.searchType == "User")
-            {
-                
-                AuthService.nextComicsSearch(this.searchTerm).then(response => 
-                {
-                    this.results = response.data;
-                    this.showNextButtons = true;
-                    this.isLoading = false;
-                })
-            }
+            
         },
 
         nextPage()
         {
             this.increment();
-            ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => 
+            if(this.searchType == "Comic Book")
             {
-                this.results = response.data;                
-            })
+                ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => 
+                {
+                    this.results = response.data;                
+                })
+            }
+            else if(this.searchType == "User")
+            {
+                AuthService.getUsers(this.searchTerm, this.page).then(response => 
+                {
+                    this.results = response.data;                
+                })
+            }
+            else if(this.searchType == "Collection")
+            {
+                CollectionService.getCollectionsPages(this.searchTerm, this.page).then(response => 
+                {
+                    
+                    this.results = response.data;                
+                })
+            }
         },
         increment(){
             this.page++;
@@ -144,9 +175,27 @@ export default {
         //NEED TO FIX - doesn't work properly (page decrements but returns new results)
         previousPage(){
             this.decrement();
-             ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => {
-                this.results = response.data;                
-            })
+             if(this.searchType == "Comic Book")
+            {
+                ComicService.nextComicsSearch(this.searchTerm, this.page).then(response => 
+                {
+                    this.results = response.data;                
+                })
+            }
+            else if(this.searchType == "User")
+            {
+                AuthService(this.searchTerm, this.page).then(response => 
+                {
+                    this.results = response.data;                
+                })
+            }
+            else if(this.searchType == "Collection")
+            {
+                AuthService(this.searchTerm, this.page).then(response => 
+                {
+                    this.results = response.data;                
+                })
+            }
         },
 
         decrement(){

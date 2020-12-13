@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.techelevator.model.Collection;
 import com.techelevator.model.Comment;
+import com.techelevator.model.marvel.fields.DataWrapper;
 import com.techelevator.model.marvel.fields.Field;
 import com.techelevator.model.marvel.fields.Summary;
 
@@ -21,6 +22,35 @@ public class CollectionSqlDAO implements CollectionDAO {
 	public CollectionSqlDAO(JdbcTemplate jdbcTemplate, ComicDAO comicDAO) {
 		this.jdbcTemplate = jdbcTemplate;
 		this.comicDAO = comicDAO;
+	}
+	
+	
+	@Override
+	public List<Collection> getCollections(String name, int limit, int page, int userId)
+	{
+		List<Collection> collections = new ArrayList<Collection>();
+		String sql = "select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c where c.collectionname ilike ? and c.publicstatus = true or (c.creator_id = ? or c.creator_id in (select user_id from user_friend where friend_id = ?) or c.creator_id in (select friend_id from user_friend where user_id = ?)) group by c.collection_id order by c.collection_id asc limit ? offset ?;"; 
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, "%" + name + "%", userId, userId, userId, limit, page*limit);
+        while (results.next())
+        {
+        	collections.add(mapRowToCollection(results));
+        }
+        return collections;
+	}
+	
+	@Override
+	public List<Collection> getCollections(String name, int limit, int page)
+	{
+		List<Collection> collections = new ArrayList<Collection>();
+		String sql = "select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c where c.collectionname ilike ? and c.publicstatus = true group by c.collection_id order by c.collection_id asc limit ? offset ?;"; 
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, "%" + name + "%", limit, page*limit);
+        while (results.next())
+        {
+        	collections.add(mapRowToCollection(results));
+        }
+        return collections;
 	}
 	
 	@Override
@@ -202,7 +232,7 @@ public class CollectionSqlDAO implements CollectionDAO {
 	
 	private Collection mapRowToCollection(SqlRowSet rs)
 	{
-		return new Collection(comicDAO.getComicsByCollection(rs.getLong("collection_id")), rs.getLong("creator_id"), rs.getBoolean("publicstatus"), rs.getDate("datecreated"), rs.getString("collectionname"));
+		return new Collection(rs.getInt("collection_id"), comicDAO.getComicsByCollection(rs.getLong("collection_id")), rs.getLong("creator_id"), rs.getBoolean("publicstatus"), rs.getDate("datecreated"), rs.getString("collectionname"));
 	}
 
 	

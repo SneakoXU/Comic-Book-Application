@@ -6,6 +6,10 @@ export default{
         return axios.get('/collections/public');
     },
 
+    getCollectionsPages(name, page){
+        return axios.get(`/collections/${name}/30/${page}`);
+    },
+
     getPublicCollections(){
         return axios.get('/collections/public');
     },

@@ -60,7 +60,8 @@ public class DataWrapper {
 	public Container getData() {
 		return data;
 	}
-	public void setData(Container data) {
+	public DataWrapper setData(Container data) {
 		this.data = data;
+		return this;
 	}
 }

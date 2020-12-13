@@ -41,5 +41,10 @@ public interface CollectionDAO {
 	void addComment(Comment comment);
 
 	void deleteComment(int commentId);
+
+	List<Collection> getCollections(String name, int limit, int page,
+	        int userId);
+
+	List<Collection> getCollections(String name, int limit, int page);
 	
 }

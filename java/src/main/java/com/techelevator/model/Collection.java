@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.techelevator.model.marvel.fields.Field;
 
-public class Collection {
+public class Collection extends Field{
 	
 	private List<Field> comicBooks;
 	private long userID;
@@ -16,9 +16,10 @@ public class Collection {
 	
 	public Collection() {}
 	
-	public Collection(List<Field> comicBooks, long userID, boolean isPublic,
+	public Collection(int id, List<Field> comicBooks, long userID, boolean isPublic,
 	        Date dateCreated, String name) {
 		super();
+		super.setId(id);
 		this.comicBooks = comicBooks;
 		this.userID = userID;
 		this.isPublic = isPublic;

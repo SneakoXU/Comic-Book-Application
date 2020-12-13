@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.techelevator.dao.UserDAO;
 import com.techelevator.model.FriendRequest;
 import com.techelevator.model.User;
+import com.techelevator.model.marvel.fields.Container;
+import com.techelevator.model.marvel.fields.DataWrapper;
+import com.techelevator.model.marvel.fields.Field;
 
 @CrossOrigin
 @RestController
@@ -31,9 +35,10 @@ public class UserController
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/{name}/{number}/{page}", method = RequestMethod.GET)
-    public List<User> getUsers(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) 
+    public DataWrapper getUsers(@PathVariable String name, @PathVariable int number, @PathVariable int page, Principal principal) 
 	{
-        return userDAO.getUsers(name, number, page);
+		List<User> users = userDAO.getUsers(name, number, page);
+        return new DataWrapper().setData(new Container().setResultsList(users).setCount(users.size()).setTotal(userDAO.getUsers("", Integer.MAX_VALUE, 0).size()));
     }
 	
 	@PreAuthorize("permitAll()")

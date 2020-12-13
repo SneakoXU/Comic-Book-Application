@@ -1,15 +1,16 @@
 package com.techelevator.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techelevator.model.marvel.fields.Field;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class User {
+public class User extends Field{
 
-   private Long id;
+   private int id;
    private String username;
    @JsonIgnore
    private String password;
@@ -20,7 +21,7 @@ public class User {
 
    public User() { }
 
-   public User(Long id, String username, String password, String authorities, List<Long> friends) {
+   public User(int id, String username, String password, String authorities, List<Long> friends) {
       this.id = id;
       this.username = username;
       this.password = password;
@@ -28,11 +29,11 @@ public class User {
       this.friends = friends;
    }
 
-   public Long getId() {
+   public int getId() {
       return id;
    }
 
-   public void setId(Long id) {
+   public void setId(int id) {
       this.id = id;
    }
 
