@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div id="backgd"></div>
-      
+        <h1 v-if="notFound" class="no-results">Collection not found</h1>
         <div class="container">
             
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
@@ -11,7 +11,6 @@
                 </div>
 
                 <img :src="result.thumbnail.path.substring(0, result.thumbnail.path.length - 4) + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
-                
             </div>
         </div>
 
@@ -42,13 +41,14 @@ import AuthService from '../services/AuthService.js';
 export default {
     name: 'comics',
     collectionId : 0,
-    components: {
-
-    ComicDetail
-  },
+    components: 
+    {
+        ComicDetail
+    },
     data()
     {
         return{
+            notFound :false,
             detailShowing: false,
             userId:0,
             results: 
@@ -72,16 +72,28 @@ export default {
     created()
     {
         this.collectionId = this.$route.params.id
-        CollectionService.getCollectionsById(this.collectionId).then(response =>
+        CollectionService.getCollectionsById(this.collectionId)
+        .then(response =>
         {
             this.results = response;
-        });
+        })
+        .catch(error =>
+        {
+            if (error.response.status === 404) 
+            {
+                this.notFound = true;
+            }
+        })
+        
         AuthService.getIdByUsername()
         .then(response=>
         {
             this.userId = response.data;
         })
-        .catch()
+        .catch(response =>
+        {
+        });
+        
     },
 
     methods:{

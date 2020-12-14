@@ -494,18 +494,10 @@ font-size: 120%;
     cursor: pointer;
     background-color: #BBB;
 }
+
 .popup h2
 {
     color:black;
     text-shadow: 2px 2px rgba(0,0,0,0.5);
 }
-
-.no-results
-{
-    align-self: center;
-    margin-left: 35%;
-    color:#999;
-}
-
-
 </style>

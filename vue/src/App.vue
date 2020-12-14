@@ -293,6 +293,13 @@ border-radius: 3px;
   z-index: -1;
 }
 
+.no-results
+{
+    align-self: center;
+    margin-left: 35%;
+    color:#999;
+}
+
     
 </style>
 

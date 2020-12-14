@@ -48,32 +48,34 @@ export default {
     created()
     {
         this.username = this.$route.params.username
-        CollectionService.getCollectionsByOwner(this.username).then(response => 
-                {
-                    this.results = response.data;
-                    this.showNextButtons = true;
-                    this.isLoading = false;
-                    this.$forceUpdate();
-                })
+        CollectionService.getCollectionsByOwner(this.username)
+        .then(response => 
+        {
+            this.results = response.data;
+            this.showNextButtons = true;
+            this.isLoading = false;
+            this.$forceUpdate();
+        })
 
     },
     watch:
     {
         $route()
         {
-            this.$nextTick(this.$forceUpdate)
-        }
-    },
-    updated()
-    {
-        this.username = this.$route.params.username
-        CollectionService.getCollectionsByOwner(this.username).then(response => 
+            this.username = this.$route.params.username
+            CollectionService.getCollectionsByOwner(this.username).then(response => 
                 {
                     this.results = response.data;
                     this.showNextButtons = true;
                     this.isLoading = false;
                     this.$forceUpdate();
                 })
+            this.$nextTick(this.$forceUpdate)
+        }
+    },
+    updated()
+    {
+        
     },
     name: 'user',
     methods:{

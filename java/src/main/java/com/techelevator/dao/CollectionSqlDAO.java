@@ -29,8 +29,8 @@ public class CollectionSqlDAO implements CollectionDAO {
 	public List<Collection> getCollections(String name, int limit, int page, int userId)
 	{
 		List<Collection> collections = new ArrayList<Collection>();
-		String sql = "select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c where c.collectionname ilike ? and c.publicstatus = true or (c.creator_id = ? or c.creator_id in (select user_id from user_friend where friend_id = ?) or c.creator_id in (select friend_id from user_friend where user_id = ?)) group by c.collection_id order by c.collection_id asc limit ? offset ?;"; 
-
+		String sql = "select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c where c.collectionname ilike ? and (c.publicstatus = true or (c.creator_id = ? or c.creator_id in (select user_id from user_friend where friend_id = ?) or c.creator_id in (select friend_id from user_friend where user_id = ?))) group by c.collection_id order by c.collection_id asc limit ? offset ?;"; 
+		System.out.println(name);
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, "%" + name + "%", userId, userId, userId, limit, page*limit);
         while (results.next())
         {
@@ -44,7 +44,7 @@ public class CollectionSqlDAO implements CollectionDAO {
 	{
 		List<Collection> collections = new ArrayList<Collection>();
 		String sql = "select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c where c.collectionname ilike ? and c.publicstatus = true group by c.collection_id order by c.collection_id asc limit ? offset ?;"; 
-
+		System.out.println(name);
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, "%" + name + "%", limit, page*limit);
         while (results.next())
         {

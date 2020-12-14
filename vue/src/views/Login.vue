@@ -65,13 +65,15 @@ export default {
     login() {
       authService
         .login(this.user)
-        .then(response => {
+        .then(response => 
+        {
           if (response.status == 200) {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
             this.$store.commit("SET_USER", response.data.user);
           }
         })
-        .catch(error => {
+        .catch(error => 
+        {
           const response = error.response;
 
           if (response.status === 401) {
