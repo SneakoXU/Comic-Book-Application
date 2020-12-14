@@ -17,4 +17,5 @@ export default{
     getThumbnail(id){
         return axios.get(`/comics/thumbnail/${id}`)
     },
+    
 }

@@ -16,22 +16,31 @@
             </div>
             <div class="actions">
             <button class="form-search" type='submit'>Search</button>
-            <button class="form-add">Add</button>
+            
             </div> 
           </div>
               
         </form>
     </div>
   <div class="search-container">
+            <div class="popup" v-if="detailShowing">
 
+                <comic-detail
+                :result="this.result" 
+                />
+                <button class="form-add">Add</button>
+                <button class="form-cancel" v-on:click="detailShowing=false">Close</button>
+            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+            </div>
+      
     <div class="show-div" v-if="searchType == 'Comic Book'">
-        <div class="result-container"  v-for="result in results.data.results" v-bind:key="'comic:' +result.id">
+        <div class="result-container"  v-for="result in results.data.results" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
             <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
             <div class="inception"  v-if ="!isLoading">
                 <p id="title">{{result.title}}</p>
                 <!-- NEED TO FIX LOADING GIF -->              
             </div>
-            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+
             <img :src="result.thumbnail.path + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
             
         </div>
@@ -79,12 +88,14 @@ import ComicService from '../services/ComicService.js';
 import AuthService from '../services/AuthService.js';
 import CollectionService from '../services/CollectionService.js';
 import CollectionCard from "../components/CollectionCard.vue";
+import ComicDetail from "../components/ComicDetail.vue";
 
 
 export default {
     name: 'search-comic',
     components: {
-    CollectionCard
+    CollectionCard,
+    ComicDetail
   },
     data()
     {
@@ -96,13 +107,15 @@ export default {
             showNextButtons: false,
             page: 0,
             totalPages : 0,
+            detailShowing: false,
             results: 
             {
                 data: 
                 {
                     results: []
                 }
-            }
+            },
+            result: {}
         }
     },
 
@@ -257,6 +270,12 @@ export default {
             {
                 this.page--;
             }
+        }, 
+
+        setDetail(properties){
+            this.result=properties;
+            this.detailShowing=true;
+            
         }
     }
 }

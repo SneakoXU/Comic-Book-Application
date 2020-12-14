@@ -4,18 +4,22 @@
     <h3 class="author">{{comic.author}}</h3>
     <h4 class="description">{{comic.description}}</h4>
     <div class="container">
-        <img src={{comic.image}}>
-  
+        <img :src="comic.image">
+    </div>
+</div>
 </template>
 
 
 <script>
-import comicService from '../../services/ComicService.js';
+import comicService from '../services/ComicService.js';
 export default {
     components: {
         comicService
     },
     name: 'comic-detail',
+    props: [
+        "result",
+    ],
     data() {
         return {
             comic:{
@@ -24,20 +28,25 @@ export default {
                 author: '',
                 description: '',
                 image: '' 
+                
 
             }
         }
     },
 
-    methods: {
         created() {
-            comicService.getThumbnail(id).then(response => {
-                this.comic.image=response.data;
-            });
-        },
+           
+            this.comic.title=this.result.title,
+            // this.author=result.author, 
+            this.comic.description=this.result.description
+            // this.comic.image=this.result.thumbnail.path+this.result.thumbnail.extension
+            },
+    methods: {
+
+        }
 
     }
-}
+
 </script>
 
 <style>
