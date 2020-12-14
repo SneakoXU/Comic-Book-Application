@@ -32,10 +32,11 @@
         v-model="user.confirmPassword"
         required
       />
-      <router-link class="link" :to="{ name: 'login' }">Have an account?</router-link>
+      <a class="link" v-on:click="$parent.showLogin=true, $parent.showRegister=false">Have an account?</a>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         Create Account
       </button>
+      <button class="form-cancel" v-on:click.prevent="$parent.showRegister=false">Close</button>
     </form>
   </div>
 </template>
@@ -65,13 +66,29 @@ export default {
       } else {
         authService
           .register(this.user)
-          .then((response) => {
-            if (response.status == 201) {
-              this.$router.push({
-                path: '/login',
-                query: { registration: 'success' },
+          .then(() => 
+          {
+            this.$parent.showLogin=false;
+
+            authService
+              .login(this.user)
+              .then(response => 
+              {
+                if (response.status == 200) {
+                  this.$store.commit("SET_AUTH_TOKEN", response.data.token);
+                  this.$store.commit("SET_USER", response.data.user);
+                }
+              })
+              .catch(error => 
+              {
+                const response = error.response;
+
+                if (response.status === 401) {
+                  this.invalidCredentials = true;
+                }
               });
-            }
+        
+    
           })
           .catch((error) => {
             const response = error.response;
@@ -81,6 +98,7 @@ export default {
             }
           });
       }
+      this.$parent.showRegister=false
     },
     clearErrors() {
       this.registrationErrors = false;

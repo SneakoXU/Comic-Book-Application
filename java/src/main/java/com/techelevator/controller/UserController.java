@@ -56,10 +56,14 @@ public class UserController
         return userDAO.getUserById(id);
     }
 	
+	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/get/id", method = RequestMethod.GET)
     public int getUser(Principal principal) 
 	{
-        return userDAO.findIdByUsername(principal.getName());
+		if(principal != null)
+			return userDAO.findIdByUsername(principal.getName());
+		else 
+			return -1;
     }
 	
 	@RequestMapping(value="/friends", method = RequestMethod.GET)

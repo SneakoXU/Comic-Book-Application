@@ -76,10 +76,12 @@ export default {
         {
             this.results = response;
         });
-        AuthService.getIdByUsername().then(response=>
+        AuthService.getIdByUsername()
+        .then(response=>
         {
             this.userId = response.data;
         })
+        .catch()
     },
 
     methods:{

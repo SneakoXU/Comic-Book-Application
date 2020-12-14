@@ -23,12 +23,13 @@
         </form>
     </div>
   <div class="search-container">
+            <h1 v-if="noResults" class="no-results">No results</h1>
             <div class="popup" v-if="detailShowing">
                 <div class="clickable-overlay" v-on:click="detailShowing=false"></div>
                 <comic-detail
                 :result="this.result" 
                 />
-                <button class="form-add" v-on:click="addComic(result.id)">Add</button>
+                <button class="form-add" v-on:click="addComic(result.id)">{{this.add()}}</button>
                 <button class="form-cancel" v-on:click="detailShowing=false">Close</button>
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             </div>
@@ -116,6 +117,7 @@ export default {
     {
         return{
             searchType : 'Comic Book',
+            noResults : false,
             isLoading: true,
             inputTerm : '',
             searchTerm: '',
@@ -144,23 +146,43 @@ export default {
     },
     created()
     {
-        CollectionService.getCollectionsByOwner(this.$store.state.user.username).then(response =>
+        if(this.$store.state.token != '')
         {
-            this.userCollections = response;
-        });
+            CollectionService.getCollectionsByOwner(this.$store.state.user.username).then(response =>
+            {
+                this.userCollections = response;
+            });
+        }
     },
 
     methods:{
+        add()
+        {
+            if(this.$store.state.token != '')
+            {
+                return "Add"
+            }
+            else
+            {
+                return "Log in to add"
+            }
+        },
         addComic(comicId)
         {
-            this.comicToAdd = comicId;
-            this.detailShowing = false;
-            this.userCollectionsShowing = true;
-            console.log(comicId);
+            if(this.$store.state.token != '')
+            {
+                this.comicToAdd = comicId;
+                this.detailShowing = false;
+                this.userCollectionsShowing = true;
+            }
+            else
+            {
+                this.detailShowing = false;
+                this.$parent.$parent.showLogin = true;
+            }
         },
         addComicToCollection(collectionId)
         {
-            console.log(collectionId);
             CollectionService.addComicToCollection(collectionId,this.comicToAdd);
             this.comicAdded = true;
         },
@@ -192,7 +214,6 @@ export default {
             {
                 tempString = tempString.replaceAll(key, illegalCharacters[key])
             }
-            console.log(tempString);
             if(tempString.length != 0)
                 tempString += '/';
             this.searchTerm = tempString;
@@ -211,19 +232,24 @@ export default {
         },
         searchByName()
         {
+            this.noResults = false;
             this.page = 0;
             if(this.searchType == "Comic Book")
             {
                 ComicService.nextComicsSearch(this.searchTerm, 0).then(response => 
                 {
-                    this.updateSearch(response);             
+                    this.updateSearch(response); 
+                    if(this.results.data.results.length == 0)
+                        this.noResults = true;              
                 })
             }
             else if(this.searchType == "User")
             {
                 AuthService.getUsers(this.searchTerm, 0).then(response => 
                 {
-                    this.updateSearch(response);           
+                    this.updateSearch(response);     
+                    if(this.results.data.results.length == 0)
+                        this.noResults = true;      
                 })
             }
             else if(this.searchType == "Collection")
@@ -231,13 +257,15 @@ export default {
                 CollectionService.getCollectionsPages(this.searchTerm, 0).then(response => 
                 {
                     this.updateSearch(response);       
+                    if(this.results.data.results.length == 0)
+                        this.noResults = true;
                 })
             }
+            
         },
         updateSearch(response)
         {
             this.totalPages = Math.ceil(response.data.data.total/30);
-            console.log(response);
             this.results = response.data;
             this.showNextButtons = this.totalPages > 1;
             this.isLoading = false;
@@ -375,7 +403,7 @@ input
 {
     position: fixed;
     top:0;
-    max-width: 20vw;
+    max-width: 25vw;
     padding:1%;
     height:100%;
     margin-left:1%;
@@ -394,14 +422,16 @@ cursor: pointer;
 
 
 .search-container{
-    margin-top:5%;
+    margin-top:5vh;
+    height: 90vh;
     max-width: 70vw;
     width:70vw;
     float:right;
     display: flex;
     flex-wrap: wrap;
-    padding-bottom: 5%;
+    padding-bottom: 5vh;
     justify-content: left;
+    background-color: #DDD;
 } 
 
 #title{
@@ -468,6 +498,13 @@ font-size: 120%;
 {
     color:black;
     text-shadow: 2px 2px rgba(0,0,0,0.5);
+}
+
+.no-results
+{
+    align-self: center;
+    margin-left: 35%;
+    color:#999;
 }
 
 

@@ -5,23 +5,42 @@
       <router-link class="navItem" v-bind:to="{ name: 'home' }" >
         <img class="logo" src="../assets/Images/BTC icon.png" alt="BT Comic Logo">
       </router-link>
+      <login v-if="showLogin" />
+      <register v-if="showRegister" />
       <div class="itemBox">
         <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'collection-display' , params: {username: $store.state.user.username}}" v-if="loggedIn">Collections</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'friends', params: {username: $store.state.user.username}}" v-if="loggedIn">Friends</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'login' }" v-if="!loggedIn">Login</router-link>
-        <router-link class="navItem" v-bind:to="{ name: 'register' }" v-if="!loggedIn">Register</router-link>
+        <a class="navItem" v-if="!loggedIn" v-on:click="showLogin=true">Login</a>
+        <a class="navItem"  v-if="!loggedIn" v-on:click="showRegister=true">Register</a>
         <router-link class="navItem" id="usr" v-bind:to="{ name: 'user', params: {username: $store.state.user.username}}" v-if="loggedIn">{{$store.state.user.username}}</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Logout</router-link>
       </div>
     </div>
-    <router-view />
+    <router-view  />
   </div>
 </template>
 <script>
+import Login from './views/Login.vue'
+import Register from './views/Register.vue';
+
 export default {
+  components:
+  {
+    Login,
+    Register
+  },
+  data()
+  {
+    return{
+      showLogin: false,
+      showRegister: false
+    }
+  },
+
   computed:
   {
+    
     loggedIn()
     {
       return this.$store.state.token != '';
@@ -29,7 +48,16 @@ export default {
   },
   methods:
   {
-    
+    login()
+    {
+      this.register= false;
+      this.showLogin = true;
+    },
+    register()
+    {
+      this.showLogin = false;
+      this.register= true;
+    }
   }
 }
 </script>
