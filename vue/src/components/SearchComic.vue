@@ -2,7 +2,7 @@
   <div class="main">
       <div id="backgd"></div>
     <div class="form-container">
-        <h2 class="header">Search for a {{this.searchType}}</h2>
+        <h2 class="search-text">Search for a {{this.searchType}}</h2>
         <form v-on:submit.prevent="searchByName">
             <div class="search-form">
             <div class="form-input">
@@ -24,13 +24,26 @@
     </div>
   <div class="search-container">
             <div class="popup" v-if="detailShowing">
-
+                <div class="clickable-overlay" v-on:click="detailShowing=false"></div>
                 <comic-detail
                 :result="this.result" 
                 />
-                <button class="form-add">Add</button>
+                <button class="form-add" v-on:click="addComic(result.id)">Add</button>
                 <button class="form-cancel" v-on:click="detailShowing=false">Close</button>
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+            </div>
+            <div class="popup" v-if="userCollectionsShowing">
+                <div class="clickable-overlay" v-on:click="userCollectionsShowing=false, comicAdded = false"></div>
+                <div v-show="!comicAdded">
+                    <h2>Select collection to add to:</h2>
+                
+                    <div class="collection-list" v-for="collection in userCollections.data.data.results" v-bind:key="collection.id" v-on:click="addComicToCollection(collection.id)">{{collection.name}}</div>
+                    
+                </div>
+                <div v-show="comicAdded">
+                    <h2>Comic added!</h2>
+                </div>
+                <button class="form-cancel" v-on:click="userCollectionsShowing=false, comicAdded = false">Close</button>
             </div>
       
     <div class="show-div" v-if="searchType == 'Comic Book'">
@@ -47,29 +60,33 @@
     </div>
     <div class="show-div" v-if="searchType == 'Collection'">
         <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
+            <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: result.id}}">
             <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
             <div class="inception"  v-if ="!isLoading">
                 <p id="title">{{result.name}}</p>
-                <!-- NEED TO FIX LOADING GIF -->              
+                <!-- NEED TO FIX LOADING GIF -->
             </div>
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             <img :src="getCollectionImage(result)" alt="Comic Book Image Result" :title="result.title" class="result-image">
+            </router-link>
             
         </div>
-    </div>
-    <div class="result-container" v-show="searchType == 'User'" v-for="result in results.data.results" v-bind:key="'user:' +result.id">
-        <router-link class="result-container" v-bind:to="{ name: 'user', params: {username: result.username}}">
-            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-            <div class="inception"  v-if ="!isLoading">
-                <p id="title">{{result.username}}</p>
-                <!-- NEED TO FIX LOADING GIF -->              
+        </div>
+        <div class="show-div" v-if="searchType == 'User'">
+            <div  class="result-container"  v-for="result in results.data.results" v-bind:key="'user:' +result.id">
+                <router-link class="result-container" v-bind:to="{ name: 'user', params: {username: result.username}}">
+                    <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+                    <div class="inception"  v-if ="!isLoading">
+                        <p id="title">{{result.username}}</p>
+                        <!-- NEED TO FIX LOADING GIF -->              
+                    </div>
+                
+                <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+                    <img src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg" :title="result.title" class="result-image">
+                </router-link>
+                
             </div>
-        
-        <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-            <img src="http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg" :title="result.title" class="result-image">
-        </router-link>
-        
-    </div>
+        </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
         <div>
@@ -87,14 +104,12 @@
 import ComicService from '../services/ComicService.js';
 import AuthService from '../services/AuthService.js';
 import CollectionService from '../services/CollectionService.js';
-import CollectionCard from "../components/CollectionCard.vue";
 import ComicDetail from "../components/ComicDetail.vue";
 
 
 export default {
     name: 'search-comic',
     components: {
-    CollectionCard,
     ComicDetail
   },
     data()
@@ -108,6 +123,10 @@ export default {
             page: 0,
             totalPages : 0,
             detailShowing: false,
+            userCollectionsShowing: false,
+            comicToAdd: 0,
+            userCollections :[],
+            comicAdded:false,
             results: 
             {
                 data: 
@@ -125,10 +144,26 @@ export default {
     },
     created()
     {
-
+        CollectionService.getCollectionsByOwner(this.$store.state.user.username).then(response =>
+        {
+            this.userCollections = response;
+        });
     },
 
     methods:{
+        addComic(comicId)
+        {
+            this.comicToAdd = comicId;
+            this.detailShowing = false;
+            this.userCollectionsShowing = true;
+            console.log(comicId);
+        },
+        addComicToCollection(collectionId)
+        {
+            console.log(collectionId);
+            CollectionService.addComicToCollection(collectionId,this.comicToAdd);
+            this.comicAdded = true;
+        },
         getCollectionImage(result)
         {
             let comic = result.comicBookIDs;
@@ -383,13 +418,13 @@ font-size: 120%;
     
 }
 
-.header{
+.search-text{
     color:black;
     text-shadow: 2px 2px gray;
-    padding-top: 50%;
+    padding-top: 20%;
 }
 
-.header, form{
+.search-text, form{
     
     width: 100%;
     display: flex;
@@ -415,6 +450,24 @@ font-size: 120%;
 .form-previous, .form-next, .page-number
 {
     font-family: "Runners-bold";
+}
+
+.collection-list
+{
+    padding:5px;
+    background-color: #EEE;
+    font-family: "Runners-bold";
+}
+
+.collection-list:hover
+{
+    cursor: pointer;
+    background-color: #BBB;
+}
+.popup h2
+{
+    color:black;
+    text-shadow: 2px 2px rgba(0,0,0,0.5);
 }
 
 

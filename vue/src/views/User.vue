@@ -10,13 +10,15 @@
     <h2>Collections</h2>
     <div class="collections">
         <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
-            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-            <div class="inception"  v-if ="!isLoading">
-                <p id="title">{{result.name}}</p>
-                <!-- NEED TO FIX LOADING GIF -->              
-            </div>
-            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-            <img :src="getCollectionImage(result)" alt="Comic Book Image Result" :title="result.title" class="result-image">
+            <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: result.id}}">
+                <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+                <div class="inception"  v-if ="!isLoading">
+                    <p id="title">{{result.name}}</p>
+                    <!-- NEED TO FIX LOADING GIF -->              
+                </div>
+                <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+                <img :src="getCollectionImage(result)" alt="Collection Thumbnail" :title="result.title" class="result-image">
+            </router-link>
             
         </div>
     </div>
@@ -51,6 +53,26 @@ export default {
                     this.results = response.data;
                     this.showNextButtons = true;
                     this.isLoading = false;
+                    this.$forceUpdate();
+                })
+
+    },
+    watch:
+    {
+        $route()
+        {
+            this.$nextTick(this.$forceUpdate)
+        }
+    },
+    updated()
+    {
+        this.username = this.$route.params.username
+        CollectionService.getCollectionsByOwner(this.username).then(response => 
+                {
+                    this.results = response.data;
+                    this.showNextButtons = true;
+                    this.isLoading = false;
+                    this.$forceUpdate();
                 })
     },
     name: 'user',
@@ -79,5 +101,6 @@ h1
 .collections
 {
     display: flex;
+    width: 100vw;
 }
 </style>

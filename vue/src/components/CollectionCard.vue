@@ -1,5 +1,6 @@
 <template>
 <div>
+  <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: this.collection.id}}">
 <div class="card">
   <h2 class="title">{{collection.name}}</h2>
   <h3 class="owner">By: {{username}}</h3>
@@ -10,6 +11,7 @@
     </div>
   </div>
 </div>
+  </router-link>
 </div>
 </template>
 

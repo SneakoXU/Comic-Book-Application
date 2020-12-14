@@ -8,6 +8,8 @@ import store from '../store/index'
 import Collection from '../views/Collection.vue'
 import Search from '../views/Search.vue'
 import User from '../views/User.vue'
+import Friends from '../views/Friends.vue'
+import Comics from '../views/Comics.vue'
 
 Vue.use(Router)
 
@@ -57,7 +59,7 @@ const router = new Router({
       }
     },
     {
-      path: "/collections",
+      path: "/user/:username/collections",
       name: "collection-display",
       component: Collection,
       meta: {
@@ -78,6 +80,24 @@ const router = new Router({
       path: "/user/:username",
       name: "user",
       component: User,
+      meta: {
+        requiresAuth: false
+      }
+    },
+
+    {
+      path: "/user/:username/friends",
+      name: "friends",
+      component: Friends,
+      meta: {
+        requiresAuth: false
+      }
+    },
+
+    {
+      path: "/collections/:id",
+      name: "comics",
+      component: Comics,
       meta: {
         requiresAuth: false
       }

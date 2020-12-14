@@ -31,7 +31,7 @@ export default{
     },
 
     removeComicFromCollection(collectionId, comicId){
-        return axios.post(`/collections/${collectionId}/add/${comicId}`);
+        return axios.post(`/collections/${collectionId}/remove/${comicId}`);
     },
 
     addCollection(collection){

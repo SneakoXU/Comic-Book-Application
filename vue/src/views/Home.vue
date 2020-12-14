@@ -10,7 +10,6 @@
 <script>
 import CollectionCard from "../components/CollectionCard.vue";
 import CollectionService from '../services/CollectionService.js';
-import router from '../router/index'
 
 export default {
   name: "home",

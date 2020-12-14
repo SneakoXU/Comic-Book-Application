@@ -56,6 +56,12 @@ public class UserController
         return userDAO.getUserById(id);
     }
 	
+	@RequestMapping(value="/get/id", method = RequestMethod.GET)
+    public int getUser(Principal principal) 
+	{
+        return userDAO.findIdByUsername(principal.getName());
+    }
+	
 	@RequestMapping(value="/friends", method = RequestMethod.GET)
 	public List<User> getFriends(Principal principal)
 	{

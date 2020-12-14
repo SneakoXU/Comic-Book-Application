@@ -83,7 +83,7 @@ public class CollectionSqlDAO implements CollectionDAO {
 	@Override
 	public void addComic(Field newComic, int collectionId) {
 		String sql = "insert into comic (comic_id, title, description, thumbnail_url) values (?, ?, ?, ?) on conflict do nothing;";
-        jdbcTemplate.update(sql, newComic.getId(), newComic.getTitle(), newComic.getDescription(), newComic.getThumbnail().getPath()+newComic.getThumbnail().getExtension());
+        jdbcTemplate.update(sql, newComic.getId(), newComic.getTitle(), newComic.getDescription(), newComic.getThumbnail().getPath()+"."+newComic.getThumbnail().getExtension());
         sql = "insert into collection_comic (comic_id, collection_id) values (?, ?) on conflict do nothing;";
         jdbcTemplate.update(sql, newComic.getId(), collectionId);
         for(Summary creator : newComic.getCreators().getItems())
@@ -100,7 +100,21 @@ public class CollectionSqlDAO implements CollectionDAO {
 					System.out.println(creator.getResourceURI().substring(creator.getResourceURI().lastIndexOf('/') + 1));
 				}
         		sql = "insert into author (author_id, firstname, lastname, description, thumbnail_url) values (?, ?, ?, ?, ?) on conflict do nothing;";
-        		jdbcTemplate.update(sql, id, creator.getName().substring(0, creator.getName().indexOf(' ')), creator.getName().substring(creator.getName().lastIndexOf(' ')), creator.getRole(), "");
+        		String firstName = "";
+        		String lastName = "";
+        		try {
+        		firstName = creator.getName().substring(0, creator.getName().indexOf(' '));
+        		}
+        		catch (Exception e) {
+					// TODO: handle exception
+				}
+        		try {
+        			lastName = creator.getName().substring(creator.getName().lastIndexOf(' '));
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+        		
+        		jdbcTemplate.update(sql, id, firstName, lastName, creator.getRole(), "");
         		if(!comicDAO.hasAuthor(newComic.getId(), id))
         		{
         			sql = "insert into comic_author (comic_id, author_id) values (?, ?) on conflict do nothing;";

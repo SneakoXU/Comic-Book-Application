@@ -4,17 +4,17 @@
     <h3 class="author">{{comic.author}}</h3>
     <h4 class="description">{{comic.description}}</h4>
     <div class="container">
-        <img :src="comic.image">
+        <!-- <img :src="comic.image"> -->
     </div>
 </div>
 </template>
 
 
 <script>
-import comicService from '../services/ComicService.js';
+
 export default {
     components: {
-        comicService
+
     },
     name: 'comic-detail',
     props: [
