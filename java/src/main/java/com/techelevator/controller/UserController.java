@@ -3,13 +3,21 @@ package com.techelevator.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.slf4j.helpers.SubstituteLogger;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.vote.ConsensusBased;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -58,28 +66,54 @@ public class UserController
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/get/id", method = RequestMethod.GET)
-    public int getUser(Principal principal) 
+    public int getUserId(Principal principal) 
 	{
+		System.out.println(userDAO.findIdByUsername(principal.getName()));
 		if(principal != null)
 			return userDAO.findIdByUsername(principal.getName());
-		else 
-			return -1;
+		return -1;
     }
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/get/id/{name}", method = RequestMethod.GET)
     public int getUserIdByName(@PathVariable String name, Principal principal) 
 	{
-
 		return userDAO.findIdByUsername(name);
-
+    }
+	
+	
+	
+	@RequestMapping(value="/edit/description", method = RequestMethod.POST)
+	public void editDescription(@RequestBody String description, Principal principal)
+	{
+		
+		description = description.substring(0,description.length()-1);
+		
+		for(Entry<String,String> entry : MarvelAPIController.ILLEGAL_CHARACTERS.entrySet())
+		{
+			description = MarvelAPIController.replace(description, entry.getValue(), entry.getKey());
+			System.out.println(description + " " + entry.getValue());
+		}
+		description = MarvelAPIController.replace(description, "%25", "%");
+		
+		
+		System.out.println("Changing " + principal.getName() + "'s description to " + description);
+        userDAO.setDescription(userDAO.findIdByUsername(principal.getName()), description);
+    }
+	
+	@RequestMapping(value="/edit/name", method = RequestMethod.POST)
+	public boolean editName(@RequestBody String name, Principal principal)
+	{
+		name = name.substring(0,name.length()-1);
+		System.out.println("Changing " + principal.getName() + "'s name to " + name);
+        return userDAO.setName(userDAO.findIdByUsername(principal.getName()), name);
     }
 	
 	@CrossOrigin
 	@RequestMapping(value="/friends", method = RequestMethod.GET)
 	public List<User> getFriends(Principal principal)
 	{
-		System.out.println(principal.getName());
+		System.out.println("Gettting " + principal.getName() + "'s friends");
         return userDAO.getFriendsByUserId(userDAO.findIdByUsername(principal.getName()));
     }
 	

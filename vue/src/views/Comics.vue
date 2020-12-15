@@ -1,9 +1,12 @@
 <template>
     <div class="main">
         <div id="backgd"></div>
+        
         <h1 v-if="notFound" class="no-results">Collection not found</h1>
         <div class="container">
-            
+            <div>
+                <button class='form-cancel' v-if="isUser" v-on:click="deleteCollection()">Delete Collection</button>
+            </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
                 <div class="inception" >
                     <p id="title">{{result.title}}</p>
@@ -51,6 +54,7 @@ export default {
             notFound :false,
             detailShowing: false,
             userId:0,
+            isUser: false,
             results: 
             {
                 data: 
@@ -85,18 +89,37 @@ export default {
             }
         })
         
-        AuthService.getIdByUsername()
+        AuthService.getId()
         .then(response=>
         {
+            console.log(response.data)
             this.userId = response.data;
+            AuthService.getUserById(this.userId).then(res=>
+            {
+                this.isUser = res.data.username == this.$store.state.user.username
+            });
         })
         .catch(response =>
         {
         });
+
+
+        
         
     },
 
-    methods:{
+    methods:
+    {
+        
+        deleteCollection()
+        {
+            CollectionService.deleteCollection(this.collectionId).then(()=>
+            {
+                this.$router.push("/user/" + this.$store.state.user.username + "/collections");
+            });
+            
+        },
+
         removeComic(comicId)
         {
             CollectionService.removeComicFromCollection(this.collectionId, comicId).then(() =>
@@ -119,6 +142,11 @@ export default {
 </script>
   
 <style scoped>
+
+button
+{
+    margin-top:5vh;
+}
 
 .container
 {

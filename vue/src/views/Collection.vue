@@ -92,14 +92,14 @@ export default {
     margin-top:5%;
 
     top:0;
-    max-width: 15vw;
+    width: 20vw;
     padding:1%;
     height:100%;
     margin-left:1%;
 }
 
 .comic-display{
-    margin-top:5%;
+    margin-top:5vh;
     justify-content: space-between;
     display: flex;
     max-width: 100vw;
@@ -110,11 +110,21 @@ export default {
     display: flex;
     width: 80vw;
     flex-wrap: wrap;
+    min-height: 95vh;
+    background-color: #DDD;
+    padding-top:5%;
 }
 
 .header
 {
     position: fixed;
-    left:50vw;
+    margin-left: 50vw;
+    top:10%;
+}
+
+.popup-header
+{
+
+    align-self: center;
 }
 </style>

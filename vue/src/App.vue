@@ -11,8 +11,8 @@
         <router-link class="navItem" v-bind:to="{ name: 'search' }">Search</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'collection-display' , params: {username: $store.state.user.username}}" v-if="loggedIn">Collections</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'friends', params: {username: $store.state.user.username}}" v-if="loggedIn">Friends</router-link>
-        <a class="navItem" v-if="!loggedIn" v-on:click="showLogin=true">Login</a>
-        <a class="navItem"  v-if="!loggedIn" v-on:click="showRegister=true">Register</a>
+        <a class="navItem" v-if="!loggedIn" v-on:click="showLogin=true, showRegister = false">Login</a>
+        <a class="navItem"  v-if="!loggedIn" v-on:click="showLogin=false, showRegister = true">Register</a>
         <router-link class="navItem" id="usr" v-bind:to="{ name: 'user', params: {username: $store.state.user.username}}" v-if="loggedIn">{{$store.state.user.username}}</router-link>
         <router-link class="navItem" v-bind:to="{ name: 'logout' }" v-if="loggedIn">Logout</router-link>
       </div>
@@ -21,10 +21,11 @@
   </div>
 </template>
 <script>
-import Login from './views/Login.vue'
+import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 
-export default {
+export default 
+{
   components:
   {
     Login,
@@ -113,6 +114,12 @@ export default {
     margin:0;
   }
 
+  .error
+  {
+    margin-top:0;
+    color:#ED1D24;
+  }
+
   .itemBox{
     display: flex;
     width: 100%;
@@ -148,7 +155,7 @@ export default {
     width: 100px;
   }
 
-  input, select
+  input, select, textarea
     {
         font-size: 20px;
         padding: 5px;
@@ -158,8 +165,9 @@ export default {
         border-width: 2px;
         border-style: solid;
         border-radius: 3px;
-        font-family: Runners-bold;
+        font-family: 'Runners-bold';
         outline:none;
+        resize: none;
     }
 
     button
@@ -193,6 +201,17 @@ export default {
     .form-search:hover
     {
       background-color:#BBB;
+      cursor: pointer;
+    }
+
+    .form-edit
+    {
+      background-color:rgb(167, 61, 144);
+    }
+
+    .form-edit:hover
+    {
+      color:rgb(238, 201, 238);
       cursor: pointer;
     }
 

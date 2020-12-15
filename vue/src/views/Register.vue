@@ -2,7 +2,7 @@
   <div  class="popup">
     <form class="form-register" @submit.prevent="register">
       <h1 >Create Account</h1>
-      <div class="alert alert-danger" role="alert" v-if="registrationErrors">
+      <div class="error" role="alert" v-if="registrationErrors">
         {{ registrationErrorMsg }}
       </div>
       <label for="username" class="sr-only">Username</label>
@@ -33,10 +33,10 @@
         required
       />
       <a class="link" v-on:click="$parent.showLogin=true, $parent.showRegister=false">Have an account?</a>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
-        Create Account
+      <div><button class="btn btn-lg btn-primary btn-block" type="submit">
+      Create Account
       </button>
-      <button class="form-cancel" v-on:click.prevent="$parent.showRegister=false">Close</button>
+      <button class="form-cancel" v-on:click.prevent="$parent.showRegister=false">Close</button></div>
     </form>
   </div>
 </template>
@@ -77,6 +77,8 @@ export default {
                 if (response.status == 200) {
                   this.$store.commit("SET_AUTH_TOKEN", response.data.token);
                   this.$store.commit("SET_USER", response.data.user);
+                  this.$parent.showRegister=false
+
                 }
               })
               .catch(error => 
@@ -93,12 +95,16 @@ export default {
           .catch((error) => {
             const response = error.response;
             this.registrationErrors = true;
-            if (response.status === 400) {
+            if (response.status === 400) 
+            {
               this.registrationErrorMsg = 'Bad Request: Validation Errors';
+            }
+            else if (response.status === 409) 
+            {
+              this.registrationErrorMsg = 'User already exists';
             }
           });
       }
-      this.$parent.showRegister=false
     },
     clearErrors() {
       this.registrationErrors = false;
@@ -158,5 +164,9 @@ export default {
     margin-top:-4%;
   }
 
- 
+ .popup
+  {
+    left:32.5vw;
+    width: 25vw;
+  }
 </style>

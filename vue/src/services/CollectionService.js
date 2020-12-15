@@ -51,7 +51,7 @@ export default{
     },
 
     deleteCollection(id){
-        return axios.delete(`/collections/${id}`)
+        return axios.post(`/collections/delete/${id}`)
     }
 
 

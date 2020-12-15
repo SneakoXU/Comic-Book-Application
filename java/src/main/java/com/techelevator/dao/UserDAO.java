@@ -42,4 +42,14 @@ public interface UserDAO {
 	String getUsername(int id);
 
 	List<User> getUsers(String name, int number, int page);
+
+	void setIsOnline(int id, boolean isOnline);
+
+	void setDescription(int id, String desc);
+
+	boolean isSubscribed(int id, int collectionId);
+
+	void subscribe(int id, int collectionId);
+
+	boolean setName(int id, String name);
 }

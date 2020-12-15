@@ -45,9 +45,13 @@ export default {
 </script>
 
 <style>
+
+
 .friends
 {
   margin-top:10vh;
+  display: flex;
+  flex-wrap: wrap;
 }
  
 </style>

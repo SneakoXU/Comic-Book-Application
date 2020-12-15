@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS users (
 	user_id int DEFAULT nextval('seq_user_id'::regclass) NOT NULL,
 	username varchar(50) NOT NULL,
 	password_hash varchar(200) NOT NULL,
+	online_status boolean,
+	description varchar (280),
 	role varchar(50) NOT NULL,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
@@ -222,17 +224,16 @@ CREATE TABLE IF NOT EXISTS friendrequest
 	
 CREATE TABLE IF NOT EXISTS comment
 (
-        comment_id serial,
-        commenter_id int,
+    comment_id serial,
+    commenter_id int,
 	collection_id int,
-        likes int,
-        text varchar(140) ,
+    likes int,
+    text varchar(140) ,
     	    
-        constraint pk_comment primary key(comment_id),
+    constraint pk_comment primary key(comment_id),
 	constraint fk_comment_commenter foreign key(commenter_id) references users(user_id),
 	constraint fk_comment_collection foreign key(collection_id) references collections(collection_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS subscription
 (

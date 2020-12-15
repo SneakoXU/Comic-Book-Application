@@ -25,7 +25,6 @@
   <div class="search-container">
             <h1 v-if="noResults" class="no-results">No results</h1>
             <div class="popup" v-if="detailShowing">
-                <div class="clickable-overlay" v-on:click="detailShowing=false"></div>
                 <comic-detail
                 :result="this.result" 
                 />
@@ -34,7 +33,6 @@
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             </div>
             <div class="popup" v-if="userCollectionsShowing">
-                <div class="clickable-overlay" v-on:click="userCollectionsShowing=false, comicAdded = false"></div>
                 <div v-show="!comicAdded">
                     <h2>Select collection to add to:</h2>
                 

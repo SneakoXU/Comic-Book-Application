@@ -10,7 +10,7 @@
       <div class="form-container" v-if="showForm === true">
            
           <form v-on:submit.prevent="addNewCollection" class="popup">
-              <h2 class="header">{{responseMessage}}</h2>
+              <h2 class="popup-header">{{responseMessage}}</h2>
                <div v-show="!formAddedSuccess" class="form-input">
                     <label for='name'>Collection Name: </label><br>
                     <input id='name' type='text' v-model="collection.name" class="form-control"/>
@@ -74,9 +74,7 @@ export default {
             
             CollectionService.addCollection(this.collection).then(response => {
                 if(response.status === 201){
-                    this.$router.push({
-                        path:'/collections'                        
-                    });
+                    this.$router.push('/user/' + this.$store.state.user.username + "/collections");
                     this.formAddedSuccess = true
                     this.collection.name = "";
                     this.responseMessage = "Collection added!"
@@ -110,7 +108,7 @@ export default {
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        width: 70px;
+        width: 100%;
     }
     #show-form-button{
         margin-top: 20px;

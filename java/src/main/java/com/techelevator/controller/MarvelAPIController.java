@@ -33,17 +33,30 @@ public class MarvelAPIController
 		ILLEGAL_CHARACTERS.put("!" , "%21");
 		ILLEGAL_CHARACTERS.put("@" , "%40");
 		ILLEGAL_CHARACTERS.put("#" , "%23");
-		ILLEGAL_CHARACTERS.put("//$" , "%24");
-		//ILLEGAL_CHARACTERS.put("^" , "%5E");
+		ILLEGAL_CHARACTERS.put("$" , "%24");
+		ILLEGAL_CHARACTERS.put("^" , "%5E");
 		ILLEGAL_CHARACTERS.put("&" , "%26");
 		ILLEGAL_CHARACTERS.put("\"" , "%27");
-		ILLEGAL_CHARACTERS.put("\\(" , "%28");
-		ILLEGAL_CHARACTERS.put("\\)" , "%29");
+		ILLEGAL_CHARACTERS.put("(" , "%28");
+		ILLEGAL_CHARACTERS.put(")" , "%29");
 		ILLEGAL_CHARACTERS.put("," , "%2C");
 	}
 	
 	public static RestTemplate restTemplate = new RestTemplate();
 	public static ObjectMapper mapper = new ObjectMapper();
+	
+	public static String replace(String s, String lookFor, String replacement)
+	{
+		for(int i = 0; i < s.length() - lookFor.length() + 1; i++)
+		{
+			if(s.charAt(i) == lookFor.charAt(0) &&s.substring(i, i + lookFor.length()).equals(lookFor))
+			{
+				s = s.substring(0, i) + replacement + s.substring(i + lookFor.length());
+				i += replacement.length() - lookFor.length();
+			}
+		}
+		return s;
+	}
 	
 	//black box
 	public static String generateURL(String uri)
@@ -142,10 +155,10 @@ public class MarvelAPIController
 		public static DataWrapper getComicsByName(String name) 
 		{
 
-			name = name.replaceAll("%", "%25");
+			name = replace(name, "%", "%25");
 			for(Entry<String,String> entry : ILLEGAL_CHARACTERS.entrySet())
 			{
-				name = name.replaceAll(entry.getKey(), entry.getValue());
+				name = replace(name, entry.getKey(), entry.getValue());
 			}
 			System.out.println("Getting 30 comics by name " + name);
 			return getDataWrapper("public/comics?"+ (name.equals("0")?"": "titleStartsWith="+name + "&") + "limit=30");
@@ -155,11 +168,11 @@ public class MarvelAPIController
 		{
 			if(name.equals("0"))
 				name="";
-			name = name.replaceAll("%", "%25");
+			name = replace(name, "%", "%25");
 			for(Entry<String,String> entry : ILLEGAL_CHARACTERS.entrySet())
 			{
 				
-				name = name.replaceAll(entry.getKey(), entry.getValue());
+				name = replace(name, entry.getKey(), entry.getValue());
 			}
 			System.out.println("Getting page " + pageNumber + " of comics by name " + name);
 			return getDataWrapper("public/comics?"+ (name.equals("0")?"": "titleStartsWith="+name + "&") + "limit=30&offset="+(pageNumber*30));

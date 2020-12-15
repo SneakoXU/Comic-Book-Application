@@ -12,7 +12,7 @@ public interface CollectionDAO {
 	
 	void addCollection(Collection newCollection);
 	
-	Collection removeCollection(long id);
+	void removeCollection(long id);
 	
 	List<Collection> getCollectionByCharacter(long characterID);
 		

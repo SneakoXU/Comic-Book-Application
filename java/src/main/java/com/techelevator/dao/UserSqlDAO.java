@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.management.openmbean.ArrayType;
+import javax.xml.ws.http.HTTPException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -62,6 +64,13 @@ public class UserSqlDAO implements UserDAO {
 	}
 	
 	@Override
+	public void setIsOnline(int id, boolean isOnline)
+	{
+		String sql = "update users set online_status = ? where user_id = ?;";
+		jdbcTemplate.update(sql, isOnline, id);
+	}
+	
+	@Override
 	public boolean userExists(int id)
 	{
 		String sql = "SELECT user_id FROM users WHERE user_id = ?";
@@ -73,11 +82,11 @@ public class UserSqlDAO implements UserDAO {
 	public List<User> getFriendsByUserId(int userId)
 	{
 		List<User> friends = new ArrayList<>();
-		String sql = "select u.user_id, u.username from users as u inner join user_friend as uf on uf.user_id = u.user_id where uf.friend_id = ?";
+		String sql = "select * from users as u inner join user_friend as uf on uf.user_id = u.user_id where uf.friend_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		while(results.next()) 
 			friends.add(mapRowToUserPublic(results));
-		sql = "select u.user_id, u.username from users as u inner join user_friend as uf on uf.friend_id = u.user_id where uf.user_id = ?";
+		sql = "select * from users as u inner join user_friend as uf on uf.friend_id = u.user_id where uf.user_id = ?";
 		results = jdbcTemplate.queryForRowSet(sql, userId);
 		while(results.next()) 
 			friends.add(mapRowToUserPublic(results));
@@ -146,6 +155,52 @@ public class UserSqlDAO implements UserDAO {
 	{
 		String sql = "update friendrequest set status_id = ? where request_id = ? and recipient_id = ?";
 		jdbcTemplate.update(sql, status, requestId, recipientId);
+	}
+	
+	@Override
+	public void setDescription(int id, String desc)
+	{
+		String sql = "update users set description = ? where user_id = ?";
+		jdbcTemplate.update(sql, desc, id);
+	}
+	
+	@Override
+	public boolean setName(int id, String name)
+	{
+		if(getUsername(id).equals(name) || !userExists(findIdByUsername(name)))
+		{
+			System.out.println("Setting name...");
+			String sql = "update users set username = ? where user_id = ?";
+			jdbcTemplate.update(sql, name, id);
+			return true;
+		}
+		else 
+		{
+			System.out.println("Tried to set name to user that already exists");
+			return false;
+		}
+		
+	}
+	
+	@Override
+	public void subscribe(int id, int collectionId)
+	{
+		if(!isSubscribed(id, collectionId))
+		{
+			String sql = "insert into subscription (user_id, collection_id) values (?, ?)";
+			jdbcTemplate.update(sql, id, collectionId);
+		}
+		else 
+		{
+			System.out.println("Already subscribed");
+		}
+	}
+	
+	@Override
+	public boolean isSubscribed(int id, int collectionId)
+	{
+		String sql = "select user_id from subscription where user_id = ? and collectionId = ?";
+		return jdbcTemplate.queryForRowSet(sql, id, collectionId).next();
 	}
 	
 	@Override
@@ -227,6 +282,8 @@ public class UserSqlDAO implements UserDAO {
         user.setPassword(rs.getString("password_hash"));
         user.setAuthorities(rs.getString("role"));
         user.setActivated(true);
+        user.setIsOnline(true);
+        user.setDescription(rs.getString("description"));
         return user;
     }
     
@@ -234,6 +291,8 @@ public class UserSqlDAO implements UserDAO {
         User user = new User();
         user.setId(rs.getInt("user_id"));
         user.setUsername(rs.getString("username"));
+        user.setIsOnline(true);
+        user.setDescription(rs.getString("description"));
         return user;
     }
     

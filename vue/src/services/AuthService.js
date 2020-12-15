@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-export default {
+export default 
+{
 
   login(user) {
     return axios.post('/login', user)
@@ -13,6 +14,11 @@ export default {
   getUserById(id)
   {
     return axios.get(`/user/${id}`)
+  },
+
+  getId()
+  {
+    return axios.get('user/get/id')
   },
 
   getIdByUsername(username)
@@ -70,7 +76,20 @@ export default {
     return axios.post(`/user/friends/request/acknowledge/${id}`)
   },
   
+  logout()
+  {
+    return axios.post('/logout')
+  },
 
-  
+  setName(name)
+  {
+    console.log(name);
+    return axios.post('/user/edit/name', name)
+  },
 
+  setDesc(desc)
+  {
+    console.log(desc);
+    return axios.post('/user/edit/description', desc)
+  }
 }

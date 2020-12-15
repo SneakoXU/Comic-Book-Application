@@ -13,6 +13,8 @@ public class User extends Field
 
    private int id;
    private String username;
+   private String description;
+   private boolean isOnline;
    @JsonIgnore
    private String password;
    @JsonIgnore
@@ -29,10 +31,28 @@ public class User extends Field
       this.activated = true;
       this.friends = friends;
    }
+   
+   
 
-   public int getId() {
-      return id;
+   public String getDescription() {
+	return description;
    }
+
+   public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public boolean isOnline() {
+		return isOnline;
+	}
+
+	public void setIsOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+
+	public int getId() {
+      return id;
+	}
 
    public void setId(int id) {
       this.id = id;

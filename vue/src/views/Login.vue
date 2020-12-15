@@ -2,11 +2,7 @@
   <div  class="popup">
 <form class="form-signin" @submit.prevent="login">
       <h1 class="h1 mb-3 font-weight-normal">Please Sign In</h1>
-      <div
-        class="alert alert-danger"
-        role="alert"
-        v-if="invalidCredentials"
-      >Invalid username and password!</div>
+      
       <div
         class="alert alert-success"
         role="alert"
@@ -23,6 +19,11 @@
         required
         autofocus
       />
+      <div
+        class="error"
+        role="alert"
+        v-if="invalidCredentials"
+      >Invalid username and password!</div>
       <label for="password" class="sr-only">Password</label>
       <input
         type="password"
@@ -34,8 +35,8 @@
         required
       />
       <a class="link" v-on:click="$parent.showLogin=false, $parent.showRegister=true">Need an account?</a>
-      <button type="submit">Sign in</button>
-      <button class="form-cancel" v-on:click="$parent.showLogin=false">Close</button>
+      <div><button type="submit">Sign in</button>
+      <button class="form-cancel" v-on:click="$parent.showLogin=false">Close</button></div>
     </form>
     
   </div>
@@ -67,20 +68,25 @@ export default {
         .login(this.user)
         .then(response => 
         {
-          if (response.status == 200) {
+          if (response.status == 200) 
+          {
             this.$store.commit("SET_AUTH_TOKEN", response.data.token);
+            response.data.user.password = this.user.password;
             this.$store.commit("SET_USER", response.data.user);
+            this.$parent.showLogin=false;
           }
         })
         .catch(error => 
         {
+          console.log
           const response = error.response;
-
-          if (response.status === 401) {
+          
+          if (response.status === 401) 
+          {
             this.invalidCredentials = true;
           }
         });
-        this.$parent.showLogin=false;
+        
     }
   }
 };
@@ -109,6 +115,12 @@ export default {
     
   } 
 
+  .popup
+  {
+    left:32.5vw;
+    width: 25vw;
+  }
+
   .form-signin{
 
     display: flex;
@@ -122,9 +134,11 @@ export default {
      box-shadow: 2px 5px;
    }
 
-   #username, #password{
-     margin-bottom: 15px;
-        }
+   #username, #password, a 
+   {
+     margin-top: 15px;
+     margin-bottom: 5px;
+    }
 
    #password{
      

@@ -2,7 +2,7 @@
 <div class="comic-info">
     <h2 class="title">{{comic.title}}</h2>
     <h3 class="author">{{comic.author}}</h3>
-    <h4 class="description">{{comic.description}}</h4>
+    <h4 class="description" v-html="comic.description"></h4>
     <div class="container">
         <!-- <img :src="comic.image"> -->
     </div>

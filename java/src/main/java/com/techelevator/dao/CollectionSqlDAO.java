@@ -153,9 +153,11 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 
 	@Override
-	public Collection removeCollection(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeCollection(long id) 
+	{
+		jdbcTemplate.update("delete from collection_comic where collection_id = ?;", id);
+		jdbcTemplate.update("delete from subscription where collection_id = ?;", id);
+		jdbcTemplate.update("delete from collections where collection_id = ?;", id);
 	}
 
 	@Override
