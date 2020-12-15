@@ -7,6 +7,7 @@ public class FriendRequest
 	public static final int ACCEPTED = 1;
 	public static final int DENIED = 2;
 	public static final int CANCELED = 3;
+	public static final int ACKNOWLEGED = 4;
 	
 	private int id;
 	private User sender;

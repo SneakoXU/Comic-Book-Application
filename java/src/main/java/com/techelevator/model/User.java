@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class User extends Field{
+public class User extends Field
+{
 
    private int id;
    private String username;

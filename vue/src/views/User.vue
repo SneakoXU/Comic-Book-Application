@@ -1,14 +1,44 @@
 <template>
   <div class="main">
-      <div id="backgd"></div>
+      
+    <div id="backgd"></div>
     <div class="user-info">
         <h1>{{this.username}}</h1>
+        <p>This will be the user description</p>
+        <button class="form-add" v-on:click="addFriend()" v-if="this.canAdd">Add friend</button>
+        <h2 v-if="requestSent">Request sent!</h2>
+        <button class="form-cancel" v-on:click="removeFriend()" v-if="this.canRemove">Remove friend</button>
+        <div class="incoming" v-if="incomingRequests.length != 0">
+            <h2>Incoming requests</h2>
+            <div class="request" v-for="request in incomingRequests" v-bind:key="request.id">
+                <h3>
+                    <router-link class="link" v-bind:to="{ name: 'user' , params: {username: request.sender.username}}">
+                        {{request.sender.username}}
+                    </router-link>    
+                        sent you a request</h3>
+                <div>
+                    <button class="form-add" v-on:click="acceptRequest(request.id)">Accept</button>
+                    <button class="form-cancel" v-on:click="denyReqest(request.id)">Deny</button>
+                </div>
+            </div>
+        </div>
+        <div class="outgoing" v-if="outgoingRequests.length != 0">
+            <h2>Outgoing requests</h2>
+            <div class="request" v-for="request in outgoingRequests" v-bind:key="request.id">
+                <h3>{{outgoingMessage(request)}}</h3>
+                <div>
+                    <button class="form-cancel" v-if="isPending(request)" v-on:click="cancelRequest(request.id)">Cancel</button>
+                    <button class="form-add" v-if="toBeAcknowleged(request)" v-on:click="acknowledgeRequest(request.id)">Okay</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="friends">
-
-    </div>
-    <h2>Collections</h2>
+    
     <div class="collections">
+        <div class="header">
+            <h2>Collections</h2>
+        
+        </div>
         <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
             <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: result.id}}">
                 <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
@@ -27,6 +57,7 @@
 </template>
 
 <script>
+import AuthService from '../services/AuthService';
 import CollectionService from '../services/CollectionService';
 export default {
     components: {
@@ -36,13 +67,20 @@ export default {
     {
         return{
             username: '',
+            userId: 0,
+            canAdd: false,
+            isUser:false,
+            canRemove: false,
+            requestSent:false,
             results: 
             {
                 data: 
                 {
                     results: []
                 }
-            }
+            },
+            incomingRequests: [],
+            outgoingRequests: []
         }
     },
     created()
@@ -55,8 +93,17 @@ export default {
             this.showNextButtons = true;
             this.isLoading = false;
             this.$forceUpdate();
+
         })
 
+        
+
+        AuthService.getIdByUsername(this.username).then(response => 
+        {
+            this.userId = response.data;
+        })
+        this.isUser = this.username == this.$store.state.user.username;
+        this.refreshParams()
     },
     watch:
     {
@@ -69,7 +116,10 @@ export default {
                     this.showNextButtons = true;
                     this.isLoading = false;
                     this.$forceUpdate();
-                })
+                });
+                        
+            this.isUser = this.username == this.$store.state.user.username;
+            this.refreshParams()
             this.$nextTick(this.$forceUpdate)
         }
     },
@@ -78,7 +128,148 @@ export default {
         
     },
     name: 'user',
-    methods:{
+    methods:
+    {
+        refreshParams()
+        {
+            this.incomingRequests = [];
+            this.outgoingRequests = [];
+            this.canAddFriend();
+            this.canRemoveFriend()
+            this.getOutgoing();
+            this.getIncoming();
+            this.requestSentMethod()
+        },
+        isPending(request)
+        {
+            return request.status == 0;
+        },
+        toBeAcknowleged(request)
+        {
+            return request.status == 1 || request.status == 2;
+        },
+        outgoingMessage(request)
+        {
+            switch(request.status) 
+            {
+                case 0:
+                    return "Request sent to " + request.recipient.username
+                    break;
+                case 1:
+                    return request.recipient.username + " accepted your request"
+                    break;
+                case 2:
+                    return request.recipient.username + " denied your request"
+                    break;
+                default:
+                    return "Something went wrong"
+            }
+        },
+        getOutgoing()
+        {
+            if(this.isUser)
+            {
+                AuthService.getOutgoing().then(res=>
+                {
+                    this.outgoingRequests = res.data
+                })
+            }
+        },
+        getIncoming()
+        {
+            if(this.isUser)
+            {
+                AuthService.getIncoming().then(res=>
+                {
+                    this.incomingRequests = res.data
+                })
+            }
+        },
+        acceptRequest(id)
+        {
+            AuthService.acceptIncoming(id)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+        },
+        denyReqest(id)
+        {
+            AuthService.denyIncoming(id)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+        },
+        cancelRequest(id)
+        {
+            AuthService.cancelOutgoing(id)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+            
+        },
+        acknowledgeRequest(id)
+        {
+            AuthService.acknowledgeOutgoing(id)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+        },
+        addFriend()
+        {
+            AuthService.addFriend(this.userId)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+        },
+        canAddFriend()
+        {
+            AuthService.getFriends()
+            .then(friends =>
+            {
+                AuthService.getOutgoing().then(requests =>
+                {
+                    this.canAdd = !this.isUser && (friends.data.find(e => e.username == this.username) == undefined) && (requests.data.find(e => e.sender.username == this.$store.state.user.username && (e.status !=3 && e.status != 4) && e.recipient.username == this.username) == undefined);
+                })
+                
+            })
+            .catch(() =>
+            {
+                this.canAdd = false;
+            })
+        },
+        requestSentMethod()
+        {
+            AuthService.getOutgoing().then(requests=>
+            {
+                this.requestSent = !this.isUser && (requests.data.find(e => e.sender.username == this.$store.state.user.username && (e.status !=3 && e.status != 4) && e.recipient.username == this.username) != undefined)
+            })
+        },
+        canRemoveFriend()
+        {
+            AuthService.getFriends()
+            .then(res =>
+            {
+                this.canRemove = !this.isUser && (res.data.find(e => e.username == this.username) != undefined);
+            })
+            .catch(() =>
+            {
+                this.canRemove = false;
+            })
+        },
+        removeFriend()
+        {
+            AuthService.removeFriend(this.userId)
+            .then(()=>
+            {
+                this.refreshParams()
+            })
+        },
+
         getCollectionImage(result)
         {
             let comic = result.comicBookIDs;
@@ -91,18 +282,74 @@ export default {
 
 <style scoped>
 
+.request
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
 h1
 {
-    margin-top:10%;
+    margin-top:10vh;
+    padding:0;
+    margin:0;
 }
+
+.main
+{
+    display: flex;
+}
+
+button
+{
+    width: 100%;
+}
+
+.request button
+{
+
+    width: unset;
+    height: unset;
+    margin:0;
+}
+
 .user-info
 {
+    padding-left: 1vw;
+    margin-top: 10vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-items: top;
+    width: 25vw;
 }
+
+.header
+{
+    margin-top:-7vh;
+    font-size: 150%;
+}
+
+.inception
+{
+    max-width:200px;
+    white-space: nowrap;
+
+    overflow: hidden;
+}
+
 .collections
 {
+    margin-top:15vh;
     display: flex;
     width: 100vw;
+}
+
+p
+{
+    font-size: 120%;
+    magin-top:0;
 }
 </style>

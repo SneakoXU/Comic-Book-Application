@@ -70,7 +70,6 @@
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             <img :src="getCollectionImage(result)" alt="Comic Book Image Result" :title="result.title" class="result-image">
             </router-link>
-            
         </div>
         </div>
         <div class="show-div" v-if="searchType == 'User'">
@@ -423,7 +422,7 @@ cursor: pointer;
 
 .search-container{
     margin-top:5vh;
-    height: 90vh;
+    min-height: 90vh;
     max-width: 70vw;
     width:70vw;
     float:right;

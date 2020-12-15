@@ -66,15 +66,27 @@ public class UserController
 			return -1;
     }
 	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/get/id/{name}", method = RequestMethod.GET)
+    public int getUserIdByName(@PathVariable String name, Principal principal) 
+	{
+
+		return userDAO.findIdByUsername(name);
+
+    }
+	
+	@CrossOrigin
 	@RequestMapping(value="/friends", method = RequestMethod.GET)
 	public List<User> getFriends(Principal principal)
 	{
+		System.out.println(principal.getName());
         return userDAO.getFriendsByUserId(userDAO.findIdByUsername(principal.getName()));
     }
 	
 	@RequestMapping(value="/friends/add/{id}", method = RequestMethod.POST)
 	public void addFriend(@PathVariable int id, Principal principal) 
 	{
+		System.out.println("Recieved request from " + principal.getName() + " to add " + userDAO.getUsername(id));
 		int pid = userDAO.findIdByUsername(principal.getName());
 		if(id == pid)
 			throw new ResponseStatusException(
@@ -85,16 +97,17 @@ public class UserController
 		      	          HttpStatus.FORBIDDEN, userDAO.getUsername(pid) + " is already your friend");
 		if(!userDAO.userExists(pid))
 		{
-			System.out.println("yesyesyes");
 			throw new ResponseStatusException(
 	      	          HttpStatus.NOT_FOUND, "user does not exist");
 		}
+		System.out.println("Creating friend request");
         userDAO.sendFriendRequest(userDAO.findIdByUsername(principal.getName()), id);
     }
 	
 	@RequestMapping(value="/friends/remove/{id}", method = RequestMethod.POST)
 	public void removeFriend(@PathVariable int id, Principal principal) 
 	{
+		System.out.println("Removing " + userDAO.getUsername(id) + " from " + principal.getName() + "'s friend list");
         userDAO.removeFriend(id, userDAO.findIdByUsername(principal.getName()));
     }
 	
@@ -126,6 +139,12 @@ public class UserController
 	public void acceptRequest(@PathVariable int id, Principal principal) 
 	{
         userDAO.addFriend(id, userDAO.findIdByUsername(principal.getName()));
+    }
+	
+	@RequestMapping(value="/friends/request/acknowledge/{id}", method = RequestMethod.POST)
+	public void acknowledgeRequest(@PathVariable int id, Principal principal) 
+	{
+		userDAO.changeRequestStatusSender(userDAO.findIdByUsername(principal.getName()), id, FriendRequest.ACKNOWLEGED);
     }
 
 }

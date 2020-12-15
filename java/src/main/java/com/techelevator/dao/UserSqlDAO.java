@@ -99,7 +99,7 @@ public class UserSqlDAO implements UserDAO {
 	{
 		List<FriendRequest> requests = new ArrayList<FriendRequest>();
 		
-		String sql = "SELECT * FROM friendrequest WHERE sender_id = ? and status_id in (0, 2)";
+		String sql = "SELECT * FROM friendrequest WHERE sender_id = ? and status_id in (0, 1, 2)";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		while(results.next()) 
 			requests.add(mapRowToFriendRequest(results));
@@ -129,7 +129,7 @@ public class UserSqlDAO implements UserDAO {
 	@Override
 	public boolean friendRequestExists(int userId, int friendId)
 	{
-		String sql = "SELECT sender_id FROM friendrequest WHERE sender_id = ? and recipient_id = ?";
+		String sql = "SELECT sender_id FROM friendrequest WHERE sender_id = ? and recipient_id = ? and status_id in (0)";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, friendId);
 		return results.next();
 	}
