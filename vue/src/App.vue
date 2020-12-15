@@ -273,7 +273,7 @@ color:black;
 }
 
 .result-image{
-height: 250px;
+height: 240px;
 width: 250px;
 display: flex;
 box-shadow: 7px 7px 5px rgba(0,0,0,.5);
