@@ -5,16 +5,18 @@
         <h1 v-if="notFound" class="no-results">Collection not found</h1>
         <div class="container">
             <div class="form-container">
+                <div class="collection-info">
                 <h2>{{this.results.data.name}}</h2>
                 <button class='form-cancel' v-if="isUser" v-on:click="deleteCollection()">Delete Collection</button>
                 <button class='form-edit' v-if="canSubscribe" v-on:click="subscribe()">Subscribe</button>
                 <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
+                </div>
                 <form v-if="this.$store.state.token!=''" action="">
-                    <textarea v-model="comment.text" name="comments" id="comment-text"  rows="10"></textarea>
+                    <textarea v-model="comment.text" placeholder= "Leave a comment..." name="comments" id="comment-text"  rows="10"></textarea>
                     <button class="form-add" type="submit" v-on:click="addComment()">Add Comment</button>
 
                 </form>
-                <h2 class="comment-title">Comments:</h2>
+                <h2 class="comment-title">Comments</h2>
                 <div v-for="comment in comments.data" v-bind:key="'comment:' + comment.id">
                     <div class="comment">
                     <h3 class="commenter">
@@ -294,7 +296,16 @@ textarea {
 div.comment {
     background-color: lightgray;
     box-shadow: 1px 1px black;
-    border-radius: 2px;
+    border-radius: 3px;
+
+}
+h2 {
+    font-size: 30px;
+    margin-left: 3vw;
+}
+
+h2.comment-title {
+    margin-left: 6vw;
 }
 
 </style>

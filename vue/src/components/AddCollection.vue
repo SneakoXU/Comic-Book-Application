@@ -65,6 +65,7 @@ export default {
             this.formAddedSuccess = false;
             this.formAddedFailure = false;
             this.responseMessage = "Create a Collection";
+            location.reload();                   
             
         },
         addNewCollection() {
@@ -80,7 +81,6 @@ export default {
                     this.formAddedSuccess = true
                     this.collection.name = "";
                     this.responseMessage = "Collection added!";
-                    location.reload();                   
                 }
             })
             .catch((error) =>{
