@@ -87,11 +87,14 @@
         </div>
   </div> 
     <div class="next-page" v-if="showNextButtons === true">
-        <div>
-        <button class="form-previous" v-show="page > 0" v-on:click="previousPage">Previous</button>
-        
-        <p class="page-number">Displaying Page {{page+1}} of {{totalPages}}</p>
-        <button class="form-next" type='submit' v-show="page+1 < totalPages" v-on:click="nextPage">Next</button>
+        <div class="previous">
+            <button class="form-previous" v-show="page > 0" v-on:click="previousPage">Previous</button>        
+        </div>
+        <div class="pages">
+            <p class="page-number">Displaying Page {{page+1}} of {{totalPages}}</p>
+        </div>
+        <div class="next">
+            <button class="form-next" type='submit' v-show="page+1 < totalPages" v-on:click="nextPage">Next</button>
         </div>
     </div> 
 
@@ -355,7 +358,6 @@ router-link
     max-width:200px;
 }
 
-
 #backgd
 {
     position: fixed;
@@ -363,8 +365,7 @@ router-link
     height:100vh;
     width:100vw;
     background: #EEE;
-    /* background-color: #114b5f; */
-    
+    /* background-color: #114b5f; */    
     z-index: -100;
 }
 
@@ -393,9 +394,6 @@ input
     display: flex;
 }
 
-
-
-
 .form-container
 {
     position: fixed;
@@ -415,8 +413,6 @@ cursor: pointer;
 {
     width: 100%;
 }
-
-
 
 .search-container{
     margin-top:5vh;
@@ -471,12 +467,23 @@ font-size: 120%;
 .next-page div{
     width: 30%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;    
+}
+
+div.next {
+    display: flex;
+    justify-content: flex-start;
+}
+
+div.previous{
+    display: flex;
+    justify-content: flex-end;
 }
 
 .form-previous, .form-next, .page-number
 {
     font-family: "Runners-bold";
+    
 }
 
 .collection-list
