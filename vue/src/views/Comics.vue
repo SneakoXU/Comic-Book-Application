@@ -9,6 +9,12 @@
                 <button class='form-cancel' v-if="isUser" v-on:click="deleteCollection()">Delete Collection</button>
                 <button class='form-edit' v-if="canSubscribe" v-on:click="subscribe()">Subscribe</button>
                 <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
+                <form v-if="this.$store.state.token!=''" action="">
+                    <textarea name="comments" id="comment-text"  rows="10"></textarea>
+                    <button class="form-add" type="submit">Add Comment</button>
+
+                </form>
+                
             </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
                 <div class="inception" >
@@ -74,6 +80,15 @@ export default {
         }
     },
 
+    watch:
+    {
+        $route()
+        {            
+            this.$forceUpdate();           
+            
+        }
+    },
+
     beforeCreate()
     {
         
@@ -81,7 +96,6 @@ export default {
     created()
     {
         this.refresh();
-        
         
         
     },
@@ -184,6 +198,12 @@ button
 {
     margin-top:5vh;
     width: 100%;
+}
+
+textarea {
+    margin-top: 30px ;
+    max-width: 100%;
+    min-width: 100%;
 }
 
 .container

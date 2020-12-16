@@ -147,9 +147,14 @@ public class CollectionSqlDAO implements CollectionDAO {
 	@Override 
 	public List<Comment> getComments(int collectionId)
 	{
-		List<Comment> comments = new ArrayList<Comment>();
+		String sql = "Select * from comment where collection_id = ?";
+		List<Comment> comments = new ArrayList<>();
 		
-		return comments;
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, collectionId);
+		while(results.next()) {
+			comments.add(mapRowToComment(results));
+		}
+		return  comments;
 	}
 
 	@Override
@@ -268,10 +273,14 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 	
 	
-	
 	private Collection mapRowToCollection(SqlRowSet rs)
 	{
 		return new Collection(rs.getInt("collection_id"), comicDAO.getComicsByCollection(rs.getLong("collection_id")), rs.getLong("creator_id"), rs.getBoolean("publicstatus"), rs.getDate("datecreated"), rs.getString("collectionname"));
+	}
+	
+	private Comment mapRowToComment(SqlRowSet rs)
+	{
+		return new Comment(rs.getInt("comment_id"), rs.getInt("commenter_id"), rs.getInt("collection_id"), rs.getInt("likes"), rs.getString("text"));
 	}
 
 	

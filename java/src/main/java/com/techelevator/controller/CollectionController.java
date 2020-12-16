@@ -173,11 +173,22 @@ public class CollectionController {
 	
 	
 	@ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/{collectionId}/comment", method = RequestMethod.POST)
-    public void addComic(@RequestBody Comment comment, @PathVariable int comicId, Principal principal) {
+    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    public void addComic(@RequestBody Comment comment, Principal principal) {
 		collectionDAO.addComment(comment);
     }
 	
+	@RequestMapping(value = "/{collectionId}/comments", method = RequestMethod.GET)
+	public List<Comment> getComments(@PathVariable int collectionId)
+	{
+		return collectionDAO.getComments(collectionId);
+	}	
+	
+	@RequestMapping(value = "/comment/delete/{commentId}", method = RequestMethod.POST)
+	public void deleteComment(@PathVariable int commentId)
+	{
+		 collectionDAO.deleteComment(commentId);
+	}	
 	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/{collectionId}/remove/{comicId}", method = RequestMethod.POST)

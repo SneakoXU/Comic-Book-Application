@@ -75,7 +75,7 @@
                 <router-link class="result-container" v-bind:to="{ name: 'user', params: {username: result.username}}">
                     <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
                     <div class="inception"  v-if ="!isLoading">
-                        <p id="title">
+                        <p id="user-title">
                             <i v-if="result.online" alt="online" class="online fas fa-circle fa-xs"></i>
                             <i v-if="!result.online" alt="offline" class="offline fas fa-circle fa-xs"></i>
                             {{result.username}}
@@ -434,11 +434,11 @@ cursor: pointer;
     background-color: #DDD;
 } 
 
-#title{
+#title, #page-title{
 font-family: "Runners-bold";
 white-space: nowrap;
 text-align: center;
-
+overflow: hidden;
 text-overflow: ellipsis;
 color: black;
 text-shadow: 1px 1px gray;
@@ -447,6 +447,7 @@ display: block;
 font-size: 120%;
     
 }
+
 
 .search-text{
     color:black;
