@@ -43,12 +43,16 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
-    	System.out.println(loginDto.toString());
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) 
+    {
+    	loginDto.setUsername(loginDto.getUsername().toLowerCase());
+    	loginDto.setPassword(loginDto.getPassword().toLowerCase());
     	String hash ="";
     	for(int i = 0; i < loginDto.getPassword().length()-2; i++)
     		hash += "*";
     	System.out.println("Logging in user " + loginDto.getUsername() + " with password " + loginDto.getPassword().substring(0,2) + hash);
+    	System.out.println("Setting user " + loginDto.getUsername() + "'s status to online");
+    	
     	userDAO.setIsOnline(userDAO.findIdByUsername(loginDto.getUsername()), true);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -88,7 +92,10 @@ public class AuthenticationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<HttpStatus> register(@Valid @RequestBody RegisterUserDTO newUser) { 
+    public ResponseEntity<HttpStatus> register(@Valid @RequestBody RegisterUserDTO newUser) 
+    { 
+    	newUser.setUsername(newUser.getUsername().toLowerCase());
+    	newUser.setPassword(newUser.getPassword().toLowerCase());
     	System.out.println("Registering user " + newUser.getUsername());
     	String hash ="";
     	for(int i = 0; i < newUser.getPassword().length()-2; i++)
@@ -110,13 +117,7 @@ public class AuthenticationController {
         
     }
     
-    @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public void logout(Principal principal) { 
-    	System.out.println("Logging out user " + principal.getName());
-    	userDAO.setIsOnline(userDAO.findIdByUsername(principal.getName()), false);
-    }
+    
 
     /**
      * Object to return as body in JWT Authentication. 

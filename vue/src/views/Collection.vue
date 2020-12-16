@@ -53,11 +53,12 @@ export default {
         }
     },
     created() {
-        CollectionService.getCollections().then((response) =>{
+        CollectionService.getCollections().then((response) =>
+        {
             this.collections = response.data;
         });
         this.username = this.$store.state.user.username
-        CollectionService.getCollectionsByOwner(this.username).then(response => 
+        CollectionService.getCollectionsByOwnerSubscription(this.username).then(response => 
                 {
                     this.results = response.data;
                     this.showNextButtons = true;
@@ -112,7 +113,7 @@ export default {
     flex-wrap: wrap;
     min-height: 95vh;
     background-color: #DDD;
-    padding-top:5%;
+    padding-top:5vh;
 }
 
 .header

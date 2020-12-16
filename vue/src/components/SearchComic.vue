@@ -75,7 +75,11 @@
                 <router-link class="result-container" v-bind:to="{ name: 'user', params: {username: result.username}}">
                     <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
                     <div class="inception"  v-if ="!isLoading">
-                        <p id="title">{{result.username}}</p>
+                        <p id="title">
+                            <i v-if="result.online" alt="online" class="online fas fa-circle fa-xs"></i>
+                            <i v-if="!result.online" alt="offline" class="offline fas fa-circle fa-xs"></i>
+                            {{result.username}}
+                        </p>
                         <!-- NEED TO FIX LOADING GIF -->              
                     </div>
                 
@@ -116,6 +120,7 @@ export default {
     data()
     {
         return{
+            
             searchType : 'Comic Book',
             noResults : false,
             isLoading: true,
@@ -346,6 +351,8 @@ export default {
   
 <style scoped>
 
+
+
 h2{
     font-size: 36px;
     color: white;
@@ -431,7 +438,7 @@ cursor: pointer;
 font-family: "Runners-bold";
 white-space: nowrap;
 text-align: center;
-overflow: hidden;
+
 text-overflow: ellipsis;
 color: black;
 text-shadow: 1px 1px gray;

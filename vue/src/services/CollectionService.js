@@ -26,6 +26,10 @@ export default{
         return axios.get(`/collections/owner/${username}`);
     },
 
+    getCollectionsByOwnerSubscription(username){
+        return axios.get(`/collections/mycollections/${username}`);
+    },
+
     addComicToCollection(collectionId, comicId){
         return axios.post(`/collections/${collectionId}/add/${comicId}`);
     },
@@ -52,6 +56,14 @@ export default{
 
     deleteCollection(id){
         return axios.post(`/collections/delete/${id}`)
+    },
+    subscribe(id)
+    {
+        return axios.post(`/collections/subscribe/${id}`)
+    },
+    unSubscribe(id)
+    {
+        return axios.post(`/collections/unsubscribe/${id}`)
     }
 
 

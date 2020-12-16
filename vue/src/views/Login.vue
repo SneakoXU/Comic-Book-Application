@@ -64,6 +64,19 @@ export default {
       this.register= true;
     },
     login() {
+      authService.logout().then(()=>
+      {
+        this.executeLogin();
+      })
+      .catch(()=>
+      {
+        this.executeLogin();
+      })
+      
+        
+    },
+    executeLogin()
+    {
       authService
         .login(this.user)
         .then(response => 
@@ -86,7 +99,6 @@ export default {
             this.invalidCredentials = true;
           }
         });
-        
     }
   }
 };
@@ -121,7 +133,8 @@ export default {
     width: 25vw;
   }
 
-  .form-signin{
+  .form-signin
+  {
 
     display: flex;
     align-items: center;

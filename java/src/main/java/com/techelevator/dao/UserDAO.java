@@ -52,4 +52,6 @@ public interface UserDAO {
 	void subscribe(int id, int collectionId);
 
 	boolean setName(int id, String name);
+
+	void unSubscribe(int id, int collectionId);
 }

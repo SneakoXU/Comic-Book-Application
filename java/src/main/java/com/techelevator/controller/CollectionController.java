@@ -100,6 +100,27 @@ public class CollectionController {
 		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collections.size()));
     }
 	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/mycollections/{username}", method = RequestMethod.GET)
+    public DataWrapper getCollectionsByUsernameOrSubscribed(@PathVariable String username, Principal principal) {
+		List<Collection> collections;
+		System.out.println("Getting " + username + "'s collections");
+		if(principal == null)
+		{
+			System.out.println("Logged out");
+			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), true);
+			collections.addAll(collectionDAO.getPublicCollectionsBySubscription(true, userDAO.findIdByUsername(username)));
+		}
+		else 
+		{
+			System.out.println("Logged in");
+			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), false);
+			collections.addAll(collectionDAO.getPublicCollectionsBySubscription(false, userDAO.findIdByUsername(username)));
+		}
+		System.out.println("Returning " + collections.size() + " collections");
+		return new DataWrapper().setData(new Container().setResultsList(collections).setCount(collections.size()).setTotal(collections.size()));
+    }
+	
 	
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value="/public", method = RequestMethod.GET)
@@ -183,6 +204,22 @@ public class CollectionController {
 		//else 
 			//throw new ResponseStatusException(
 		      	          //HttpStatus.UNAUTHORIZED, "You cannot edit others' collections");
+	}
+	
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/subscribe/{collectionId}", method = RequestMethod.POST)
+	public void subscribe(@PathVariable int collectionId, Principal principal) 
+	{
+		System.out.println("Subscribing user " + principal.getName() + " to collection by id " + collectionId);
+		userDAO.subscribe(userDAO.findIdByUsername(principal.getName()), collectionId);
+	}
+	
+	@ResponseStatus(HttpStatus.OK)
+	@RequestMapping(value = "/unsubscribe/{collectionId}", method = RequestMethod.POST)
+	public void unSubscribe(@PathVariable int collectionId, Principal principal) 
+	{
+		System.out.println("Unsubscribing user " + principal.getName() + " from collection by id " + collectionId);
+		userDAO.unSubscribe(userDAO.findIdByUsername(principal.getName()), collectionId);
 	}
 	
 	

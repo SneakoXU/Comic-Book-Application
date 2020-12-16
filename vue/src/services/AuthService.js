@@ -78,7 +78,7 @@ export default
   
   logout()
   {
-    return axios.post('/logout')
+    return axios.post('/user/logout')
   },
 
   setName(name)
@@ -91,5 +91,10 @@ export default
   {
     console.log(desc);
     return axios.post('/user/edit/description', desc)
+  },
+
+  isSubscribed(collectionId)
+  {
+    return axios.get(`/user/subscribed/${collectionId}`)
   }
 }

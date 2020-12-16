@@ -161,7 +161,8 @@ public class CollectionSqlDAO implements CollectionDAO {
 	}
 
 	@Override
-	public List<Collection> getCollectionByCharacter(long characterID) {
+	public List<Collection> getCollectionByCharacter(long characterID) 
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -171,6 +172,21 @@ public class CollectionSqlDAO implements CollectionDAO {
 		return getCollections("select collection_id, collectionname, creator_id, publicstatus, datecreated from collections where publicstatus = ? and creator_id = ?",
 				new Object[] {isPublic, creatorID},
 				new int[] {java.sql.Types.BOOLEAN, java.sql.Types.INTEGER});
+	}
+	
+	@Override
+	public List<Collection> getPublicCollectionsBySubscription(boolean isPublic, long userId) {
+		if(isPublic)
+		{
+			return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c inner join subscription as s on c.collection_id = s.collection_id where publicstatus = true and s.user_id = ?;",
+					new Object[] {userId},
+					new int[] {java.sql.Types.INTEGER});
+		}
+		return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c inner join subscription as s on c.collection_id = s.collection_id inner join user_friend as uf on (uf.user_id = ? or uf.friend_id = ?) where (publicstatus = true or ((uf.user_id = ? and uf.friend_id = c.creator_id) or (uf.friend_id = ? and uf.user_id = c.creator_id))) and s.user_id = ? group by c.collection_id;",
+				new Object[] {userId,userId,userId,userId,userId},
+				new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER});
+
+		
 	}
 	
 	@Override

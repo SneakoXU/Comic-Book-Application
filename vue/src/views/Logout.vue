@@ -3,9 +3,12 @@
 </template>
 
 <script>
+import AuthService from '../services/AuthService'
+
 export default {
-  created() {
-    
+  created() 
+  {
+    AuthService.logout();
     this.$store.commit("LOGOUT");
     this.$router.push("/");
   }

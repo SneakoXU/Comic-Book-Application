@@ -4,8 +4,11 @@
         
         <h1 v-if="notFound" class="no-results">Collection not found</h1>
         <div class="container">
-            <div>
+            <div class="form-container">
+                <h2>{{this.results.data.name}}</h2>
                 <button class='form-cancel' v-if="isUser" v-on:click="deleteCollection()">Delete Collection</button>
+                <button class='form-edit' v-if="canSubscribe" v-on:click="subscribe()">Subscribe</button>
+                <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
             </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
                 <div class="inception" >
@@ -55,6 +58,8 @@ export default {
             detailShowing: false,
             userId:0,
             isUser: false,
+            canSubscribe: false,
+            canUnSubscribe:false,
             results: 
             {
                 data: 
@@ -75,11 +80,37 @@ export default {
     },
     created()
     {
-        this.collectionId = this.$route.params.id
+        this.refresh();
+        
+        
+        
+    },
+
+    methods:
+    {
+        refresh()
+        {
+            this.collectionId = this.$route.params.id
         CollectionService.getCollectionsById(this.collectionId)
         .then(response =>
         {
+            
             this.results = response;
+            this.userId = response.data.userID;
+            AuthService.getUserById(this.userId)
+            .then(response=>
+            {
+                
+                AuthService.getUserById(this.userId).then(res=>
+                {
+                    this.isUser = res.data.username == this.$store.state.user.username
+                    this.checkCanSubscribe();
+                    this.checkCanUnSubscribe();
+                });
+            })
+            .catch(response =>
+            {
+            });
         })
         .catch(error =>
         {
@@ -88,29 +119,35 @@ export default {
                 this.notFound = true;
             }
         })
-        
-        AuthService.getId()
-        .then(response=>
+        },
+        checkCanSubscribe()
         {
-            console.log(response.data)
-            this.userId = response.data;
-            AuthService.getUserById(this.userId).then(res=>
+            AuthService.isSubscribed(this.results.data.id).then(res=>
             {
-                this.isUser = res.data.username == this.$store.state.user.username
-            });
-        })
-        .catch(response =>
+                this.canSubscribe = !this.isUser && this.$store.state.token != '' && !res.data
+            })
+        },
+        checkCanUnSubscribe()
         {
-        });
-
-
-        
-        
-    },
-
-    methods:
-    {
-        
+            AuthService.isSubscribed(this.results.data.id).then(res=>
+            {
+                this.canUnSubscribe = !this.isUser && this.$store.state.token != '' && res.data
+            })
+        },
+        subscribe()
+        {
+            CollectionService.subscribe(this.results.data.id).then(()=>
+            {
+                this.refresh();
+            })
+        },
+        unSubscribe()
+        {
+            CollectionService.unSubscribe(this.results.data.id).then(()=>
+            {
+                this.refresh();
+            })
+        },
         deleteCollection()
         {
             CollectionService.deleteCollection(this.collectionId).then(()=>
@@ -146,6 +183,7 @@ export default {
 button
 {
     margin-top:5vh;
+    width: 100%;
 }
 
 .container

@@ -49,7 +49,7 @@
     </div>
     
     <div class="collections">
-        <div class="header">
+        <div class="collection-header">
             <h2>Collections</h2>
         
         </div>
@@ -391,6 +391,11 @@ export default {
 
 <style scoped>
 
+.result-container
+{
+    margin-top:8%;
+}
+
 textarea
 {
     font-family: 'Runners';
@@ -431,7 +436,7 @@ button
 
 .user-info
 {
-    padding-left: 1vw;
+    padding: 0 1vw;
     margin-top: 10vh;
     display: flex;
     flex-direction: column;
@@ -440,10 +445,12 @@ button
     width: 25vw;
 }
 
-.header
+.collection-header
 {
-    margin-top:-7vh;
+    position: fixed;
+    margin-top:0vh;
     font-size: 150%;
+    left:50vw;
 }
 
 .inception
@@ -456,14 +463,15 @@ button
 
 .collections
 {
-    margin-top:15vh;
+    margin-top:5vh;
     display: flex;
     width: 100vw;
+    min-height: 95vh;
 }
 
 p
 {
     font-size: 120%;
-    magin-top:0;
+    margin-top:0;
 }
 </style>

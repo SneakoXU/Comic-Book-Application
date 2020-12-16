@@ -66,6 +66,7 @@ public class UserSqlDAO implements UserDAO {
 	@Override
 	public void setIsOnline(int id, boolean isOnline)
 	{
+		System.out.println("[BACKEND] setting user with id " + id + " to status " + isOnline);
 		String sql = "update users set online_status = ? where user_id = ?;";
 		jdbcTemplate.update(sql, isOnline, id);
 	}
@@ -167,6 +168,7 @@ public class UserSqlDAO implements UserDAO {
 	@Override
 	public boolean setName(int id, String name)
 	{
+		name = name.toLowerCase();
 		if(getUsername(id).equals(name) || !userExists(findIdByUsername(name)))
 		{
 			System.out.println("Setting name...");
@@ -197,9 +199,23 @@ public class UserSqlDAO implements UserDAO {
 	}
 	
 	@Override
+	public void unSubscribe(int id, int collectionId)
+	{
+		if(isSubscribed(id, collectionId))
+		{
+			String sql = "delete from subscription where user_id = ? and collection_id = ?";
+			jdbcTemplate.update(sql, id, collectionId);
+		}
+		else 
+		{
+			System.out.println("Not subscribed");
+		}
+	}
+	
+	@Override
 	public boolean isSubscribed(int id, int collectionId)
 	{
-		String sql = "select user_id from subscription where user_id = ? and collectionId = ?";
+		String sql = "select user_id from subscription where user_id = ? and collection_id = ?";
 		return jdbcTemplate.queryForRowSet(sql, id, collectionId).next();
 	}
 	
@@ -282,7 +298,7 @@ public class UserSqlDAO implements UserDAO {
         user.setPassword(rs.getString("password_hash"));
         user.setAuthorities(rs.getString("role"));
         user.setActivated(true);
-        user.setIsOnline(true);
+        user.setIsOnline(rs.getBoolean("online_status"));
         user.setDescription(rs.getString("description"));
         return user;
     }
@@ -291,7 +307,7 @@ public class UserSqlDAO implements UserDAO {
         User user = new User();
         user.setId(rs.getInt("user_id"));
         user.setUsername(rs.getString("username"));
-        user.setIsOnline(true);
+        user.setIsOnline(rs.getBoolean("online_status"));
         user.setDescription(rs.getString("description"));
         return user;
     }

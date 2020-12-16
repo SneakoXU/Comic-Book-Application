@@ -46,5 +46,8 @@ public interface CollectionDAO {
 	        int userId);
 
 	List<Collection> getCollections(String name, int limit, int page);
+
+	List<Collection> getPublicCollectionsBySubscription(boolean isPublic,
+	        long userId);
 	
 }

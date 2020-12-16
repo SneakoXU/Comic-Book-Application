@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -47,6 +48,13 @@ public class UserController
 	{
 		List<User> users = userDAO.getUsers(name, number, page);
         return new DataWrapper().setData(new Container().setResultsList(users).setCount(users.size()).setTotal(userDAO.getUsers("", Integer.MAX_VALUE, 0).size()));
+    }
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(value="/subscribed/{id}", method = RequestMethod.GET)
+    public boolean isSubscribed(@PathVariable int id, Principal principal) 
+	{
+        return userDAO.isSubscribed(userDAO.findIdByUsername(principal.getName()), id);
     }
 	
 	@PreAuthorize("permitAll()")
@@ -81,7 +89,20 @@ public class UserController
 		return userDAO.findIdByUsername(name);
     }
 	
-	
+	@CrossOrigin
+    @PreAuthorize("permitAll()")
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logout(Principal principal)
+    { 
+    	if(principal != null)
+    	{
+    		System.out.println("Logging out user " + principal.getName());
+    		userDAO.setIsOnline(userDAO.findIdByUsername(principal.getName()), false);
+    		return "Logged out";
+    	}
+    	return "You must be logged in to log out";
+    }
 	
 	@RequestMapping(value="/edit/description", method = RequestMethod.POST)
 	public void editDescription(@RequestBody String description, Principal principal)

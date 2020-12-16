@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import AuthService from './services/AuthService';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 
@@ -38,7 +39,10 @@ export default
       showRegister: false
     }
   },
+  created()
+  {
 
+  },
   computed:
   {
     
@@ -49,6 +53,7 @@ export default
   },
   methods:
   {
+
     login()
     {
       this.register= false;
@@ -82,6 +87,22 @@ export default
   *{
     font-family: "Runners", sans serif;
   }
+
+  i
+{
+    float: right;
+}
+
+.online
+{
+    color: #0F0;
+    text-shadow: 0px 0px 5px #4F4;
+}
+
+.offline
+{
+    color: rgb(85, 85, 85);
+}
 
   input::placeholder
   {

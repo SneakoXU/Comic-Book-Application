@@ -48,7 +48,8 @@ export default {
   name: 'register',
   data() {
     return {
-      user: {
+      user: 
+      {
         username: '',
         password: '',
         confirmPassword: '',
@@ -58,12 +59,17 @@ export default {
       registrationErrorMsg: 'There were problems registering this user.',
     };
   },
-  methods: {
-    register() {
-      if (this.user.password != this.user.confirmPassword) {
+  methods: 
+  {
+    register() 
+    {
+      if (this.user.password != this.user.confirmPassword) 
+      {
         this.registrationErrors = true;
         this.registrationErrorMsg = 'Password & Confirm Password do not match.';
-      } else {
+      } 
+      else 
+      {
         authService
           .register(this.user)
           .then(() => 
@@ -92,7 +98,8 @@ export default {
         
     
           })
-          .catch((error) => {
+          .catch((error) => 
+          {
             const response = error.response;
             this.registrationErrors = true;
             if (response.status === 400) 
