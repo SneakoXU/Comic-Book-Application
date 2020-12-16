@@ -10,7 +10,7 @@
                 <button class='form-edit' v-if="canSubscribe" v-on:click="subscribe()">Subscribe</button>
                 <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
                 <form v-if="this.$store.state.token!=''" action="">
-                    <textarea name="comments" id="comment-text"  rows="10"></textarea>
+                    <textarea v-model="comment.text" name="comments" id="comment-text"  rows="10"></textarea>
                     <button class="form-add" type="submit">Add Comment</button>
 
                 </form>
@@ -24,6 +24,9 @@
 
                 <img :src="result.thumbnail.path.substring(0, result.thumbnail.path.length - 4) + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
             </div>
+            <div v-for="comment in comments.data.results" v-bind:key="'comment:' + comment.id">
+                <p>{{comment.text}}</p>
+                </div>    
         </div>
 
         <div class="search-container">
@@ -38,6 +41,7 @@
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             </div>
         </div>
+
 
     
 
@@ -76,6 +80,18 @@ export default {
             comic : 
             {
                 id:0
+            },
+            comment: 
+            {
+                collectionId: 0,
+                text: '',
+                commenterId: 0
+            },
+            comments: {
+                data:
+                {
+                    results: []
+                }
             }
         }
     },
@@ -120,6 +136,7 @@ export default {
                     this.isUser = res.data.username == this.$store.state.user.username
                     this.checkCanSubscribe();
                     this.checkCanUnSubscribe();
+                    this.getComments();
                 });
             })
             .catch(response =>
@@ -187,6 +204,24 @@ export default {
             this.comic=comic;
             this.detailShowing=true;
             
+        },
+
+        deleteComment(){
+            CollectionService.deleteComment()
+        },
+
+        addComment(){
+            this.comment.commenterId = this.userId;
+            this.comment.collectionId = this.collectionId;
+            CollectionService.addComment(this.comment)
+        },
+
+        getComments(){
+
+            CollectionService.getComments(this.collectionId).then(response => {
+                this.comments = response;
+            })
+
         }
     }
 }

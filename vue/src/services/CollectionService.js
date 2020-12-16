@@ -64,6 +64,18 @@ export default{
     unSubscribe(id)
     {
         return axios.post(`/collections/unsubscribe/${id}`)
+    },
+
+    addComment(collection){
+        return axios.post('/collections/comment', collection)
+    },
+
+    deleteComment(id){
+        return axios.post(`/collections/comment/delete/${id}`)
+    },
+
+    getComments(id){
+        return axios.get(`/${id}/comments`)
     }
 
 
