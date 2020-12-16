@@ -8,8 +8,7 @@
             
         </div>
         <h2 class="header">My Collections</h2>
-        <div class="collections">
-            
+        <div class="collections">            
                 <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
                     <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: result.id}}">
                     <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
@@ -107,6 +106,8 @@ export default {
 }
 .collections
 {
+    text-decoration: underline;
+    margin-top: 5%;
     justify-self: right;
     display: flex;
     width: 80vw;
@@ -118,6 +119,7 @@ export default {
 
 .header
 {
+    font-size: 200%;
     position: fixed;
     margin-left: 50vw;
     top:10%;

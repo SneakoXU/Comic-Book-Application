@@ -60,16 +60,18 @@ export default {
     methods:{
         closeCreateCollection()
         {
+            this.$forceUpdate();
             this.showForm = false;
             this.formAddedSuccess = false;
             this.formAddedFailure = false;
             this.responseMessage = "Create a Collection";
+            
         },
         addNewCollection() {
             this.collection = {
                 name: this.collection.name, 
                 userId: this.$store.state.user,
-                public: this.collection.public              
+                public: this.collection.public
             };
             
             CollectionService.addCollection(this.collection).then(response => {
@@ -77,7 +79,8 @@ export default {
                     this.$router.push('/user/' + this.$store.state.user.username + "/collections");
                     this.formAddedSuccess = true
                     this.collection.name = "";
-                    this.responseMessage = "Collection added!"
+                    this.responseMessage = "Collection added!";
+                    location.reload();                   
                 }
             })
             .catch((error) =>{

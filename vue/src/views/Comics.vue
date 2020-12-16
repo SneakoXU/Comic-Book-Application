@@ -14,12 +14,15 @@
                     <button class="form-add" type="submit" v-on:click="addComment()">Add Comment</button>
 
                 </form>
+                <h2 class="comment-title">Comments:</h2>
                 <div v-for="comment in comments.data" v-bind:key="'comment:' + comment.id">
-                    <h3>
+                    <div class="comment">
+                    <h3 class="commenter">
                         {{comment.commenter_name}}
                     </h3>
-                    <p>{{comment.text}}</p>
+                    <p class="comment">{{comment.text}}</p>
                     <button class="form-cancel" v-if="comment.commenter_id == activeUser" v-on:click="deleteComment(comment.id)">Delete</button>
+                    </div>
                 </div> 
             </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
@@ -228,7 +231,7 @@ export default {
         },
 
         addComment(){
-            this.comment.commenter_id = this.userId;
+            this.comment.commenter_id = this.activeUser;
             this.comment.collection_id = this.collectionId;
             CollectionService.addComment(this.comment)
         },
@@ -287,6 +290,11 @@ textarea {
     white-space: nowrap;
 
     overflow: hidden;
+}
+div.comment {
+    background-color: lightgray;
+    box-shadow: 1px 1px black;
+    border-radius: 2px;
 }
 
 </style>
