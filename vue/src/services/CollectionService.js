@@ -75,7 +75,7 @@ export default{
     },
 
     getComments(id){
-        return axios.get(`/${id}/comments`)
+        return axios.get(`/collections/${id}/comments`)
     }
 
 

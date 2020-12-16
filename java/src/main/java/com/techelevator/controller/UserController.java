@@ -54,7 +54,9 @@ public class UserController
 	@RequestMapping(value="/subscribed/{id}", method = RequestMethod.GET)
     public boolean isSubscribed(@PathVariable int id, Principal principal) 
 	{
-        return userDAO.isSubscribed(userDAO.findIdByUsername(principal.getName()), id);
+		if(principal != null)
+			return userDAO.isSubscribed(userDAO.findIdByUsername(principal.getName()), id);
+		return false;
     }
 	
 	@PreAuthorize("permitAll()")
@@ -76,7 +78,6 @@ public class UserController
 	@RequestMapping(value="/get/id", method = RequestMethod.GET)
     public int getUserId(Principal principal) 
 	{
-		System.out.println(userDAO.findIdByUsername(principal.getName()));
 		if(principal != null)
 			return userDAO.findIdByUsername(principal.getName());
 		return -1;

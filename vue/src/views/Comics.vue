@@ -11,10 +11,16 @@
                 <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
                 <form v-if="this.$store.state.token!=''" action="">
                     <textarea v-model="comment.text" name="comments" id="comment-text"  rows="10"></textarea>
-                    <button class="form-add" type="submit">Add Comment</button>
+                    <button class="form-add" type="submit" v-on:click="addComment()">Add Comment</button>
 
                 </form>
-                
+                <div v-for="comment in comments.data" v-bind:key="'comment:' + comment.id">
+                    <h3>
+                        {{comment.commenter_name}}
+                    </h3>
+                    <p>{{comment.text}}</p>
+                    <button class="form-cancel" v-if="comment.commenter_id == activeUser" v-on:click="deleteComment(comment.id)">Delete</button>
+                </div> 
             </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
                 <div class="inception" >
@@ -24,9 +30,7 @@
 
                 <img :src="result.thumbnail.path.substring(0, result.thumbnail.path.length - 4) + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
             </div>
-            <div v-for="comment in comments.data.results" v-bind:key="'comment:' + comment.id">
-                <p>{{comment.text}}</p>
-                </div>    
+               
         </div>
 
         <div class="search-container">
@@ -66,6 +70,7 @@ export default {
         return{
             notFound :false,
             detailShowing: false,
+            activeUser: 0,
             userId:0,
             isUser: false,
             canSubscribe: false,
@@ -83,15 +88,13 @@ export default {
             },
             comment: 
             {
-                collectionId: 0,
+                collection_id: 0,
                 text: '',
-                commenterId: 0
+                commenter_id: 0
             },
-            comments: {
-                data:
-                {
-                    results: []
-                }
+            comments: 
+            {
+                data:[]
             }
         }
     },
@@ -121,35 +124,41 @@ export default {
         refresh()
         {
             this.collectionId = this.$route.params.id
-        CollectionService.getCollectionsById(this.collectionId)
-        .then(response =>
-        {
-            
-            this.results = response;
-            this.userId = response.data.userID;
-            AuthService.getUserById(this.userId)
-            .then(response=>
+            CollectionService.getCollectionsById(this.collectionId)
+            .then(response =>
             {
                 
-                AuthService.getUserById(this.userId).then(res=>
+                this.results = response;
+                this.userId = response.data.userID;
+                AuthService.getUserById(this.userId)
+                .then(response=>
                 {
-                    this.isUser = res.data.username == this.$store.state.user.username
-                    this.checkCanSubscribe();
-                    this.checkCanUnSubscribe();
-                    this.getComments();
+                    
+                    AuthService.getId().then(res=>
+                    {
+                        this.activeUser = res.data;
+                        AuthService.getUserById(this.userId).then(res=>
+                        {
+                            this.isUser = res.data.username == this.$store.state.user.username
+                            this.checkCanSubscribe();
+                            this.checkCanUnSubscribe();
+                            this.getComments();
+                        });
+                    });
+
+                    
+                })
+                .catch(response =>
+                {
                 });
             })
-            .catch(response =>
+            .catch(error =>
             {
-            });
-        })
-        .catch(error =>
-        {
-            if (error.response.status === 404) 
-            {
-                this.notFound = true;
-            }
-        })
+                if (error.response.status === 404) 
+                {
+                    this.notFound = true;
+                }
+            })
         },
         checkCanSubscribe()
         {
@@ -206,13 +215,21 @@ export default {
             
         },
 
-        deleteComment(){
-            CollectionService.deleteComment()
+        deleteComment(id){
+            CollectionService.deleteComment(id).then(()=>
+            {
+                CollectionService.getComments(this.collectionId).then(res =>
+                {
+                    this.comments = res;
+                })
+                
+            })
+            
         },
 
         addComment(){
-            this.comment.commenterId = this.userId;
-            this.comment.collectionId = this.collectionId;
+            this.comment.commenter_id = this.userId;
+            this.comment.collection_id = this.collectionId;
             CollectionService.addComment(this.comment)
         },
 
@@ -220,8 +237,17 @@ export default {
 
             CollectionService.getComments(this.collectionId).then(response => {
                 this.comments = response;
+                this.$forceUpdate()
             })
 
+        },
+        getUserById: async function(id)
+        {
+            AuthService.getUserById(id).then(res=>
+            {
+                return res.data.username;
+
+            })
         }
     }
 }

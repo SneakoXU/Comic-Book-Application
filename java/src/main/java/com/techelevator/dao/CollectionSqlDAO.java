@@ -17,11 +17,13 @@ import com.techelevator.model.marvel.fields.Summary;
 public class CollectionSqlDAO implements CollectionDAO {
 
 	private ComicDAO comicDAO;
+	private UserDAO userDAO;
     private JdbcTemplate jdbcTemplate;
 	
-	public CollectionSqlDAO(JdbcTemplate jdbcTemplate, ComicDAO comicDAO) {
+	public CollectionSqlDAO(JdbcTemplate jdbcTemplate, ComicDAO comicDAO, UserDAO userDAO) {
 		this.jdbcTemplate = jdbcTemplate;
 		this.comicDAO = comicDAO;
+		this.userDAO = userDAO;
 	}
 	
 	
@@ -133,8 +135,9 @@ public class CollectionSqlDAO implements CollectionDAO {
 	@Override 
 	public void addComment(Comment comment)
 	{
-		String sql = "insert into comment (comment_id, commenter_id, collection_id, likes, text)";
-        jdbcTemplate.update(sql, comment.getId(), comment.getCommenter_id(), comment.getCollection_id(), comment.getLikes(), comment.getText());
+		System.out.println(comment.getCommenter_id());
+		String sql = "insert into comment (commenter_id, collection_id, text) values (?, ?, ?)";
+        jdbcTemplate.update(sql, comment.getCommenter_id(), comment.getCollection_id(), comment.getText());
 	}
 	
 	@Override 
@@ -160,6 +163,7 @@ public class CollectionSqlDAO implements CollectionDAO {
 	@Override
 	public void removeCollection(long id) 
 	{
+		jdbcTemplate.update("delete from comment where collection_id = ?;", id);
 		jdbcTemplate.update("delete from collection_comic where collection_id = ?;", id);
 		jdbcTemplate.update("delete from subscription where collection_id = ?;", id);
 		jdbcTemplate.update("delete from collections where collection_id = ?;", id);
@@ -280,7 +284,7 @@ public class CollectionSqlDAO implements CollectionDAO {
 	
 	private Comment mapRowToComment(SqlRowSet rs)
 	{
-		return new Comment(rs.getInt("comment_id"), rs.getInt("commenter_id"), rs.getInt("collection_id"), rs.getInt("likes"), rs.getString("text"));
+		return new Comment(rs.getInt("comment_id"), rs.getInt("commenter_id"), userDAO.getUsername(rs.getInt("commenter_id")), rs.getInt("collection_id"), rs.getInt("likes"), rs.getString("text"));
 	}
 
 	

@@ -178,6 +178,7 @@ public class CollectionController {
 		collectionDAO.addComment(comment);
     }
 	
+	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "/{collectionId}/comments", method = RequestMethod.GET)
 	public List<Comment> getComments(@PathVariable int collectionId)
 	{

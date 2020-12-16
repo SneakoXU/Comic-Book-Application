@@ -4,17 +4,19 @@ public class Comment
 {
 	private int id;
 	private int commenter_id;
+	private String commenter_name;
 	private int collection_id;
 	private int likes;
 	private String text;
 	
 	public Comment() {}
 
-	public Comment(int id, int commenter_id, int collection_id, int likes,
+	public Comment(int id, int commenter_id, String commenter_name, int collection_id, int likes,
 	        String text) {
 		super();
 		this.id = id;
 		this.commenter_id = commenter_id;
+		this.commenter_name = commenter_name;
 		this.collection_id = collection_id;
 		this.likes = likes;
 		this.text = text;
@@ -58,6 +60,16 @@ public class Comment
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public String getCommenter_name()
+	{
+		return commenter_name;
+	}
+	
+	public void setCommenter_name(String name)
+	{
+		this.commenter_name = name;
 	}
 	
 	
