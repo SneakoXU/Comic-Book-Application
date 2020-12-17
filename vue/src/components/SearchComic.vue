@@ -36,7 +36,7 @@
                 <div v-show="!comicAdded">
                     <h2>Select collection to add to:</h2>
                 
-                    <div class="collection-list" v-for="collection in userCollections.data.data.results" v-bind:key="collection.id" v-on:click="addComicToCollection(collection.id)">{{collection.name}}</div>
+                    <button class="form-search" v-for="collection in userCollections.data.data.results" v-bind:key="collection.id" v-on:click="addComicToCollection(collection.id)">{{collection.name}}</button>
                     
                 </div>
                 <div v-show="comicAdded">
@@ -512,4 +512,7 @@ div.previous{
     color:black;
     text-shadow: 2px 2px rgba(0,0,0,0.5);
 }
+ .form-search {
+     width: 100%;
+ }
 </style>

@@ -29,12 +29,16 @@
                     </div>
                 </div> 
             </div>
+                <div class="no-comics" v-if="results.data.comicBookIDs.length==0">
+                        <h2 >No Comics in this Collection</h2>
+                        <h3 class="search-suggestion" v-if="isUser">Go to Search to Add Comics</h3>
+                </div>
             <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
+                
                 <div class="inception" >
                     <p id="title">{{result.title}}</p>
                     <!-- NEED TO FIX LOADING GIF -->              
                 </div>
-
                 <img :src="result.thumbnail.path.substring(0, result.thumbnail.path.length - 4) + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
             </div>
                
@@ -335,8 +339,16 @@ div.comment {
 
 h2 {
     font-size: 300%;
-
     text-align: center;
+}
+
+.no-comics {
+    color: darkgray;
+    text-align: center;
+    margin-left: 10vw;
+}
+button {
+    margin: 0px;
 }
 
 </style>

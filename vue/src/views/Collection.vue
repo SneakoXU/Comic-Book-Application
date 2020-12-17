@@ -10,7 +10,7 @@
         <h2 class="header">My Collections</h2>
         <div class='collections-backgd'></div>
         <div class="collections">            
-                <div class="collection-containerl" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
+                <div class="collection-containerl" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">                    
                     <router-link class="collection-containerl" v-bind:to="{ name: 'comics', params: {id: result.id}}">
 
                         <p id="title">{{result.name}}</p>

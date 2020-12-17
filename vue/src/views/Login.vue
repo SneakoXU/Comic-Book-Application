@@ -72,7 +72,7 @@ export default {
       {
         this.executeLogin();
       })
-      
+      location.reload();
         
     },
     executeLogin()
