@@ -51,7 +51,7 @@
                 :result="this.comic" 
                 />
                 <button class="form-search" v-on:click="detailShowing=false">Close</button>
-                <button class="form-cancel" v-if="this.results.data.userID == this.userId && this.$store.state.token != ''" v-on:click="removeComic(comic.id)">Delete</button>
+                <button class="form-cancel" v-if="this.results.data.userID == this.activeUser && this.$store.state.token != ''" v-on:click="removeComic(comic.id)">Delete</button>
                 
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             </div>
