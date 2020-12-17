@@ -9,11 +9,14 @@
         <div class='popup' v-if="showEdit">
             <label for="newname">Username:</label>
             <input type="text" name="newname" id="newname" v-model="username" placeholder="New Username">
+            <p class='error' v-if="username.length > 50">Name is too long</p>
             <p class='error'>{{nameErrMsg}}</p>
             <label for="newdesc">Description:</label>
             <textarea rows="4" name="newdesc" id="newdesc" v-model="description" placeholder="New Description" /> 
+            <p v-if="description.length > 0 && description.length <= 280">{{280 - this.description.length}} characters left</p>
+            <p class='error' v-if="description.length > 280">Delete {{this.description.length - 280}} characters to submit</p>
             <div>
-                <button class="form-add" v-on:click="submitEdit()" >Save</button>
+                <button class="form-add" v-if="description.length <= 280 && username.length <= 50" v-on:click="submitEdit()" >Save</button>
                 <button class="form-cancel" v-on:click="refreshParams()" >Cancel</button>
             </div>
         </div>
@@ -149,6 +152,7 @@ export default {
     {
         refreshParams()
         {
+            this.username = this.$route.params.username
             AuthService.getIdByUsername(this.username).then(response => 
             {
             this.userId = response.data;
@@ -382,7 +386,7 @@ export default {
         getCollectionImage(result)
         {
             let comic = result.comicBookIDs;
-            return comic[0] == undefined? "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_xlarge.jpg":comic[0].thumbnail.path.substring(0, comic[0].thumbnail.path.length -4) + "/portrait_xlarge.jpg";
+            return comic[0] == undefined? "https://cdn.discordapp.com/attachments/784490257771921420/789145235296485416/nocomics-collection.png":comic[0].thumbnail.path.substring(0, comic[0].thumbnail.path.length -4) + "/portrait_xlarge.jpg";
         }
     }
 
@@ -411,6 +415,8 @@ textarea
 
 h1
 {
+    max-width: 100%;
+    overflow-wrap: break-word;
     margin-top:10vh;
     padding:0;
     margin:0;
@@ -471,6 +477,9 @@ button
 
 p
 {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    
     font-size: 120%;
     margin-top:0;
 }

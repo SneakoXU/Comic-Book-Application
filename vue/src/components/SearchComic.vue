@@ -405,7 +405,7 @@ input
 {
     position: fixed;
     top:0;
-    max-width: 25vw;
+    min-width: 25vw;
     padding:1%;
     height:100%;
     margin-left:1%;

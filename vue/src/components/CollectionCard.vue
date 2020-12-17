@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class='wrapper'>
   <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: this.collection.id}}">
 <div class="card">
   <h2 class="title">{{collection.name}}</h2>
@@ -45,7 +45,7 @@ export default {
       if(this.collection.comicBookIDs[0] != undefined)
         return this.collection.comicBookIDs[0].thumbnail.path;
       else
-        return "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg";
+        return "https://cdn.discordapp.com/attachments/784490257771921420/789145235296485416/nocomics-collection.png";
     }
   }
   
@@ -55,6 +55,7 @@ export default {
 </script>
 
 <style>
+
   div.card{
     display: flex;
     flex-direction: column;

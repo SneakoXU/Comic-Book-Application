@@ -176,4 +176,9 @@ export default {
     left:32.5vw;
     width: 25vw;
   }
+
+  a
+    {
+      cursor: pointer;
+    }
 </style>

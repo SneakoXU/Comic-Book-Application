@@ -12,8 +12,10 @@
                 <button class='form-cancel' v-if="canUnSubscribe" v-on:click="unSubscribe()">Unsubscribe</button>
                 </div>
                 <form v-if="this.$store.state.token!=''" action="">
-                    <textarea v-model="comment.text" placeholder= "Leave a comment..." name="comments" id="comment-text"  rows="10"></textarea>
-                    <button class="form-add" type="submit" v-on:click="addComment()">Add Comment</button>
+                    <textarea v-bind:class="{'text-truncate':comment.text.length ==0}" v-model="comment.text" placeholder= "Leave a comment..." name="comments" id="comment-text"  rows="10"></textarea>
+                    <p v-if="comment.text.length > 0 && comment.text.length <= 140">{{140 - this.comment.text.length}} characters left</p>
+                    <p class='error' v-if="comment.text.length > 140">Delete {{this.comment.text.length - 140}} characters to submit</p>
+                    <button class="form-add" v-if="comment.text.length > 0 && comment.text.length <= 140" type="submit" v-on:click="addComment()">Add Comment</button>
 
                 </form>
                 <h2 class="comment-title">Comments</h2>
@@ -45,7 +47,7 @@
                 :result="this.comic" 
                 />
                 <button class="form-search" v-on:click="detailShowing=false">Close</button>
-                <button class="form-cancel" v-if="this.results.data.userID == this.userId" v-on:click="removeComic(comic.id)">Delete</button>
+                <button class="form-cancel" v-if="this.results.data.userID == this.userId && this.$store.state.token != ''" v-on:click="removeComic(comic.id)">Delete</button>
                 
             <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
             </div>
@@ -266,11 +268,20 @@ button
     width: 100%;
 }
 
-textarea {
+textarea
+{
     margin-top: 30px ;
     max-width: 100%;
     min-width: 100%;
 }
+
+.text-truncate
+{
+    
+    max-height: 40px;
+}
+
+
 
 .container
 {
@@ -293,19 +304,39 @@ textarea {
 
     overflow: hidden;
 }
+
+.comment-title
+{
+    font-size: 200%;
+}
+
+.commenter
+{
+    margin-top: 0;
+}
+
 div.comment {
-    background-color: lightgray;
-    box-shadow: 1px 1px black;
+    padding:10px;
+    font-size: 110%;
+    font-family: Runners-bold;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+    border-color: #000;
+    border-width: 2px;
+    border-style: solid;
     border-radius: 3px;
+    outline:0;
 
 }
+
+.form-container
+{
+    margin-top: 0;
+}
+
 h2 {
-    font-size: 30px;
-    margin-left: 3vw;
-}
+    font-size: 300%;
 
-h2.comment-title {
-    margin-left: 6vw;
+    text-align: center;
 }
 
 </style>

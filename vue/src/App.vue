@@ -21,7 +21,6 @@
   </div>
 </template>
 <script>
-import AuthService from './services/AuthService';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 
@@ -211,6 +210,11 @@ export default
     .form-submit:hover, .form-add:hover
     {
       color:#CFC;
+      cursor: pointer;
+    }
+
+    a
+    {
       cursor: pointer;
     }
 

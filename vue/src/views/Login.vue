@@ -154,6 +154,11 @@ export default {
      margin-bottom: 5px;
     }
 
+    a
+    {
+      cursor: pointer;
+    }
+
    #password{
      
    }

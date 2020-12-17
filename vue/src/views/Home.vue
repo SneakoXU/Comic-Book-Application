@@ -45,7 +45,7 @@ export default {
    text-shadow: 2px 2px black;
    text-align: center;
    margin:0;
-   
+
  }
 
  h1{
@@ -55,7 +55,7 @@ export default {
 
  .collection-container
  {
-
+  width: 100vw;
    display: flex;
    flex-direction: row;
    justify-content: space-around;

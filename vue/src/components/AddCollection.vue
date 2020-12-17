@@ -26,7 +26,8 @@
                 v-model="collection.public" v-on:checked="collection.public = !collection.public"><br> -->
                 <div class="actions">
                     <button v-show="!formAddedSuccess" class="form-submit" type='submit'>Create</button>
-                    <button class="form-cancel" v-on:click=closeCreateCollection()>Close</button>
+                    <button v-show="!formAddedSuccess" class="form-cancel" v-on:click=closeCreateCollection()>Close</button>
+                    <button v-show="formAddedSuccess" class="form-cancel form-control" v-on:click=closeCreateCollection()>Close</button>
                 </div> 
 
           </form>
@@ -117,7 +118,10 @@ export default {
         margin-top: 20px;
     }
 
-    
+    .form-control
+    {
+        width: 100%;
+    }
 
     
 
