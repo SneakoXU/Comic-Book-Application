@@ -36,7 +36,7 @@ public class MarvelAPIController
 		ILLEGAL_CHARACTERS.put("$" , "%24");
 		ILLEGAL_CHARACTERS.put("^" , "%5E");
 		ILLEGAL_CHARACTERS.put("&" , "%26");
-		ILLEGAL_CHARACTERS.put("\"" , "%27");
+		ILLEGAL_CHARACTERS.put("\'" , "%27");
 		ILLEGAL_CHARACTERS.put("(" , "%28");
 		ILLEGAL_CHARACTERS.put(")" , "%29");
 		ILLEGAL_CHARACTERS.put("," , "%2C");
