@@ -72,7 +72,7 @@ export default {
       {
         this.executeLogin();
       })
-      location.reload();
+      
         
     },
     executeLogin()
@@ -87,7 +87,7 @@ export default {
             response.data.user.password = this.user.password;
             this.$store.commit("SET_USER", response.data.user);
             this.$parent.showLogin=false;
-            this.$forceUpdate();
+            location.reload();
           }
         })
         .catch(error => 
