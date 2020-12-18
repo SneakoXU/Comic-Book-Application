@@ -10,13 +10,14 @@
             <label for="newname">Username:</label>
             <input type="text" name="newname" id="newname" v-model="username" placeholder="New Username">
             <p class='error' v-if="username.length > 50">Name is too long</p>
+            <p class='error' v-if="hasSpace(username)">Name cannot contain spaces</p>
             <p class='error'>{{nameErrMsg}}</p>
             <label for="newdesc">Description:</label>
             <textarea rows="4" name="newdesc" id="newdesc" v-model="description" placeholder="New Description" /> 
-            <p v-if="description.length > 0 && description.length <= 280">{{280 - this.description.length}} characters left</p>
-            <p class='error' v-if="description.length > 280">Delete {{this.description.length - 280}} characters to submit</p>
+            <p v-if="description.length > 0 && description.length < 280">{{279 - this.description.length}} characters left</p>
+            <p class='error' v-if="description.length >= 280">Delete {{this.description.length - 280}} characters to submit</p>
             <div>
-                <button class="form-add" v-if="description.length <= 280 && username.length <= 50" v-on:click="submitEdit()" >Save</button>
+                <button class="form-add" v-if="description.length <= 280 && username.length <= 50 && !hasSpace(username)" v-on:click="submitEdit()" >Save</button>
                 <button class="form-cancel" v-on:click="refreshParams()" >Cancel</button>
             </div>
         </div>
@@ -110,6 +111,7 @@ export default {
             outgoingRequests: []
         }
     },
+    
     created()
     {
         this.username = this.$route.params.username
@@ -150,6 +152,11 @@ export default {
     name: 'user',
     methods:
     {
+        hasSpace(str)
+        {
+            console.log('ran ' + str + ";")
+            return str.includes(' ');
+        },
         refreshParams()
         {
             this.username = this.$route.params.username
