@@ -128,11 +128,13 @@ export default {
     
   } 
 
+@media only screen and (orientation:landscape) {
   .popup
   {
     left:32.5vw;
     width: 25vw;
   }
+}
 
   .form-signin
   {
@@ -190,7 +192,11 @@ export default {
 
 
 
- 
+ @media only screen and (orientation:portrait) {
+
+   
+
+ }
 
 
 

@@ -58,15 +58,15 @@
         </div>
         <div class="result-container" v-for="result in results.data.results" v-bind:key="'collection:' + result.id">
             <router-link class="result-container" v-bind:to="{ name: 'comics', params: {id: result.id}}">
-                <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
-                <div class="inception"  v-if ="!isLoading">
-                    <p id="title">{{result.name}}</p>
-                    <!-- NEED TO FIX LOADING GIF -->              
-                </div>
-                <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
-                <img :src="getCollectionImage(result)" alt="Collection Thumbnail" :title="result.title" class="result-image">
+            <img class="result-image" v-if="isLoading" src="../../assets/Images/loading.gif"/>
+            <div class="inception"  v-if ="!isLoading">
+            <p id="title">{{result.name}}</p>
+            <!-- NEED TO FIX LOADING GIF -->
+            </div>
+            <!-- <router-link v-bind:to="{name: 'comic'}" v-show="onClick() === true"> -->
+            <img :src="getCollectionImage(result)" alt="Collection Thumbnail" :title="result.title" class="result-image">
             </router-link>
-            
+
         </div>
     </div>
   </div>
@@ -483,4 +483,42 @@ p
     font-size: 120%;
     margin-top:0;
 }
+
+@media only screen and (orientation:portrait) {
+
+    .user-info, .collections
+    {
+        min-width: 45%;
+
+    }
+
+    h2, .collection-header
+    {
+        text-align: center;
+        min-width: 100%;
+        max-width: 100%;
+        position: unset;
+        text-decoration: none;
+    }
+
+    .collections
+    {
+        margin-top: 15vh;
+    }
+
+    .collection-header
+    {
+        position: fixed;
+        max-height: 10vh;
+    }
+
+    h2
+    {
+        min-width: 50vw;
+        margin-top: -3vh;
+        max-width: 50vw;
+    }
+
+}
+
 </style>

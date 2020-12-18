@@ -354,6 +354,7 @@ export default {
 
 
 h2{
+    white-space: unset;
     font-size: 36px;
     color: white;
     text-shadow: 2px 2px black;
@@ -515,4 +516,95 @@ div.previous{
  .form-search {
      width: 100%;
  }
+
+@media only screen and (orientation:portrait) {
+    .main
+    {
+        z-index: -100;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container
+    {
+        margin-top: 7vh;
+        left:0;
+        z-index: 10;
+        width:95%;
+        height: 5vh;
+    }
+
+    .search-text
+    {
+        display: none;
+    }
+
+    .search-form
+    {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        margin-top: 5vh;
+    }
+
+    .form-input
+    {
+        flex-grow: 5;
+    }
+
+    select
+    {
+        width: 30%;
+        min-width: 160px;
+    }
+
+    .actions
+    {
+        width: 10vw;
+        margin:0;
+        flex-grow: 1;
+        min-width: 80px;
+    }
+
+    .show-div
+    {
+        background-color: rgba(0,0,0,0);
+    }
+
+    #backgd
+    {
+        background-color: rgba(0,0,0,0);
+    }
+
+    .search-container, .show-div
+    {
+        
+        z-index: 1;
+        min-width: 100%;
+        justify-content:space-around;
+        margin:0;
+        padding:0;
+    }
+
+    .show-div
+    {
+        padding-top: 15vh;
+        padding-bottom: 5vh;
+        min-height: 80vh;
+    }
+    .result-container
+    {
+        z-index: 1;
+    }
+
+    .next-page
+    {
+        z-index: 1;
+    }
+
+    
+
+
+}
+
 </style>

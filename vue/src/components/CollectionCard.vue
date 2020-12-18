@@ -5,7 +5,7 @@
   <h2 class="title">{{collection.name}}</h2>
   <h3 class="owner">By: {{username}}</h3>
   <div class="image-container">
-    <img class="face" :src="thumbnail" alt="">
+    <img class="image-card" :src="thumbnail" alt="">
     <div class="view">
       Click to view more
     </div>

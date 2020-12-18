@@ -82,7 +82,9 @@ export default {
     text-align: center;
     font-family: 'Runners-bold';
     height:unset;
+    text-decoration: none;
 }
+
 
 #backgd
 {
@@ -118,7 +120,7 @@ export default {
 .collection-containerl:visited
 {
     color:black;
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .comic-display{
@@ -129,13 +131,12 @@ export default {
 }
 .collections
 {
-    text-decoration: underline;
     justify-self: right;
     display: flex;
     width: 80vw;
     flex-wrap: wrap;
     margin-top:15vh;
-
+    text-decoration: none;
 }
 .collections-backgd
 {
@@ -165,6 +166,38 @@ export default {
 {
     height: 244px;
     width: 200px;
+}
+
+@media only screen and (orientation:portrait) {
+
+    .collections-backgd
+    {
+        width: 100%;
+    }
+
+    .collections
+    {
+        min-width: 100%;
+        margin-top:20vh;
+        justify-content: space-around;
+    }
+
+    .form-container
+    {
+        position: fixed;
+        width: 50%;
+        left:25%;
+        margin-top:15vh;
+        max-height: 10vh;
+    }
+    .header
+    {
+        min-width: 100%;
+        text-align: center;
+        margin:0;
+        margin-top: 1vh;
+    }
+
 }
 
 </style>

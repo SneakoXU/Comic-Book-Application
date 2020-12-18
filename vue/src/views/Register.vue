@@ -168,14 +168,16 @@ export default {
   h1{
     /* font-family: "SBoom"; */
     font-size: 40px;
-    margin-top:-4%;
+    margin-top:0%;
   }
-
+@media only screen and (orientation:landscape) {
  .popup
   {
     left:32.5vw;
     width: 25vw;
   }
+}
+
 
   a
     {

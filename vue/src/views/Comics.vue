@@ -29,17 +29,19 @@
                     </div>
                 </div> 
             </div>
-                <div class="no-comics" v-if="results.data.comicBookIDs.length==0">
-                        <h2 >No Comics in this Collection</h2>
-                        <h3 class="search-suggestion" v-if="isUser">Go to Search to Add Comics</h3>
-                </div>
-            <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
-                
-                <div class="inception" >
-                    <p id="title">{{result.title}}</p>
-                    <!-- NEED TO FIX LOADING GIF -->              
-                </div>
+            <div class="no-comics" v-if="results.data.comicBookIDs.length==0">
+                <h2 >No Comics in this Collection</h2>
+                <h3 class="search-suggestion" v-if="isUser">Go to Search to Add Comics</h3>
+            </div>
+            <div class='comics'>
+                <div class="result-container"  v-for="result in results.data.comicBookIDs" v-on:click="setDetail(result)" v-bind:key="'comic:' +result.id">
+            
+                    <div class="inception" >
+                        <p id="title">{{result.title}}</p>
+                        <!-- NEED TO FIX LOADING GIF -->
+                    </div>
                 <img :src="result.thumbnail.path.substring(0, result.thumbnail.path.length - 4) + '/portrait_xlarge.jpg'" alt="Comic Book Image Result" :title="result.title" class="result-image">
+                </div>
             </div>
                
         </div>
@@ -266,6 +268,14 @@ export default {
   
 <style scoped>
 
+.comics{
+    margin-top: 10vh;
+    width:75vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 button
 {
     margin-top:5vh;
@@ -289,7 +299,7 @@ textarea
 
 .container
 {
-    width: 100vw;
+    max-width: 100vw;
     margin-top:5%;
     display: flex;
     flex-direction: row;
@@ -349,6 +359,47 @@ h2 {
 }
 button {
     margin: 0px;
+}
+
+@media only screen and (orientation:portrait) {
+
+    .comics, .form-container
+    {
+        width:45%;
+    }
+
+    .container
+    {
+        max-width: 100vw;
+    }
+
+    .form-container
+    {
+        position: unset;
+        max-width: 45vw;
+        margin-left: 2vw;
+    }
+
+    h2
+    {
+        margin-top: 10vh;
+        max-width: 50vh;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space:pre-wrap;
+    }
+
+    .comics
+    {
+        margin-top: 10vh;
+        justify-content: center;
+    }
+
+    .no-comics 
+    {
+        opacity: 0;
+    }
+
 }
 
 </style>

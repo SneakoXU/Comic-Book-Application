@@ -47,6 +47,11 @@ export default {
    margin:0;
 
  }
+ h2
+ {
+   max-width: 100%;
+   white-space: nowrap;
+ }
 
  h1{
    margin-top:10%;
@@ -59,7 +64,37 @@ export default {
    display: flex;
    flex-direction: row;
    justify-content: space-around;
+   flex-wrap: wrap;
    margin:0;
+ }
+
+ @media only screen and (orientation:portrait) {
+
+   h1
+   {
+     margin-top:10vh
+   }
+
+   #title
+   {
+     max-width:100%;
+     
+   }
+
+   .card
+  {
+    min-width:100%;
+    min-height: 100%;
+    margin:0px;
+  }
+
+   .collection-container
+   {
+     max-width:95vw;
+     margin-top:-20vh;
+     flex-wrap: wrap;
+   }
+
  }
  
 </style>

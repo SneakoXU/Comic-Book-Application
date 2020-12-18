@@ -10,6 +10,7 @@ import Search from '../views/Search.vue'
 import User from '../views/User.vue'
 import Friends from '../views/Friends.vue'
 import Comics from '../views/Comics.vue'
+import Video from '../views/Video.vue'
 
 Vue.use(Router)
 
@@ -98,6 +99,15 @@ const router = new Router({
       path: "/collections/:id",
       name: "comics",
       component: Comics,
+      meta: {
+        requiresAuth: false
+      }
+    },
+
+    {
+      path: "/video",
+      name: "video",
+      component: Video,
       meta: {
         requiresAuth: false
       }
