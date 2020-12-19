@@ -1,131 +1,210 @@
-# Capstone Starter Project
+# Java Server Documentation v1.0
+Back-end RESTful API server
 
-## Database
+## Paths
 
-Inside the `<project-root>/database/` directory, you'll find an executable Bash script (`.sh` file) and several SQL scripts (`.sql` files). These can be used to build and rebuild a PostgreSQL database for the capstone project.
+***
+- ## Comics 
+    -     /comics/query/title/{name}
+         - Makes request to Marvel API to get the first 30 comics that begin with {name}
+         - Public
+    -     /comics/query/title/{name}/{page}
+         - add a {page} parameter to change which 30 results you get
+         - Public
+    -     /comics/query/id/{id}
+         - Makes request to Marvel API to get a comic with the matching {id}.
+         - Public
+    -     /comics/thumbnail/{id}
+         - Gets the url of the comic in the database matching {id} as a String 
+         - Public 
+     ***
 
-From a terminal session, execute the following commands:
+- ## Collections
+    -     /collections/public
+         - Gets all public collections
+         - Public
+    -     /collections/public/{limit}
+         - Gets random selection of public collections limited to {limit}
+         - Public
+    -     /collections/{name}/{number}/{page}
+         - Gets public collections loosely matching {name} limited to {number} offset by {number * page}
+         - Public
+    -     /collections/{number}/{page}
+         - Gets public collections limited to {number} offset by {number * page}
+         - Public
+    -     /collections/owner/{userId}
+         - Gets collections of user {userId} and also includes private collections based on if a valid auth token is provided
+    -     /collections/mycollections/{username}
+         - Gets collections owned by {username} as well as all they are subscribed to. Allows all but results depend on authentication
+         - Public
+    -     /collections/{id}
+         - Gets a public collection matching {id} if it exists
+         - Public
+    -     /collections/{collectionId}/add/{comicId}
+         - Adds a comic from the marvel api matching {comicId} to the collection matching {collectionId}
+         - Requires Auth
+    -     /collections/{collectionId}/remove/{comicId}
+         - Removes the comic matching {comicId} from the collection matching {collectionId}
+         - Requires Auth
+     -     /collections/thumbnail/{collectionId}
+         - Gets the url of the first comic in the collection matching {collectionId} as a String
+         - Public
+    -     /collections/delete/{collectionId}
+         - Deletes the collection matching {collectionId} if it exists
+         - Requires Auth
+    -     /collections/comment
+         - POST
+         - Adds a comment. Comments contain the collection id they are children of 
+         - Requires Auth
+    -     /collections/create
+         - Creates a form from the response body
+         - Requires Auth
+         - Example:     
+           *** 
+                <form action="http://localhost:8080/collections/create" method="post">
+                     <label for="name" >Collection Name:</label><br>
+                     <input name="name" type="text" id="nameInput"><br>
+                     <label for="isPublic" >Is this collection public?</label><br>
+                     <input name="isPublic" type="checkbox" id="isPublicInput"><br>
+                     <input type="submit" value="Submit">
+                 </form>
 
-```
-cd <project-root>/database/
-./create.sh
-```
+             <form action="http://localhost:8080/collections/create" method="post">
+                 <label for="name" >Collection Name:</label><br>
+                 <input name="name" type="text" id="nameInput"><br>
+                 <label for="isPublic" >Is this collection public?</label><br>
+                 <input name="isPublic" type="checkbox" id="isPublicInput"><br>
+                 <input type="submit" value="Submit">
+             </form>
 
-This Bash script drops the existing database, if necessary, creates a new database named `final_capstone`, and runs the various SQL scripts in the correct order. You don't need to modify the Bash script unless you want to change the database name.
+     ***
 
-Each SQL script has a specific purpose as described below:
+- ## Authentication
+     -     /register
+         - Creates an account
+         - Public
+         - Example: 
+           ***    
+                <form action="http://localhost:8080/register" method="post" target="_blank">
+                    <label for="username" >Username:</label><br>
+                    <input name="username" type="text" id="usernameInput" value="Jam"><br>
+                    <label for="password" >Password:</label><br>
+                    <input name="password" type="text" id="passwordInput" value="yes"><br>
+                    <label for="confirmPassword" >Confirm Password:</label><br>
+                    <input name="confirmPassword" type="text" id="confirmPasswordInput" value="yes"><br>
+                    <label for="role" >Role:</label><br>
+                    <input name="role" type="text" id="roleInput" value="ADMIN"><br>
+                    <input type="submit" value="Submit">
+                </form>
 
-| File Name | Description |
-| --------- | ----------- |
-| `data.sql` | This script populates the database with any static setup data or test/demo data. The project team should modify this script. |
-| `dropdb.sql` | This script destroys the database so that it can be recreated. It drops the database and associated users. The project team shouldn't have to modify this script. |
-| `schema.sql` | This script creates all of the database objects, such as tables and sequences. The project team should modify this script. |
-| `user.sql` | This script creates the database application users and grants them the appropriate privileges. The project team shouldn't have to modify this script. <br /> See the next section for more information on these users. |
+              <form action="http://localhost:8080/register" method="post" target="_blank">
+                  <label for="username" >Username:</label><br>
+                  <input name="username" type="text" id="usernameInput" value="Jam"><br>
+                  <label for="password" >Password:</label><br>
+                  <input name="password" type="text" id="passwordInput" value="yes"><br>
+                  <label for="confirmPassword" >Confirm Password:</label><br>
+                  <input name="confirmPassword" type="text" id="confirmPasswordInput" value="yes"><br>
+                  <label for="role" >Role:</label><br>
+                  <input name="role" type="text" id="roleInput" value="ADMIN"><br>
+                  <input type="submit" value="Submit">
+              </form>
 
-### Database users
+           ***
 
-The database superuser—meaning `postgres`—must only be used for database administration. It must not be used by applications. As such, two database users are created for the capstone application to use as described below:
+     -     /login
+         - Get an authenticated bearer token such as `{"token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYW0iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwNzU2OTkxOH0.S8XRbCF0c7vzuV_5kh2XKZMErqXk-qX9TmhzA9fDFHkGi19USM0Oi-uXbEu-NK9_DPA0CN35EIaxsreP0GXpfQ","user":{"id":4,"username":"Jam","authorities":[{"name":"ROLE_ADMIN"}],"friends":null}}`
+         - Used when pushing with axios
+         - Public
+     -     /loginraw
+         - Get an authenticated bearer token such as `{"token":"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKYW0iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImV4cCI6MTYwNzU2OTkxOH0.S8XRbCF0c7vzuV_5kh2XKZMErqXk-qX9TmhzA9fDFHkGi19USM0Oi-uXbEu-NK9_DPA0CN35EIaxsreP0GXpfQ","user":{"id":4,"username":"Jam","authorities":[{"name":"ROLE_ADMIN"}],"friends":null}}`
+         - Used when sending raw form data via Vanilla HTML or Postman
+         - Public
+         - Example:  
+           ***
+               
+                <form action="http://localhost:8080/login" method="post" target="_blank">
+                    <label for="username" >Username:</label><br>
+                    <input name="username" type="text" id="usernameInput" value="username"><br>
+                    <label for="password" >Password:</label><br>
+                    <input name="password" type="text" id="passwordInput" value="password"><br>
+                    <input type="submit" value="Submit">
+                </form> 
 
-| Username | Description |
-| -------- | ----------- |
-| `final_capstone_owner` | This user is the schema owner. It has full access—meaning granted all privileges—to all database objects within the `capstone` schema and also has privileges to create new schema objects. This user can be used to connect to the database from PGAdmin for administrative purposes. |
-| `final_capstone_appuser` | The application uses this user to make connections to the database. This user is granted `SELECT`, `INSERT`, `UPDATE`, and `DELETE` privileges for all database tables and can `SELECT` from all sequences. The application datasource has been configured to connect using this user. |
+              <form action="http://localhost:8080/login" method="post" target="_blank">
+                  <label for="username" >Username:</label><br>
+                  <input name="username" type="text" id="usernameInput" value="username"><br>
+                  <label for="password" >Password:</label><br>
+                  <input name="password" type="text" id="passwordInput" value="password"><br>
+                  <input type="submit" value="Submit">
+               </form>
 
-
-## Spring Boot
-
-### Datasource
-
-A Datasource has been configured for you in `/src/resources/application.properties`. It connects to the database using the `capstone_appuser` database user. You can change the name of this database if you want, but remember to change it here and in the `create.sh` script in the database folder:
-
-```
-# datasource connection properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/final_capstone
-spring.datasource.name=final_capstone
-spring.datasource.username=final_capstone_appuser
-spring.datasource.password=finalcapstone
-```
-
-### JdbcTemplate
-
-If you look in `/src/main/java/com/techelevator/dao`, you'll see `UserSqlDAO`. This is an example of how to get an instance of `JdbcTemplate` in your DAOs. If you declare a field of type `JdbcTemplate` and add it as an argument to the constructor, Spring automatically injects an instance for you:
-
-```java
-@Service
-public class UserSqlDAO implements UserDAO {
-
-    private JdbcTemplate jdbcTemplate;
-
-    public UserSqlDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-}
-```
-
-### CORS
-
-Any controller that'll be accessed from a client like the Vue Starter application needs the `@CrossOrigin` annotation. This
-tells the browser that you're allowing the client application to access this resource:
-
-```java
-@RestController
-@CrossOrigin
-public class AuthenticationController {
-    // ...
-}
-```
-
-## Security
-
-Most of the functionality related to Security is located in the `/src/main/java/com/techelevator/security` package. You shouldn't have to modify anything here, but feel free to go through the code if you want to see how things work.
-
-### Authentication Controller
-
-There is a single controller in the `com.techelevator.controller` package called `AuthenticationController.java`.
-
-This controller contains the `/login` and `/register` routes and works with the Vue starter as is. If you need to modify the user registration form, start here.
-
-The authentication controller uses the `UserSqlDAO` to read and write data from the users table.
-
-
-## Testing
+     ***
+- ## Users
+     -     /user/logout
+         - Sets an account's online status to false
+         - Requires Auth
+  -     /user/edit/name
+     - Changes the name/username of the user. This changes login credentials
+     - Requires Auth
+  -     /user/edit/description
+     - Changes the description of the user
+     - Requires Auth
 
 
-### DAO integration tests
+     ***
+- ## Friends
+   - ### Friend request statuses:
+     - 0 - Pending 
+     - 1 - Accepted
+     - 2 - Denied
+     - 3 - Canceled
+     - Example: 
+     ``` 
+     {
+        "id": 1,
+        "sender": 
+        {
+          "id": 1,
+          "username": "Example1",
+          "authorities": [],
+          "friends": null
+        },
+        "recipient": 
+        {
+          "id": 2,
+          "username": "Example2",
+          "authorities": [],
+          "friends": null
+        },
+        "status": 0   <--------------- HERE
+     }
+   -     /user/friends
+     - Gets the friends of the logged in user
+     - Requires Auth
+   -     /user/friends/add/{id}
+     - Sends the user matching {id} a friend request if they exist
+     - Requires Auth
+   -     /user/friends/remove/{id}
+     - Removes a user matching {id} from the logged in user's friend list
+     - Requires Auth
+   -     /user/friends/request/incoming
+     - Gets a list of pending friend requests to the logged in user
+     - Requires Auth
+   -     /user/friends/request/outgoing
+     - Gets a list of pending friend requests from the logged in user
+     - Requires Auth
+   -     /user/friends/request/deny/{requestId}
+     - Cancels an incoming request to the logged in user matching {requestId}
+     - Requires Auth
+   -     /user/friends/request/cancel/{requestId}
+     - Cancels an outgoing request from the logged in user matching {requestId}
+     - Requires Auth
+   -     /user/friends/request/accept/{requestId}
+     - Accepts an incoming request to the logged in user matching {requestId} and adds the request sender as a friend
+     - Requires Auth
 
-`com.techelevator.dao.DAOIntegrationTest` has been provided for you to use as a base class for any DAO integration test. It initializes a Datasource for testing and manages rollback of database changes between tests.
-
-The following is an example of extending this class for writing your own DAO integration tests:
-
-```
-package com.techelevator.dao;
-
-import com.techelevator.model.User;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import javax.sql.DataSource;
-
-public class UserSqlDaoIntegrationTest extends DAOIntegrationTest {
-
-    private UserSqlDAO userSqlDAO;
-
-    @Before
-    public void setup() {
-        DataSource dataSource = this.getDataSource();
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        userSqlDAO = new UserSqlDAO(jdbcTemplate);
-    }
-
-    @Test
-    public void createNewUser() {
-        boolean userCreated = userSqlDAO.create("TEST_USER","test_password","user");
-        Assert.assertTrue(userCreated);
-        User user = userSqlDAO.findByUsername("TEST_USER");
-        Assert.assertEquals("TEST_USER", user.getUsername());
-    }
-
-}
-```
+# Changelog
+   - v1.1b Added friends/ request system
+   - v1.2b Fixed problem with listing incoming friend requests
+   - v1.0 Fixed problem with accepting, denying, and canceling friend requests
+   - v2.1b Added collection comments
