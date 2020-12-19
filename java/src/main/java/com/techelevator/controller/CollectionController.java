@@ -3,6 +3,7 @@ package com.techelevator.controller;
 import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -86,12 +87,12 @@ public class CollectionController {
     public DataWrapper getCollectionsByUsername(@PathVariable String username, Principal principal) {
 		List<Collection> collections;
 		System.out.println("Getting " + username + "'s collections");
-		if(principal == null)
+		if(principal == null || (!userDAO.friendExists(userDAO.findIdByUsername(username), userDAO.findIdByUsername(principal.getName())) && !principal.getName().equals(username)))
 		{
 			System.out.println("Logged out");
 			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), true);
 		}
-		else 
+		else
 		{
 			System.out.println("Logged in");
 			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), false);
@@ -114,6 +115,7 @@ public class CollectionController {
 		else 
 		{
 			System.out.println("Logged in");
+			System.out.println("Subscribed to " + collectionDAO.getPublicCollectionsBySubscription(false, userDAO.findIdByUsername(username)).size() + " collections");
 			collections = collectionDAO.getCollectionsByUser(userDAO.findIdByUsername(username), false);
 			collections.addAll(collectionDAO.getPublicCollectionsBySubscription(false, userDAO.findIdByUsername(username)));
 		}
@@ -135,7 +137,10 @@ public class CollectionController {
     public List<Collection> getPublicCollectionsLimited(@PathVariable int limit, Principal principal) {
         List<Collection> collections = collectionDAO.getCollections(true);
         if(collections.size() > limit)
-        	collections = collections.subList(0,4);
+        {
+        	Collections.shuffle(collections);
+        	collections = collections .subList(0,4);
+        }
         return collections;
     }
 	

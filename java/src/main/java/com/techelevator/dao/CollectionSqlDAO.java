@@ -187,11 +187,11 @@ public class CollectionSqlDAO implements CollectionDAO {
 	public List<Collection> getPublicCollectionsBySubscription(boolean isPublic, long userId) {
 		if(isPublic)
 		{
-			return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c inner join subscription as s on c.collection_id = s.collection_id where publicstatus = true and s.user_id = ?;",
+			return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c full outer join subscription as s on c.collection_id = s.collection_id where publicstatus = true and s.user_id = ?;",
 					new Object[] {userId},
 					new int[] {java.sql.Types.INTEGER});
 		}
-		return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c inner join subscription as s on c.collection_id = s.collection_id inner join user_friend as uf on (uf.user_id = ? or uf.friend_id = ?) where (publicstatus = true or ((uf.user_id = ? and uf.friend_id = c.creator_id) or (uf.friend_id = ? and uf.user_id = c.creator_id))) and s.user_id = ? group by c.collection_id;",
+		return getCollections("select c.collection_id, c.collectionname, c.creator_id, c.publicstatus, c.datecreated from collections as c inner join subscription as s on c.collection_id = s.collection_id full outer join user_friend as uf on (uf.user_id = ? or uf.friend_id = ?) where (publicstatus = true or ((uf.user_id = ? and uf.friend_id = c.creator_id) or (uf.friend_id = ? and uf.user_id = c.creator_id))) and s.user_id = ? group by c.collection_id;",
 				new Object[] {userId,userId,userId,userId,userId},
 				new int[] {java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER,java.sql.Types.INTEGER});
 
