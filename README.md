@@ -20,11 +20,28 @@ In addition, we were required to adhere to at least the following user stories
 We completed all of these within the allotted time and even more. The features that we added include the following:
 
 ## Web app Features
-- Registration/ login
-- Create/ delete collections
-- Search all marvel comics by name and add them to collections
-- Search users by name as well as see if they're online, send them friend requests, and view their collections
-- Search Collections by name, view the comics in them, and subscribe/unsubscribe to them to see them in your Collections tab
-- Accept, Deny, and Cancel Incoming/ Outgoing friend requests
-- Add comments to collections or delete your comments
-- Change your Description and Display name/Username
+- # Registration/ login
+  ![Home page](./images/home%20page.PNG)
+  ![Login](./images/login.png)
+  ![Register](./images/register.PNG)
+- # Create/ delete collections
+  ![Collections](./images/collections.PNG)
+  ![Create collection](./images/create%20collection.PNG)
+- # Search all marvel comics by name and add them to collections
+  ![Search comics](./images/search.PNG)
+  ![Search comics](./images/comic%20detail.PNG)
+  ![Search comics](./images/add%20to%20collection.PNG)
+- # Search users by name as well as see if they're online, send them friend requests, and view their collections
+  ![Search users](./images/search%20users.PNG)
+  ![Search users](./images/add%20friend.PNG)
+  ![Search users](./images/friends.PNG)
+- # Search Collections by name, view the comics in them, and subscribe/unsubscribe to them to see them in your Collections tab
+  ![Search users](./images/search%20collections.PNG)
+  ![Search comics](./images/comics.PNG)
+
+- # Accept, Deny, and Cancel Incoming/ Outgoing friend requests
+  ![Search users](./images/profile.PNG)
+- # Add comments to collections or delete your comments
+  ![Search users](./images/add%20comment.PNG)
+- # Change your Description and Display name/Username
+  ![Search users](./images/edit%20profile.PNG)
